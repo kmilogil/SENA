@@ -98,12 +98,12 @@ function resultadoFormOfertar() {
  */
 
 
-     
+
 
 // Realizar Pedido
 var xmlHttp;
 function getPedido(idOferta) {
-    
+
     if (window.XMLHttpRequest) {
         xmlHttp = new XMLHttpRequest();
     }
@@ -151,7 +151,7 @@ function resultadonumeroOferta() {
     if (xmlHttp.readyState === 4) {
         if (xmlHttp.responseText !== null) {
             document.getElementById("modalOferta").innerHTML = xmlHttp.responseText;
-            
+
         }
 
     }
@@ -159,7 +159,7 @@ function resultadonumeroOferta() {
 
 var xmlHttp;
 function getAbastecimiento(idOferta) {
-    
+
     if (window.XMLHttpRequest) {
         xmlHttp = new XMLHttpRequest();
     }
@@ -186,7 +186,7 @@ function resultadoAbastecer() {
 
 var xmlHttp;
 function getDetalleCliente(idPedido) {
-    
+
     if (window.XMLHttpRequest) {
         xmlHttp = new XMLHttpRequest();
     }
@@ -211,8 +211,8 @@ function resultadoDetalleCliente() {
 }
 
 var xmlHttp;
-function getDetalleProductor(idPedido,idUsuario) {
-    
+function getDetalleProductor(idPedido, idUsuario) {
+
     if (window.XMLHttpRequest) {
         xmlHttp = new XMLHttpRequest();
     }
@@ -236,3 +236,29 @@ function resultadoDetalleProductor() {
     }
 }
 
+var xmlHttp;
+function getEliminar(idProducto) {
+
+
+    if (window.XMLHttpRequest) {
+        xmlHttp = new XMLHttpRequest();
+    }
+    else if (window.ActiveXObject) {
+        xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
+    } else {
+        alert("El navegador no soporta Ajax!");
+        return;
+    }
+
+    var url = "../ajax/eliminarProducto.jsp?idproducto=" + idProducto;
+    xmlHttp.onreadystatechange = resultadoEliminar;
+    xmlHttp.open("GET", url, true);
+    xmlHttp.send(null);
+
+}
+
+function resultadoEliminar() {
+    if (xmlHttp.readyState === 4) {
+        document.getElementById("modalEliminarProducto").innerHTML = xmlHttp.responseText;
+    }
+}

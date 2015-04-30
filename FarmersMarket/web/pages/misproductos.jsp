@@ -34,7 +34,7 @@
 
         FUsuario faUsu = new FUsuario();
         FOferta faOfer = new FOferta();
-        FPedido faPedi = new FPedido();        
+        FPedido faPedi = new FPedido();
         String pagActual = "misproductos.jsp";
 
         // Validación para poder entrar
@@ -246,8 +246,9 @@
                                         <!--<button type="button" onclick="getFormOfertar(<%=faOfer.obtenerIdPaPorIds(actualUsuario.getIdUsuario(), p.getIdProducto())%>)" href="#" data-toggle="modal" data-target="#modalConfirmarEliminarProducto" class="btn btn-danger">Eliminar</button>
                                         <form action="../ControladorOferta?op=eliaso&idProductoAso=<%=faOfer.obtenerIdPaPorIds(actualUsuario.getIdUsuario(), p.getIdProducto())%>" method="post" id="EliminarProducto">
                                         </form>-->
-                                        <a href="../ControladorOferta?idProAsoc=<%=faOfer.obtenerIdPaPorIds(actualUsuario.getIdUsuario(), p.getIdProducto())
-                                            %>" class="btn btn-danger" id="eliminar">Eliminar Producto</a>
+
+                                        <button type="button" onclick="getEliminar(<%=faOfer.obtenerIdPaPorIds(actualUsuario.getIdUsuario(), p.getIdProducto())%>)" href="#" data-toggle="modal" data-target="#modalConfirmarEliminarProducto" class="btn btn-danger">Eliminar producto</button>
+                                        <!--<a href="../ControladorOferta?idProAsoc=<%=faOfer.obtenerIdPaPorIds(actualUsuario.getIdUsuario(), p.getIdProducto())%>" class="btn btn-danger" id="eliminar">Eliminar Producto</a>-->
 
                                     </div>
                                 </div>                                        
@@ -431,21 +432,14 @@
                         <div>
                             <div class="modal fade bs-example-modal-sm" id="modalConfirmarEliminarProducto" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
                                 <div class="modal-dialog modal-sm">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h4 class="modal-title text-center" id="myModalLabel">¿Está seguro que desea eliminar este producto?</h4>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <center>
-                                                <button type="button" class="btn btn-success" onclick="enviarFormulario('eliminar');">Sí</button>
-                                                <button type="button" class="btn btn-danger" data-dismiss="modal">No</button>                                                
-                                            </center>                                            
-                                        </div>                                        
+                                    <div class="modal-content" id="modalEliminarProducto">
+                                        
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <!-- Fin de modal para confirmación de asociar productos -->
+                        <!-- Fin de modal para confirmación eliminar productos -->
+
                     </div>
                     <!-- Fin de Ventanas Modales -->
                 </div>

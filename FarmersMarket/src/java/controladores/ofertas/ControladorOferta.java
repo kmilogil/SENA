@@ -124,8 +124,8 @@ public class ControladorOferta extends HttpServlet {
             HttpSession miSesion = request.getSession(false);
             miSesion.setAttribute("oferta", ofertas);
             response.sendRedirect("pages/ofertas.jsp");
-        }else if (request.getParameter("idProAsoc") != null) {
-            String mensaje = faOfer.eliminar(Integer.parseInt(request.getParameter("idProAsoc")));
+        }else if (request.getParameter("eliminarProducto") != null) {
+            String mensaje = faOfer.eliminar(Integer.parseInt(request.getParameter("idProducto")));
             if (mensaje.equals("ok")) {
                 response.sendRedirect("pages/misproductos.jsp?msg=<strong>¡Se ha desasociado un producto! <i class='glyphicon glyphicon-ok'></i></strong> &tipoAlert=success");
             }else{
