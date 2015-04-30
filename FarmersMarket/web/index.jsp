@@ -212,18 +212,21 @@
                                                 <input type="password" class="form-control" value="" name="ruClave" id="ruClave" tabindex="5" maxlength="45"  onblur="validarClave(this)" >
                                                 <i id="iconFeedbackClave"></i>
                                             </div>                                           
+                                            <div class="form-group has-feedback" id="inpConClave">
+                                                <label class="control-label" for="ruConClave">Confirmar contraseña:</label>
+                                                <input type="password" class="form-control" value="" name="ruConClave" id="ruConClave" tabindex="5" maxlength="45"  onblur="validarConfirmacion(this)" >
+                                                <i id="iconFeedbackConClave"></i>
+                                            </div>
 
+                                        </div>                                        
 
+                                        <div class="col-md-6">  
                                             <div class="form-group has-feedback" id="inpDireccion">
                                                 <label class="control-label" for="ruDireccion">Dirección:</label>
                                                 <input type="text" class="form-control" name="ruDireccion" 
                                                        id="ruDireccion" tabindex="6" value="" maxlength="45" onblur="validarDireccion(this)" >
                                                 <i id="iconFeedbackDireccion"></i>
                                             </div>
-                                        </div>
-
-                                        <div class="col-md-6">  
-
                                             <div class="form-group has-feedback" id="inpCorreo">
                                                 <label class="control-label" for="ruCorreo">Correo:</label>
                                                 <input type="text" class="form-control" name="ruCorreo" tabindex="7" onblur="validarCorreo(this);
@@ -233,7 +236,7 @@
                                             </div>
 
                                             <div class="form-group has-feedback" id="inpCorreoRepetido">
-                                                <label class="control-label" for="ruCorreo2">Repetir Correo:</label>
+                                                <label class="control-label" for="ruCorreo2">Confirmar Correo:</label>
                                                 <input type="text" class="form-control" name="ruCorreo2" tabindex="8" onblur="validarRepetirCorreo(this)"
                                                        id="ruCorreo2" value="" >
                                                 <i id="iconFeedbackCorreo2"></i>
@@ -263,22 +266,25 @@
                                                 </select>
                                             </div>
 
-
-
                                             <div class="form-group has-feedback" id="inpFecha">
                                                 <label class="control-label" for="ruFechaNacimiento">Fecha Nacimiento</label>
-                                                <input type="date" class="form-control" name="ruFechaNacimiento" id="ruFecha" tabindex="11" onblur="validarFecha(this)">
+                                                <input type="date" class="form-control" name="ruFechaNacimiento" id="ruFecha" tabindex="11" onblur="edad(this)">
                                                 <i id="iconFeedbackFecha"></i>
                                             </div>
 
-                                            <div class="checkbox has-feedback" id="inpTerminos">
+                                        </div>
+                                        <legend></legend>
+                                        <div class="form-inline">
+                                            <div class="checkbox has-feedback pull-left" id="inpTerminos">
                                                 <label class="control-label">
-                                                    <input  type="checkbox" id="ruTerminos" name="ruTerminos" tabindex="12" onblur="validarTerminos()"> Acepto <a href="#" data-toggle="modal" data-target="#modalTerminos">Terminos y Condiciones</a>
+                                                    <input type="checkbox" id="ruTerminos" name="ruTerminos" tabindex="12" onblur="validarTerminos()"> Acepto <a href="#" data-toggle="modal" data-target="#modalTerminos">Terminos y Condiciones</a>
                                                 </label>
                                             </div>
+                                            <input type="submit" id="botonRegistro" name="botonRegistro" class="btn btn-success pull-right" value="Registrarme" >
+                                        </div><br>
 
-                                            <input type="submit" id="botonRegistro" name="botonRegistro" class="btn btn-success" value="Registrarme" >
-                                        </div>
+
+
                                     </form>
 
                                 </div>
@@ -286,6 +292,7 @@
                             </div>                
                             <!--Fin Contendor del fomulario-->
                             <br>
+
                         </div>
 
                     </div>

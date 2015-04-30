@@ -19,52 +19,52 @@ function validarRol(rol) {
     }
 }
 ;
-
-function validarDocumento(numeroDocumento) {
-    if (numeroDocumento.value === "" || numeroDocumento.value === null) {
-        document.getElementById('ruDocumento').setAttribute('data-toggle', 'tooltip');
-        document.getElementById('ruDocumento').setAttribute('data-original-title', 'Debe ingresar su número de documento, no debe estar vacio');
-        $(document).ready(function() {
-            // Initialize tooltip
-            $('[data-toggle="tooltip"]').tooltip({
-                placement: 'left'
-            });
-        });
-        document.getElementById('inpDocumento').setAttribute('class', 'form-group has-feedback has-error');
-        document.getElementById('iconFeedbackDocumento').setAttribute('class', 'glyphicon glyphicon-remove form-control-feedback');
-        document.getElementById('botonRegistro').setAttribute('disabled', 'true');
-    } else if (numeroDocumento.value < 999999999) {
-        document.getElementById('ruDocumento').setAttribute('data-toggle', 'tooltip');
-        document.getElementById('ruDocumento').setAttribute('data-original-title', 'Debe ser de 10 digitos el campo');
-        $(document).ready(function() {
-            // Initialize tooltip
-            $('[data-toggle="tooltip"]').tooltip({
-                placement: 'left'
-            });
-        });
-        document.getElementById('inpDocumento').setAttribute('class', 'form-group has-feedback has-error');
-        document.getElementById('botonRegistro').setAttribute('disabled', 'true');
-    } else if (isNaN(numeroDocumento.value)) {
-        document.getElementById('ruDocumento').setAttribute('data-toggle', 'tooltip');
-        document.getElementById('ruDocumento').setAttribute('data-original-title', 'Debe ingresar sólo números, no se admiten letras');
-        $(document).ready(function() {
-            // Initialize tooltip
-            $('[data-toggle="tooltip"]').tooltip({
-                placement: 'left'
-            });
-        });
-        document.getElementById('inpDocumento').setAttribute('class', 'form-group has-feedback has-error');
-        document.getElementById('iconFeedbackDocumento').setAttribute('class', 'glyphicon glyphicon-remove form-control-feedback');
-        document.getElementById('botonRegistro').setAttribute('disabled', 'true');
-    } else {
-        document.getElementById('iconFeedbackDocumento').setAttribute('class', 'glyphicon glyphicon-ok form-control-feedback');
-        document.getElementById('ruDocumento').removeAttribute('data-toggle', 'tooltip');
-        document.getElementById('ruDocumento').removeAttribute('data-original-title', 'Este campo no debe ir vacio');
-        document.getElementById('inpDocumento').setAttribute('class', 'form-group has-feedback has-success');
-        document.getElementById('iconFeedbackDocumento').setAttribute('class', 'glyphicon glyphicon-ok form-control-feedback');
-        document.getElementById('botonRegistro').removeAttribute('disabled');
-    }
-}
+//
+//function validarDocumento(numeroDocumento) {
+//    if (numeroDocumento.value === "" || numeroDocumento.value === null) {
+//        document.getElementById('ruDocumento').setAttribute('data-toggle', 'tooltip');
+//        document.getElementById('ruDocumento').setAttribute('data-original-title', 'Debe ingresar su número de documento, no debe estar vacio');
+//        $(document).ready(function() {
+//            // Initialize tooltip
+//            $('[data-toggle="tooltip"]').tooltip({
+//                placement: 'left'
+//            });
+//        });
+//        document.getElementById('inpDocumento').setAttribute('class', 'form-group has-feedback has-error');
+//        document.getElementById('iconFeedbackDocumento').setAttribute('class', 'glyphicon glyphicon-remove form-control-feedback');
+//        document.getElementById('botonRegistro').setAttribute('disabled', 'true');
+//    } else if (numeroDocumento.value < 999999999) {
+//        document.getElementById('ruDocumento').setAttribute('data-toggle', 'tooltip');
+//        document.getElementById('ruDocumento').setAttribute('data-original-title', 'Debe ser de 10 digitos el campo');
+//        $(document).ready(function() {
+//            // Initialize tooltip
+//            $('[data-toggle="tooltip"]').tooltip({
+//                placement: 'left'
+//            });
+//        });
+//        document.getElementById('inpDocumento').setAttribute('class', 'form-group has-feedback has-error');
+//        document.getElementById('botonRegistro').setAttribute('disabled', 'true');
+//    } else if (isNaN(numeroDocumento.value)) {
+//        document.getElementById('ruDocumento').setAttribute('data-toggle', 'tooltip');
+//        document.getElementById('ruDocumento').setAttribute('data-original-title', 'Debe ingresar sólo números, no se admiten letras');
+//        $(document).ready(function() {
+//            // Initialize tooltip
+//            $('[data-toggle="tooltip"]').tooltip({
+//                placement: 'left'
+//            });
+//        });
+//        document.getElementById('inpDocumento').setAttribute('class', 'form-group has-feedback has-error');
+//        document.getElementById('iconFeedbackDocumento').setAttribute('class', 'glyphicon glyphicon-remove form-control-feedback');
+//        document.getElementById('botonRegistro').setAttribute('disabled', 'true');
+//    } else {
+//        document.getElementById('iconFeedbackDocumento').setAttribute('class', 'glyphicon glyphicon-ok form-control-feedback');
+//        document.getElementById('ruDocumento').removeAttribute('data-toggle', 'tooltip');
+//        document.getElementById('ruDocumento').removeAttribute('data-original-title', 'Este campo no debe ir vacio');
+//        document.getElementById('inpDocumento').setAttribute('class', 'form-group has-feedback has-success');
+//        document.getElementById('iconFeedbackDocumento').setAttribute('class', 'glyphicon glyphicon-ok form-control-feedback');
+//        document.getElementById('botonRegistro').removeAttribute('disabled');
+//    }
+//}
 function validarNombres(campoNombres) {
     var letras = /^[a-zA-Z ]+$/;
     if (campoNombres.value === null || campoNombres.value === "") {

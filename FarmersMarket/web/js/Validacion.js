@@ -298,7 +298,7 @@ $(document).ready(function() {
             $(document).ready(function() {
                 // Initialize tooltip
                 $('[data-toggle="tooltip"]').tooltip({
-                    placement: 'top'
+                    placement: 'left'
                 });
             });
             document.getElementById('inpDireccion').setAttribute('class', 'form-group has-feedback has-error');
@@ -326,7 +326,7 @@ $(document).ready(function() {
             $(document).ready(function() {
                 // Initialize tooltip
                 $('[data-toggle="tooltip"]').tooltip({
-                    placement: 'top'
+                    placement: 'left'
                 });
             });
             document.getElementById('inpDepartamento').setAttribute('class', 'form-group has-feedback has-error');
@@ -351,7 +351,7 @@ $(document).ready(function() {
             $(document).ready(function() {
                 // Initialize tooltip
                 $('[data-toggle="tooltip"]').tooltip({
-                    placement: 'top'
+                    placement: 'left'
                 });
             });
             document.getElementById('inpCiudad').setAttribute('class', 'form-group has-feedback has-error');
@@ -377,7 +377,7 @@ $(document).ready(function() {
             $(document).ready(function() {
                 // Initialize tooltip
                 $('[data-toggle="tooltip"]').tooltip({
-                    placement: 'top'
+                    placement: 'left'
                 });
             });
             document.getElementById('inpClave').setAttribute('class', 'form-group has-feedback has-error');
@@ -419,7 +419,7 @@ $(document).ready(function() {
             $(document).ready(function() {
                 // Initialize tooltip
                 $('[data-toggle="tooltip"]').tooltip({
-                    placement: 'top'
+                    placement: 'left'
                 });
             });
             document.getElementById('inpFecha').setAttribute('class', 'form-group has-feedback has-error');
@@ -713,7 +713,99 @@ $(document).ready(function() {
 //});
 
 
+$(document).ready(function() {
 
+    $("#botonRegistro").click(function() {
+        var confirmar = $('#ruConClave').val();
+        var clave = $('#ruClave').val();
+        if (confirmar === null || confirmar === "") {
+            document.getElementById('ruConClave').setAttribute('data-toggle', 'tooltip');
+            document.getElementById('ruConClave').setAttribute('data-original-title', 'Debe confirmar su contraseña');
+            $(document).ready(function() {
+                // Initialize tooltip
+                $('[data-toggle="tooltip"]').tooltip({
+                    placement: 'left'
+                });
+            });
+            document.getElementById('inpConClave').setAttribute('class', 'form-group has-feedback has-error');
+            document.getElementById('iconFeedbackConClave').setAttribute('class', 'glyphicon glyphicon-remove form-control-feedback');
+            return false;
+        } else if (confirmar !== clave) {
+            document.getElementById('ruConClave').setAttribute('data-toggle', 'tooltip');
+            document.getElementById('ruConClave').setAttribute('data-original-title', 'Los contraseñas no coinciden');
+            $(document).ready(function() {
+                // Initialize tooltip
+                $('[data-toggle="tooltip"]').tooltip({
+                    placement: 'left'
+                });
+            });
+            document.getElementById('inpConClave').setAttribute('class', 'form-group has-feedback has-error');
+            document.getElementById('iconFeedbackConClave').setAttribute('class', 'glyphicon glyphicon-remove form-control-feedback');
+
+        } else {
+            document.getElementById('ruConClave').removeAttribute('data-toggle', 'tooltip');
+            document.getElementById('ruConClave').removeAttribute('data-original-title');
+            document.getElementById('inpConClave').setAttribute('class', 'form-group has-feedback has-success');
+            document.getElementById('iconFeedbackConClave').setAttribute('class', 'glyphicon glyphicon-ok form-control-feedback');
+            document.getElementById('botonRegistro').removeAttribute('disabled');
+        }
+    });
+});
+
+
+
+$(document).ready(function() {
+
+    $("#botonRegistro").click(function() {
+        var fecha = $('#ruFecha').val();
+        var fecNac = new Date(fecha);
+        var hoy = new Date();
+        var a = hoy.getFullYear();
+        var m = hoy.getMonth() + 1;
+        var d = hoy.getDate();
+        var af = fecNac.getFullYear();
+        var mf = fecNac.getMonth() + 1;
+        var df = fecNac.getDate() + 1;
+        var hoyx = (a * 365) + (m * 30) + d;
+        var fecNacx = (af * 365) + (mf * 30) + df;
+        var dif = hoyx - fecNacx;
+        var difx = dif / 365;
+        if (fecha === null || fecha === "") {
+            document.getElementById('ruFecha').setAttribute('data-toggle', 'tooltip');
+            document.getElementById('ruFecha').setAttribute('data-original-title', 'Debe ingresar su fecha de nacimiento');
+            $(document).ready(function() {
+                // Initialize tooltip
+                $('[data-toggle="tooltip"]').tooltip({
+                    placement: 'left'
+                });
+            });
+            document.getElementById('inpFecha').setAttribute('class', 'form-group has-feedback has-error');
+            document.getElementById('iconFeedbackFecha').setAttribute('class', 'glyphicon glyphicon-remove form-control-feedback');
+            return false;
+        }
+
+        else if (difx < 18) {
+            document.getElementById('ruFecha').setAttribute('data-toggle', 'tooltip');
+            document.getElementById('ruFecha').setAttribute('data-original-title', 'No se permiten permiten personas menores de edad');
+            $(document).ready(function() {
+                // Initialize tooltip
+                $('[data-toggle="tooltip"]').tooltip({
+                    placement: 'left'
+                });
+            });
+            document.getElementById('inpFecha').setAttribute('class', 'form-group has-feedback has-error');
+            document.getElementById('iconFeedbackFecha').setAttribute('class', 'glyphicon glyphicon-remove form-control-feedback');
+            return false;
+        }
+        else {
+            document.getElementById('ruFecha').removeAttribute('data-toggle', 'tooltip');
+            document.getElementById('ruFecha').removeAttribute('data-original-title');
+            document.getElementById('inpFecha').setAttribute('class', 'form-group has-feedback has-success');
+            document.getElementById('iconFeedbackFecha').setAttribute('class', 'glyphicon glyphicon-ok form-control-feedback');
+            document.getElementById('botonRegistro').removeAttribute('disabled');
+        }
+    });
+});
 
 
 
@@ -772,9 +864,9 @@ function validarDocumento(numeroDocumento) {
         document.getElementById('iconFeedbackDocumento').setAttribute('class', 'glyphicon glyphicon-remove form-control-feedback');
         return false;
 
-    } else if (numeroDocumento.value.length < 10) {
+    } else if (numeroDocumento.value.length < 8) {
         document.getElementById('ruDocumento').setAttribute('data-toggle', 'tooltip');
-        document.getElementById('ruDocumento').setAttribute('data-original-title', 'Debe ser de 10 digitos el campo');
+        document.getElementById('ruDocumento').setAttribute('data-original-title', 'Deben ser minimo 8 digitos');
         $(document).ready(function() {
             // Initialize tooltip
             $('[data-toggle="tooltip"]').tooltip({
@@ -974,7 +1066,7 @@ function validarDireccion(direccion) {
         $(document).ready(function() {
             // Initialize tooltip
             $('[data-toggle="tooltip"]').tooltip({
-                placement: 'top'
+                placement: 'left'
             });
         });
         document.getElementById('inpDireccion').setAttribute('class', 'form-group has-feedback has-error');
@@ -996,7 +1088,7 @@ function validarDepartamento(departamento) {
         $(document).ready(function() {
             // Initialize tooltip
             $('[data-toggle="tooltip"]').tooltip({
-                placement: 'top'
+                placement: 'left'
             });
         });
         document.getElementById('inpDepartamento').setAttribute('class', 'form-group has-feedback has-error');
@@ -1016,7 +1108,7 @@ function validarCiudad(ciudad) {
         $(document).ready(function() {
             // Initialize tooltip
             $('[data-toggle="tooltip"]').tooltip({
-                placement: 'top'
+                placement: 'left'
             });
         });
         document.getElementById('inpCiudad').setAttribute('class', 'form-group has-feedback has-error');
@@ -1038,7 +1130,7 @@ function validarClave(clave) {
         $(document).ready(function() {
             // Initialize tooltip
             $('[data-toggle="tooltip"]').tooltip({
-                placement: 'top'
+                placement: 'left'
             });
         });
         document.getElementById('inpClave').setAttribute('class', 'form-group has-feedback has-error');
@@ -1065,6 +1157,41 @@ function validarClave(clave) {
     }
 }
 
+function validarConfirmacion(clave) {
+    var clave1 = document.getElementById("ruClave");
+    if (clave.value === null || clave.value === "") {
+        document.getElementById('ruConClave').setAttribute('data-toggle', 'tooltip');
+        document.getElementById('ruConClave').setAttribute('data-original-title', 'Debe confirmar su contraseña');
+        $(document).ready(function() {
+            // Initialize tooltip
+            $('[data-toggle="tooltip"]').tooltip({
+                placement: 'left'
+            });
+        });
+        document.getElementById('inpConClave').setAttribute('class', 'form-group has-feedback has-error');
+        document.getElementById('iconFeedbackConClave').setAttribute('class', 'glyphicon glyphicon-remove form-control-feedback');
+        return false;
+    } else if (clave.value !== clave1.value) {
+        document.getElementById('ruConClave').setAttribute('data-toggle', 'tooltip');
+        document.getElementById('ruConClave').setAttribute('data-original-title', 'Las contraseñas no coinciden');
+        $(document).ready(function() {
+            // Initialize tooltip
+            $('[data-toggle="tooltip"]').tooltip({
+                placement: 'left'
+            });
+        });
+        document.getElementById('inpConClave').setAttribute('class', 'form-group has-feedback has-error');
+        document.getElementById('iconFeedbackConClave').setAttribute('class', 'glyphicon glyphicon-remove form-control-feedback');
+        return false;
+    } else {
+        document.getElementById('ruConClave').removeAttribute('data-toggle', 'tooltip');
+        document.getElementById('ruConClave').removeAttribute('data-original-title');
+        document.getElementById('inpConClave').setAttribute('class', 'form-group has-feedback has-success');
+        document.getElementById('iconFeedbackConClave').setAttribute('class', 'glyphicon glyphicon-ok form-control-feedback');
+        document.getElementById('botonRegistro').removeAttribute('disabled');
+    }
+}
+
 function validarFecha(fecha) {
     if (fecha.value === null || fecha.value === "") {
         document.getElementById('ruFecha').setAttribute('data-toggle', 'tooltip');
@@ -1072,7 +1199,7 @@ function validarFecha(fecha) {
         $(document).ready(function() {
             // Initialize tooltip
             $('[data-toggle="tooltip"]').tooltip({
-                placement: 'top'
+                placement: 'left'
             });
         });
         document.getElementById('inpFecha').setAttribute('class', 'form-group has-feedback has-error');
@@ -1102,7 +1229,7 @@ function validarTerminos() {
         $(document).ready(function() {
             // Initialize tooltip
             $('[data-toggle="tooltip"]').tooltip({
-                placement: 'top'
+                placement: 'left'
             });
         });
         document.getElementById('inpTerminos').setAttribute('class', 'form-group has-feedback has-error');
@@ -1321,15 +1448,15 @@ function validarAbastecimientoPro(cantidad) {
                 placement: 'top'
             });
         });
-        
-        document.getElementById('abCantidad').setAttribute('class', 'form-group has-error');        
-        document.getElementById('abastecerOferta').setAttribute('disabled','true');
+
+        document.getElementById('abCantidad').setAttribute('class', 'form-group has-error');
+        document.getElementById('abastecerOferta').setAttribute('disabled', 'true');
         return false;
     } else {
         document.getElementById('aCantidad').removeAttribute('data-toggle', 'tooltip');
         document.getElementById('aCantidad').removeAttribute('data-original-title');
         document.getElementById('abCantidad').setAttribute('class', 'form-group has-feedback has-success');
-        
+
         document.getElementById('abastecerOferta').removeAttribute('disabled');
     }
 }
@@ -1346,16 +1473,16 @@ function validarcantidadcarrito() {
                 placement: 'top'
             });
         });
-        
-        document.getElementById('cancarrito').setAttribute('class', 'form-group has-error'); 
-        
+
+        document.getElementById('cancarrito').setAttribute('class', 'form-group has-error');
+
         return false;
     } else {
         document.getElementById('cantidadCarrito').removeAttribute('data-toggle', 'tooltip');
         document.getElementById('cantidadCarrito').removeAttribute('data-original-title');
         document.getElementById('cancarrito').setAttribute('class', 'form-group has-feedback has-success');
-        
-        
+
+
     }
 }
 
@@ -1395,8 +1522,8 @@ function enviarFormulario(nombreForm) {
 //    document.getElementsByClassName(nombreForm).submit();
 }
 
-function edad(date) {
-    var fecNac = new Date(date.value);
+function edad(fecha) {
+    var fecNac = new Date(fecha.value);
     var hoy = new Date();
     var a = hoy.getFullYear();
     var m = hoy.getMonth() + 1;
@@ -1408,12 +1535,38 @@ function edad(date) {
     var fecNacx = (af * 365) + (mf * 30) + df;
     var dif = hoyx - fecNacx;
     var difx = dif / 365;
-    if (difx < 18) {
-//alert('Usted es Menor de edad!!!\n'+'Fecha Nacimiento'+fecNacx+'\n'+'Hoy'+hoyx+'\n'+'Edad'+difx);
-        alert('Usted es menor de edad!!!\nEl sistema no permite registrar menores de edad!\n');
-        date.value = "";
+    if (fecha.value === null || fecha.value === "") {
+        document.getElementById('ruFecha').setAttribute('data-toggle', 'tooltip');
+        document.getElementById('ruFecha').setAttribute('data-original-title', 'Debe ingresar su fecha de nacimiento');
+        $(document).ready(function() {
+            // Initialize tooltip
+            $('[data-toggle="tooltip"]').tooltip({
+                placement: 'left'
+            });
+        });
+        document.getElementById('inpFecha').setAttribute('class', 'form-group has-feedback has-error');
+        document.getElementById('iconFeedbackFecha').setAttribute('class', 'glyphicon glyphicon-remove form-control-feedback');
+        return false;
+    }
+
+    else if (difx < 18) {
+        document.getElementById('ruFecha').setAttribute('data-toggle', 'tooltip');
+        document.getElementById('ruFecha').setAttribute('data-original-title', 'No se permiten permiten personas menores de edad');
+        $(document).ready(function() {
+            // Initialize tooltip
+            $('[data-toggle="tooltip"]').tooltip({
+                placement: 'left'
+            });
+        });
+        document.getElementById('inpFecha').setAttribute('class', 'form-group has-feedback has-error');
+        document.getElementById('iconFeedbackFecha').setAttribute('class', 'glyphicon glyphicon-remove form-control-feedback');
+        return false;
     }
     else {
-        date.style.border = "1px solid green";
+        document.getElementById('ruFecha').removeAttribute('data-toggle', 'tooltip');
+        document.getElementById('ruFecha').removeAttribute('data-original-title');
+        document.getElementById('inpFecha').setAttribute('class', 'form-group has-feedback has-success');
+        document.getElementById('iconFeedbackFecha').setAttribute('class', 'glyphicon glyphicon-ok form-control-feedback');
+        document.getElementById('botonRegistro').removeAttribute('disabled');
     }
 }

@@ -242,7 +242,7 @@
                         <div class="row">
 
                             <div class="col-md-6">
-                                                                
+
                                 <%
                                     for (RolDto rol : rolesActuales) {
                                         if (rol.getIdRol() == 1) {
@@ -281,7 +281,7 @@
                                 </table>
                                 <%                                    } else {
 
-                                    }%>
+                                %>
                                 <div class="col-md-12">
                                     <div class="alert alert-info text-center" id="alert">
                                         <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -290,9 +290,9 @@
                                         </p>
                                     </div>
                                 </div>
-                                <%
+                                <%                                    }
                                 } else if (rol.getIdRol() == 2) {
-                                    ArrayList<CarritoDto> rankings = (ArrayList<CarritoDto>) faOfer.obtenerRankingVendidos();
+                                    ArrayList< CarritoDto> rankings = (ArrayList<CarritoDto>) faOfer.obtenerRankingVendidos();
                                     if (rankings.size() != 0) {
                                 %>                                
                                 <div class="page-header">
