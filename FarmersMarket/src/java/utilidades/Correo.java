@@ -1,9 +1,13 @@
 package utilidades;
 
 /**
- * @author Kennit Romero
+ *
+ * @author Correo
+ * @author lenovo
  */
 import java.security.Security;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 import java.util.ResourceBundle;
 import javax.mail.Message;
@@ -25,16 +29,16 @@ public class Correo {
      * @param paraEmail : Email receptor del mensaje
      * @return true si el envío es conforme y false si no es así.
      */
-    public static synchronized boolean sendMail(String titulo, String mensaje, String paraEmail) {
+    public static synchronized boolean sendMail(String titulo,  String mensaje, String paraEmail) {
         boolean envio = false;
 
         try {
 
-            //carga del archivo smtp.properties
+   //carga del archivo smtp.properties
             Properties propiedad = new Properties();
             //se leen el archivo .properties
 
-            final ResourceBundle props = ResourceBundle.getBundle("co.utilidades.ConfigMail");
+            final ResourceBundle props = ResourceBundle.getBundle("utilidades.ConfigMail");
 
             Security.addProvider(new com.sun.net.ssl.internal.ssl.Provider());
 
@@ -47,12 +51,13 @@ public class Correo {
             propiedades.put("mail.smtp.socketFactory.port", props.getString("mail.smtp.socketFactory.port"));
             propiedades.put("mail.smtp.socketFactory.class", props.getString("mail.smtp.socketFactory.class"));
             propiedades.put("mail.smtp.socketFactory.fallback", props.getString("mail.smtp.socketFactory.fallback"));
+            propiedades.put("mail.smtp.starttls.enable", "true");
             propiedades.put("mail.smtp.mail.sender", props.getString("mail.smtp.mail.sender"));
 
             propiedades.setProperty("mail.smtp.quitwait", props.getString("mail.smtp.quitwait"));
 
             //Preparamos la Sesion autenticando al usuario
-            Session session = Session.getInstance(propiedades, new javax.mail.Authenticator() {
+            Session session = Session.getDefaultInstance(propiedades, new javax.mail.Authenticator() {
                 protected PasswordAuthentication getPasswordAuthentication() {
                     return new PasswordAuthentication(props.getString("mail.user"), props.getString("mail.password"));
                 }

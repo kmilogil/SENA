@@ -113,4 +113,7 @@ public class FPedido {
     public int obtenerPedidosPendientesCliente(long idCliente) {
         return peDao.obtenerPedidosPendientesCliente(idCliente, miConexion);
     }
+    public List obtenerUltimopedido(long idCliente){
+        return peDao.obtenerUltimopedido(idCliente, miConexion);
+    }
 }

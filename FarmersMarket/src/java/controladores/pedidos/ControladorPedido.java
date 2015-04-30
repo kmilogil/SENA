@@ -8,12 +8,16 @@ package controladores.pedidos;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import modulo.pedidos.FPedido;
 import modulo.pedidos.dto.CarritoDto;
+import modulo.pedidos.dto.ProductoCarritoDto;
+import modulo.usuarios.FUsuario;
+import utilidades.Correo;
 
 /**
  *
@@ -90,7 +94,12 @@ public class ControladorPedido extends HttpServlet {
             } else if (v.equals("si")) {
                 faPedi.descontarInventario(carrito);
                 faPedi.activarPedido(idPedido);
-                response.sendRedirect("pages/carrito.jsp?msg=<strong>¡Se realizado su pedido! <i class='glyphicon glyphicon-ok'></i></strong> Tiene 24 horas disponibles, si desea cancelarlo.&tipoAlert=success");
+
+                if (enviarCorreo(Long.parseLong(request.getParameter("idCliente")))) {
+                    response.sendRedirect("pages/carrito.jsp?msg=<strong>¡Se realizado su pedido y se le envio un correo! <i class='glyphicon glyphicon-ok'></i></strong> Tiene 24 horas disponibles, si desea cancelarlo.&tipoAlert=success");
+                } else {
+                    response.sendRedirect("pages/carrito.jsp?msg=<strong>¡Se realizado su pedido! <i class='glyphicon glyphicon-ok'></i></strong> Tiene 24 horas disponibles, si desea cancelarlo.&tipoAlert=success");
+                }
             }
         } else if (request.getParameter("idPedido") != null) {
             faPedi = new FPedido();
@@ -109,6 +118,59 @@ public class ControladorPedido extends HttpServlet {
 
             }
         }
+    }
+    private boolean enviarCorreo(long documento) {
+        FUsuario usuariof = new FUsuario();
+        String correo = usuariof.obtenerCorreoPorDocumento(documento);
+        FPedido pedido = new FPedido();
+        List<ProductoCarritoDto> productos;
+        productos = pedido.obtenerUltimopedido(documento);
+        String cuerpo = "<!DOCTYPE html>";
+        cuerpo += "<br>";
+        cuerpo += "<br>";
+        cuerpo += "<br>";
+        cuerpo += "<body>";
+        cuerpo += "<center>";
+        cuerpo += "<h2> <Strong>Sus Pedidos </Strong></h2>";
+        cuerpo += "<Table>";
+        cuerpo += "<tr>";
+        cuerpo += "<th>Nombre producto";
+        cuerpo += "</th>";
+        cuerpo += "<th>Presentacion";
+        cuerpo += "</th>";
+        cuerpo += "<th>Cantidad";
+        cuerpo += "</th>";
+        cuerpo += "<th>Fecha Entrega";
+        cuerpo += "</th>";
+        cuerpo += "<th>Precio venta";
+        cuerpo += "</th>";
+        cuerpo += "<th>Total Producto";
+        cuerpo += "</th>";
+        cuerpo += "</tr>";
+
+        long totalp = 0;
+        for (ProductoCarritoDto product : productos) {
+            totalp += product.getTotal();
+            cuerpo += "<tr>";
+            cuerpo += "<td>" + product.getNombre() + "</td>";
+            cuerpo += "<td>" + product.getPresentacion() + "</td>";
+            cuerpo += "<td>" + product.getCantidad() + "</td>";
+            cuerpo += "<td>" + product.getFechaEntrega() + "</td>";
+            cuerpo += "<td>" + product.getPrecioVenta() + "</td>";
+            cuerpo += "<td>" + product.getTotal() + "</td>";
+            cuerpo += "</tr>";
+        }
+
+        cuerpo += "</table>";
+        cuerpo += "<br>El total de su pedido es: " + totalp;
+
+        cuerpo += "</center></body></html>";
+        
+        
+
+        return Correo.sendMail("Pedido activo", cuerpo, correo);
+        
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

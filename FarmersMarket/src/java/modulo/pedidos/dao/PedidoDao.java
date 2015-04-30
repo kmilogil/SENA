@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import modulo.pedidos.dto.CarritoDto;
 import modulo.pedidos.dto.PedidoDto;
+import modulo.pedidos.dto.ProductoCarritoDto;
 import utilidades.Exceptions;
 
 /**
@@ -241,6 +242,41 @@ public class PedidoDao {
             ex.getMessage();
         }
         return rtdo;
+    }
+    
+    public List<ProductoCarritoDto> obtenerUltimopedido(long idCliente, Connection unaConexion) {
+        ArrayList<ProductoCarritoDto> pedidos = new ArrayList();
+        try {
+            pstm = unaConexion.prepareStatement("select productos.nombres, presentaciones.descripcion, carrito.cantidad, pedidos.fechaEntrega, ofertas.precioVenta,\n"
+                    + "(carrito.cantidad*ofertas.precioVenta)-(carrito.cantidad*ofertas.precioVenta*promociones.detalle) as 'Total'\n"
+                    + "from pedidos\n"
+                    + "inner join carrito on pedidos.idPedido=carrito.idPedido\n"
+                    + "inner join ofertas on ofertas.idOferta = carrito.idOferta\n"
+                    + "inner join productoasociado on ofertas.idProdAsoc = productoasociado.idProdAsoc\n"
+                    + "inner join productos on productos.idProducto = productoasociado.idProducto\n"
+                    + "inner join presentaciones on ofertas.idPresentacion= presentaciones.idPresentacion\n"
+                    + "inner join promociones on ofertas.idPromocion = promociones.idPromocion\n"
+                    + "inner join usuarios on usuarios.idUsuario = pedidos.idCliente\n"
+                    + "where pedidos.idPedido=(select pedidos.idPedido from pedidos order by pedidos.fechaPedido desc limit 1) and pedidos.idCliente=?");
+            pstm.setLong(1, idCliente);
+            rs = pstm.executeQuery();
+            while (rs.next()){
+                ProductoCarritoDto pedido = new ProductoCarritoDto();
+                pedido.setNombre(rs.getString("nombres"));
+                pedido.setPresentacion(rs.getString("descripcion"));
+                pedido.setCantidad(rs.getLong("cantidad"));
+                pedido.setFechaEntrega(rs.getString("fechaEntrega"));
+                pedido.setPrecioVenta(rs.getLong("precioVenta"));
+                pedido.setTotal(rs.getLong("Total"));
+                pedidos.add(pedido);
+            }
+            
+            
+        }catch (SQLException ex) {
+            ex.getMessage();
+        }
+        return pedidos;
+
     }
 
 }
