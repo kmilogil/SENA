@@ -33,8 +33,7 @@ public class ControladorSesiones extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        
+        response.setContentType("text/html;charset=iso-8859-1");        
          request.setCharacterEncoding("UTF-8");
 
         FUsuario faUsu = new FUsuario();
@@ -95,6 +94,7 @@ public class ControladorSesiones extends HttpServlet {
             //Cerrar sesión en el sistema.
         } else if (request.getParameter("op").equals("salir")) {
             HttpSession miSesion = request.getSession();
+            miSesion.removeAttribute("usuarioEntro");
             miSesion.invalidate();
 
             response.sendRedirect("index.jsp");

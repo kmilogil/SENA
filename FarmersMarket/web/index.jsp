@@ -26,7 +26,8 @@
     <body>
         <%
             FUsuario faUsu = new FUsuario();
-
+            String boton = "recuperar";
+            String codigo = "";
         %>
         <!--Inicio Contenedor del sitio -->
         <div class="container">
@@ -47,7 +48,25 @@
                 <p class="text-center"><%= request.getParameter("msg")%></p>
             </div>
             <%
+            } else if (request.getParameter("id") != null) {
+                boton = "recuperarCodigo";
+                String[] letras = {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J",
+                    "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
+                int[] numeros = {1, 2, 3, 4, 5, 6, 7, 8, 9};
+
+                for (int i = 0; i < 5; i++) {
+                    int il = (int) (Math.round(Math.random() * (25 - 0))) + 0;
+                    int in = (int) (Math.round(Math.random() * (8 - 0))) + 0;
+                    codigo += letras[il] + numeros[in];
                 }
+            %>
+            <div class="alert alert-success" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <p class="text-center">Ingrese el siguiente codigo <strong><%=codigo%></strong> en la sección de ¿Olvido su contraseña?</p>
+            </div>
+            <%                }
             %>            
             <!-- Fin de mensajes de alertas -->
             <!--Inicio Contenedor Principal-->
@@ -373,7 +392,11 @@
                                 <h4 class="modal-title text-center text-success" id="myModalLabel">Recuperar contraseña</h4>
                             </div>
                             <div class="container-fluid">
-                                <form method="POST" action="#" id="formRecuperarClave" >
+                                <form method="POST" action="ControladorUsuarios" id="formRecuperarClave">
+                                    <%
+                                        if (request.getParameter("id") == null) {
+
+                                    %>
                                     <div class="col-md-12">
                                         <div class="form-group" id="eCorreo">                                            
                                             <div class="form-group">
@@ -382,14 +405,31 @@
                                                        placeholder="Ingrese su correo electrónico" onblur="validarOlvidada(this)">
                                             </div>                                            
                                         </div>                            
-                                        <input type="hidden" class="form-control" id="rcEnviar" name="rcEnviar" value="ok">
-                                        <br>
-                                    </div>                                        
+                                        <input type="hidden" class="form-control" id="rcEnviar" name="rcEnviar" value="ok">                                        
+                                    </div>
+                                    <%                                    } else if (request.getParameter("id") != null) {
+                                        String encriptado = request.getParameter("id");
+                                    %>
+                                    <div class="col-md-12">
+                                        <div class="form-group" id="eCodigo">                                            
+                                            <div class="form-group">
+                                                <label for="recipient-name" class="control-label">Ingrese el codigo:</label>                                                
+                                                <input type="text" class="form-control" id="rcCodigo" name="rcCodigo"  value=""
+                                                       placeholder="Ingrese el codigo obtenido" onblur="validarCodigo(this)">
+                                            </div>                                            
+                                        </div>                            
+                                        <input type="hidden" class="form-control" id="codigor" name="codigo" value="<%=codigo%>"> 
+                                        <input type="hidden" class="form-control" id="encriptacion" name="encriptacion" value="<%=encriptado%>">  
+                                    </div>
+                                    <%                                        }
+                                    %>
+                                    <legend></legend>
+                                    <div class="text-right">
+                                        <input type="submit" name="<%=boton%>" id="<%=boton%>" class="btn btn-success" value="Recuperar contraseña">
+                                    </div>
+                                    <br>
                                 </form>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-success" id="recuperar" onclick="enviarFormulario('formRecuperarClave')">Recuperar Contraseña</button>
-                            </div>
+                            </div>                            
                         </div>
                     </div>
                 </div>
@@ -404,16 +444,16 @@
                             <h4 class="modal-title text-center text-success" id="myModalLabel">Contáctenos | Farmer's Market</h4>
                         </div>
                         <div class="modal-body">
-                            <form class="form-horizontal" method="POST" action="GestionUsuarios" id="formContactenos">
-                                <div class="form-group">
+                            <form class="form-horizontal" method="POST" action="ControladorContacto" id="formContactenos">
+                                <div class="form-group" id="dmNombre">
                                     <label for="mcNombre" class="col-sm-2 control-label">Nombre</label>
                                     <div class="col-sm-10">
                                         <input type="text" class="form-control" name="mcNombre"
-                                               id="mcNombre" placeholder="Ingrese su nombre">
+                                               id="mcNombre" placeholder="Ingrese su nombre completo">
                                     </div>
                                 </div>
 
-                                <div class="form-group">
+                                <div class="form-group" id="dmCorreo">
                                     <label for="mcCorreo" class="col-sm-2 control-label">Correo</label>
                                     <div class="col-sm-10">
                                         <input type="text" class="form-control" name="mcCorreo"
@@ -421,16 +461,16 @@
                                     </div>
                                 </div>
 
-                                <div class="form-group">
-                                    <label for="inputPassword3" class="col-sm-2 control-label">Mensaje</label>
+                                <div class="form-group" id="dmMensaje">
+                                    <label for="mcMensaje" class="col-sm-2 control-label">Mensaje</label>
                                     <div class="col-sm-10">
-                                        <textarea name="mcMensaje" class="form-control" rows="4" placeholder="Ingrese su mensaje para la compañía Farmer's Market"></textarea>
+                                        <textarea name="mcMensaje" id="mcMensaje"class="form-control" rows="4" placeholder="Ingrese su mensaje para la compañía Farmer's Market"></textarea>
                                     </div>
                                 </div>
 
                                 <input hidden="true" name="mcViene" value="indexp">
                                 <div class="text-right">
-                                    <input type="submit" name="mcEnviar" class="btn btn-success" value="Enviar Mensaje">
+                                    <input type="submit" name="contactar"  id="contactar"class="btn btn-success" value="Enviar Mensaje">
                                 </div>
                             </form>
                         </div>                       

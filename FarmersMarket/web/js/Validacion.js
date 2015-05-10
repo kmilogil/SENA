@@ -543,30 +543,6 @@ $(document).ready(function() {
     });
 });
 
-$(document).ready(function() {
-
-    $("#recuperar").click(function() {
-        var clave = $('#rcCorreo').val();
-        if (clave === null || clave === "") {
-            document.getElementById('rcCorreo').setAttribute('data-toggle', 'tooltip');
-            document.getElementById('rcCorreo').setAttribute('data-original-title', 'Debe ingresar su correo electronico');
-            $(document).ready(function() {
-                // Initialize tooltip
-                $('[data-toggle="tooltip"]').tooltip({
-                    placement: 'bottom'
-                });
-            });
-            document.getElementById('eCorreo').setAttribute('class', 'has-error');
-            return false;
-        } else {
-            document.getElementById('rcCorreo').removeAttribute('data-toggle', 'tooltip');
-            document.getElementById('rcCorreo').removeAttribute('data-original-title');
-            document.getElementById('eCorreo').setAttribute('class', 'form-group has-feedback has-success');
-            document.getElementById('inFeedbackCorreo').setAttribute('class', 'glyphicon glyphicon-ok form-control-feedback');
-            document.getElementById('rcEnviar').removeAttribute('disabled');
-        }
-    });
-});
 
 $(document).ready(function() {
 
@@ -806,6 +782,310 @@ $(document).ready(function() {
         }
     });
 });
+
+$(document).ready(function() {
+
+    $("#contactar").bind("click", function() {
+        var nombre = $('#mcNombre').val();
+        if (nombre === null || nombre === "") {
+            document.getElementById('mcNombre').setAttribute('data-toggle', 'tooltip');
+            document.getElementById('mcNombre').setAttribute('data-original-title', 'Por favor ingrese su nombre completo');
+            $(document).ready(function() {
+                // Initialize tooltip
+                $('[data-toggle="tooltip"]').tooltip({
+                    placement: 'top'
+                });
+            });
+            document.getElementById('dmNombre').setAttribute('class', 'form-group has-error');
+            return false;
+        } else {
+            document.getElementById('mcNombre').removeAttribute('data-toggle', 'tooltip');
+            document.getElementById('mcNombre').removeAttribute('data-original-title');
+            document.getElementById('dmNombre').setAttribute('class', 'form-group has-feedback has-success');
+
+        }
+    });
+});
+
+$(document).ready(function() {
+
+    $("#contactar").bind("click", function() {
+        var correo = $('#mcCorreo').val();
+        if (correo === null || correo === "") {
+            document.getElementById('mcCorreo').setAttribute('data-toggle', 'tooltip');
+            document.getElementById('mcCorreo').setAttribute('data-original-title', 'Por ingrese su correo electronico');
+            $(document).ready(function() {
+                // Initialize tooltip
+                $('[data-toggle="tooltip"]').tooltip({
+                    placement: 'top'
+                });
+            });
+            document.getElementById('dmCorreo').setAttribute('class', 'form-group has-error');
+            return false;
+        }
+        else if (!(/^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/.test(correo))) {
+            document.getElementById('mcCorreo').setAttribute('data-toggle', 'tooltip');
+            document.getElementById('mcCorreo').setAttribute('data-original-title', 'El correo no está en un formato correcto, correo@ejemplo.com');
+            $(document).ready(function() {
+                // Initialize tooltip
+                $('[data-toggle="tooltip"]').tooltip({
+                    placement: 'left'
+                });
+            });
+            document.getElementById('dmCorreo').setAttribute('class', 'form-group has-feedback has-error');
+            return false;
+        } else {
+            document.getElementById('mcCorreo').removeAttribute('data-toggle', 'tooltip');
+            document.getElementById('mcCorreo').removeAttribute('data-original-title');
+            document.getElementById('dmCorreo').setAttribute('class', 'form-group has-feedback has-success');
+
+        }
+    });
+});
+
+
+$(document).ready(function() {
+
+    $("#contactar").bind("click", function() {
+        var mensaje = $('#mcMensaje').val();
+        if (mensaje === null || mensaje === "") {
+            document.getElementById('mcMensaje').setAttribute('data-toggle', 'tooltip');
+            document.getElementById('mcMensaje').setAttribute('data-original-title', 'Por favor escriba el mensaje');
+            $(document).ready(function() {
+                // Initialize tooltip
+                $('[data-toggle="tooltip"]').tooltip({
+                    placement: 'top'
+                });
+            });
+            document.getElementById('dmMensaje').setAttribute('class', 'form-group has-error');
+            return false;
+        } else {
+            document.getElementById('mcMensaje').removeAttribute('data-toggle', 'tooltip');
+            document.getElementById('mcMensaje').removeAttribute('data-original-title');
+            document.getElementById('dmMensaje').setAttribute('class', 'form-group has-feedback has-success');
+
+        }
+    });
+});
+
+$(document).ready(function() {
+
+    $("#contactarAdmin").bind("click", function() {
+        var mensaje = $('#mcAsunto').val();
+        if (mensaje === null || mensaje === "") {
+            document.getElementById('mcAsunto').setAttribute('data-toggle', 'tooltip');
+            document.getElementById('mcAsunto').setAttribute('data-original-title', 'Por favor escriba el asunto');
+            $(document).ready(function() {
+                // Initialize tooltip
+                $('[data-toggle="tooltip"]').tooltip({
+                    placement: 'top'
+                });
+            });
+            document.getElementById('dmAsunto').setAttribute('class', 'form-group has-error');
+            return false;
+        } else {
+            document.getElementById('mcAsunto').removeAttribute('data-toggle', 'tooltip');
+            document.getElementById('mcAsunto').removeAttribute('data-original-title');
+            document.getElementById('dmAsunto').setAttribute('class', 'form-group has-feedback has-success');
+
+        }
+    });
+});
+
+
+$(document).ready(function() {
+
+    $("#contactarAdmin").bind("click", function() {
+        var mensaje = $('#mcMensaje').val();
+        if (mensaje === null || mensaje === "") {
+            document.getElementById('mcMensaje').setAttribute('data-toggle', 'tooltip');
+            document.getElementById('mcMensaje').setAttribute('data-original-title', 'Por favor escriba el mensaje');
+            $(document).ready(function() {
+                // Initialize tooltip
+                $('[data-toggle="tooltip"]').tooltip({
+                    placement: 'top'
+                });
+            });
+            document.getElementById('dmMensaje').setAttribute('class', 'form-group has-error');
+            return false;
+        } else {
+            document.getElementById('mcMensaje').removeAttribute('data-toggle', 'tooltip');
+            document.getElementById('mcMensaje').removeAttribute('data-original-title');
+            document.getElementById('dmMensaje').setAttribute('class', 'form-group has-feedback has-success');
+
+        }
+    });
+});
+
+
+$(document).ready(function() {
+
+    $("#recuperar").bind("click", function() {
+        var correo = $('#rcCorreo').val();
+        if (correo === null || correo === "") {
+            document.getElementById('rcCorreo').setAttribute('data-toggle', 'tooltip');
+            document.getElementById('rcCorreo').setAttribute('data-original-title', 'Debe ingresar su correo electronico');
+            $(document).ready(function() {
+                // Initialize tooltip
+                $('[data-toggle="tooltip"]').tooltip({
+                    placement: 'bottom'
+                });
+            });
+            document.getElementById('eCorreo').setAttribute('class', 'has-error');
+            return false;
+        } else if (!(/^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/.test(correo))) {
+            document.getElementById('rcCorreo').setAttribute('data-toggle', 'tooltip');
+            document.getElementById('rcCorreo').setAttribute('data-original-title', 'El correo no está en un formato correcto, correo@ejemplo.com');
+            $(document).ready(function() {
+                // Initialize tooltip
+                $('[data-toggle="tooltip"]').tooltip({
+                    placement: 'bottom'
+                });
+            });
+            document.getElementById('eCorreo').setAttribute('class', 'form-group has-feedback has-error');
+            return false;
+        } else {
+            document.getElementById('rcCorreo').removeAttribute('data-toggle', 'tooltip');
+            document.getElementById('rcCorreo').removeAttribute('data-original-title');
+            document.getElementById('eCorreo').setAttribute('class', 'form-group has-feedback has-success');
+        }
+    });
+});
+
+
+$(document).ready(function() {
+
+    $("#recuperarCodigo").bind("click", function() {
+        var codigo = $('#rcCodigo').val();
+        var cod = $('#codigor').val();
+        if (codigo === null || codigo === "") {
+            document.getElementById('rcCodigo').setAttribute('data-toggle', 'tooltip');
+            document.getElementById('rcCodigo').setAttribute('data-original-title', 'Por favor ingrese el codigo obtenido');
+            $(document).ready(function() {
+                // Initialize tooltip
+                $('[data-toggle="tooltip"]').tooltip({
+                    placement: 'bottom'
+                });
+            });
+            document.getElementById('eCodigo').setAttribute('class', 'has-error');
+            return false;
+        } else if (codigo !== cod) {
+            document.getElementById('rcCodigo').setAttribute('data-toggle', 'tooltip');
+            document.getElementById('rcCodigo').setAttribute('data-original-title', 'El codigo es incorrecto');
+            $(document).ready(function() {
+                // Initialize tooltip
+                $('[data-toggle="tooltip"]').tooltip({
+                    placement: 'bottom'
+                });
+            });
+            document.getElementById('eCodigo').setAttribute('class', 'has-error');
+            return false;
+        } else {
+            document.getElementById('rcCodigo').removeAttribute('data-toggle', 'tooltip');
+            document.getElementById('rcCodigo').removeAttribute('data-original-title');
+            document.getElementById('eCodigo').setAttribute('class', 'form-group has-feedback has-success');
+        }
+    });
+});
+
+
+
+$(document).ready(function() {
+
+    $("#cambiarPass").bind("click", function() {
+        var clave = $('#ccClaveAntigua').val();
+        if (clave === null || clave === "") {
+            document.getElementById('ccClaveAntigua').setAttribute('data-toggle', 'tooltip');
+            document.getElementById('ccClaveAntigua').setAttribute('data-original-title', 'Ingrese su contraseña actual');
+            $(document).ready(function() {
+                // Initialize tooltip
+                $('[data-toggle="tooltip"]').tooltip({
+                    placement: 'top'
+                });
+            });
+            document.getElementById('inpClaveAntigua').setAttribute('class', 'form-group has-feedback has-error');
+            return false;
+        } else {
+            document.getElementById('ccClaveAntigua').removeAttribute('data-toggle', 'tooltip');
+            document.getElementById('ccClaveAntigua').removeAttribute('data-original-title');
+            document.getElementById('inpClaveAntigua').setAttribute('class', 'form-group has-feedback has-success');
+        }
+    });
+});
+
+$(document).ready(function() {
+
+    $("#cambiarPass").bind("click", function() {
+        var clave = $('#ccClaveNueva').val();
+        if (clave === null || clave === "") {
+            document.getElementById('ccClaveNueva').setAttribute('data-toggle', 'tooltip');
+            document.getElementById('ccClaveNueva').setAttribute('data-original-title', 'Ingrese su nueva contraseña');
+            $(document).ready(function() {
+                // Initialize tooltip
+                $('[data-toggle="tooltip"]').tooltip({
+                    placement: 'top'
+                });
+            });
+            document.getElementById('inpClaveNuevaCambiar').setAttribute('class', 'form-group has-feedback has-error');
+            return false;
+        } else if (clave.length < 6) {
+            document.getElementById('ccClaveNueva').setAttribute('data-toggle', 'tooltip');
+            document.getElementById('ccClaveNueva').setAttribute('data-original-title', 'Debe tener minimo 6 caracteres');
+            $(document).ready(function() {
+                // Initialize tooltip
+                $('[data-toggle="tooltip"]').tooltip({
+                    placement: 'top'
+                });
+            });
+            document.getElementById('inpClaveNuevaCambiar').setAttribute('class', 'form-group has-feedback has-error');
+            return false;
+
+        } else {
+            document.getElementById('ccClaveNueva').removeAttribute('data-toggle', 'tooltip');
+            document.getElementById('ccClaveNueva').removeAttribute('data-original-title');
+            document.getElementById('inpClaveNuevaCambiar').setAttribute('class', 'form-group has-feedback has-success');
+        }
+    });
+});
+
+$(document).ready(function() {
+
+    $("#cambiarPass").bind("click", function() {
+        var clave = $('#ccClaveRepetida').val();
+        var clave1 = $('#ccClaveNueva').val();
+        if (clave === null || clave === "") {
+            document.getElementById('ccClaveRepetida').setAttribute('data-toggle', 'tooltip');
+            document.getElementById('ccClaveRepetida').setAttribute('data-original-title', 'Confirme la nueva contraseña');
+            $(document).ready(function() {
+                // Initialize tooltip
+                $('[data-toggle="tooltip"]').tooltip({
+                    placement: 'top'
+                });
+            });
+            document.getElementById('inpClaveRepetidaCambiar').setAttribute('class', 'form-group has-feedback has-error');
+            return false;
+        } else if (clave !== clave1) {
+            document.getElementById('ccClaveRepetida').setAttribute('data-toggle', 'tooltip');
+            document.getElementById('ccClaveRepetida').setAttribute('data-original-title', 'Los contraseñas no coinciden, verifique');
+            $(document).ready(function() {
+                // Initialize tooltip
+                $('[data-toggle="tooltip"]').tooltip({
+                    placement: 'top'
+                });
+            });
+            document.getElementById('inpClaveRepetidaCambiar').setAttribute('class', 'form-group has-feedback has-error');
+            return false;
+        } else {
+            document.getElementById('ccClaveRepetida').removeAttribute('data-toggle', 'tooltip');
+            document.getElementById('ccClaveRepetida').removeAttribute('data-original-title');
+            document.getElementById('inpClaveRepetidaCambiar').setAttribute('class', 'form-group has-feedback has-success');
+        }
+    });
+});
+
+
+
+
 
 
 
@@ -1305,9 +1585,40 @@ function validarDocumentoIngreso(documento) {
     }
 }
 
-function validarOlvidada(clave) {
+function validarCodigo(codigo) {
+    var cod = document.getElementById("codigor");
+    if (codigo.value === null || codigo.value === "") {
+        document.getElementById('rcCodigo').setAttribute('data-toggle', 'tooltip');
+        document.getElementById('rcCodigo').setAttribute('data-original-title', 'Por favor ingrese el codigo obtenido');
+        $(document).ready(function() {
+            // Initialize tooltip
+            $('[data-toggle="tooltip"]').tooltip({
+                placement: 'bottom'
+            });
+        });
+        document.getElementById('eCodigo').setAttribute('class', 'has-error');
+        return false;
+    } else if (codigo.value !== cod.value) {
+        document.getElementById('rcCodigo').setAttribute('data-toggle', 'tooltip');
+        document.getElementById('rcCodigo').setAttribute('data-original-title', 'El codigo es incorrecto');
+        $(document).ready(function() {
+            // Initialize tooltip
+            $('[data-toggle="tooltip"]').tooltip({
+                placement: 'bottom'
+            });
+        });
+        document.getElementById('eCodigo').setAttribute('class', 'has-error');
+        return false;
+    } else {
+        document.getElementById('rcCodigo').removeAttribute('data-toggle', 'tooltip');
+        document.getElementById('rcCodigo').removeAttribute('data-original-title');
+        document.getElementById('eCodigo').setAttribute('class', 'form-group has-feedback has-success');
+    }
+}
 
-    if (clave.value === null || clave.value === "") {
+function validarOlvidada(correo) {
+
+    if (correo.value === null || correo.value === "") {
         document.getElementById('rcCorreo').setAttribute('data-toggle', 'tooltip');
         document.getElementById('rcCorreo').setAttribute('data-original-title', 'Debe ingresar su correo electronico');
         $(document).ready(function() {
@@ -1317,17 +1628,27 @@ function validarOlvidada(clave) {
             });
         });
         document.getElementById('eCorreo').setAttribute('class', 'has-error');
-
-
         return false;
+    } else if (!(/^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/.test(correo.value))) {
+        document.getElementById('rcCorreo').setAttribute('data-toggle', 'tooltip');
+        document.getElementById('rcCorreo').setAttribute('data-original-title', 'El correo no está en un formato correcto, correo@ejemplo.com');
+        $(document).ready(function() {
+            // Initialize tooltip
+            $('[data-toggle="tooltip"]').tooltip({
+                placement: 'bottom'
+            });
+        });
+        document.getElementById('eCorreo').setAttribute('class', 'form-group has-feedback has-error');
+        return false;
+
+
     } else {
         document.getElementById('rcCorreo').removeAttribute('data-toggle', 'tooltip');
         document.getElementById('rcCorreo').removeAttribute('data-original-title');
         document.getElementById('eCorreo').setAttribute('class', 'form-group has-feedback has-success');
-        document.getElementById('inFeedbackCorreo').setAttribute('class', 'glyphicon glyphicon-ok form-control-feedback');
-        document.getElementById('rcEnviar').removeAttribute('disabled');
     }
 }
+
 
 
 
@@ -1487,7 +1808,6 @@ function validarcantidadcarrito() {
 }
 
 
-
 //function validarPromocion(promo) {
 //    if (promo.selectedIndex === 0) {
 //        document.getElementById('promocion').setAttribute('data-toggle', 'tooltip');
@@ -1569,4 +1889,85 @@ function edad(fecha) {
         document.getElementById('iconFeedbackFecha').setAttribute('class', 'glyphicon glyphicon-ok form-control-feedback');
         document.getElementById('botonRegistro').removeAttribute('disabled');
     }
+}
+
+function validarClaveEnCambiar(clave) {
+    if (clave.value === null || clave.value === "") {
+        document.getElementById('ccClaveAntigua').setAttribute('data-toggle', 'tooltip');
+        document.getElementById('ccClaveAntigua').setAttribute('data-original-title', 'Ingrese su contraseña actual');
+        $(document).ready(function() {
+            // Initialize tooltip
+            $('[data-toggle="tooltip"]').tooltip({
+                placement: 'top'
+            });
+        });
+        document.getElementById('inpClaveAntigua').setAttribute('class', 'form-group has-feedback has-error');
+        return false;
+    } else {
+        document.getElementById('ccClaveAntigua').removeAttribute('data-toggle', 'tooltip');
+        document.getElementById('ccClaveAntigua').removeAttribute('data-original-title');
+        document.getElementById('inpClaveAntigua').setAttribute('class', 'form-group has-feedback has-success');
+    }
+}
+
+function validarClaveNuevaEnCambiar(clave) {
+    if (clave.value === null || clave.value === "") {
+        document.getElementById('ccClaveNueva').setAttribute('data-toggle', 'tooltip');
+        document.getElementById('ccClaveNueva').setAttribute('data-original-title', 'Ingrese su nueva contraseña');
+        $(document).ready(function() {
+            // Initialize tooltip
+            $('[data-toggle="tooltip"]').tooltip({
+                placement: 'top'
+            });
+        });
+        document.getElementById('inpClaveNuevaCambiar').setAttribute('class', 'form-group has-feedback has-error');
+        return false;
+    } else if (clave.value.length < 6) {
+        document.getElementById('ccClaveNueva').setAttribute('data-toggle', 'tooltip');
+        document.getElementById('ccClaveNueva').setAttribute('data-original-title', 'Debe tener minimo 6 caracteres');
+        $(document).ready(function() {
+            // Initialize tooltip
+            $('[data-toggle="tooltip"]').tooltip({
+                placement: 'top'
+            });
+        });
+        document.getElementById('inpClaveNuevaCambiar').setAttribute('class', 'form-group has-feedback has-error');
+        return false;
+
+    } else {
+        document.getElementById('ccClaveNueva').removeAttribute('data-toggle', 'tooltip');
+        document.getElementById('ccClaveNueva').removeAttribute('data-original-title');
+        document.getElementById('inpClaveNuevaCambiar').setAttribute('class', 'form-group has-feedback has-success');
+    }
+}
+
+function validarRepetirClaveNuevaEnCambiar(clave) {
+    var clave1 = document.getElementById('ccClaveNueva');
+    if (clave.value === null || clave.value === "") {
+        document.getElementById('ccClaveRepetida').setAttribute('data-toggle', 'tooltip');
+        document.getElementById('ccClaveRepetida').setAttribute('data-original-title', 'Confirme la nueva contraseña');
+        $(document).ready(function() {
+            // Initialize tooltip
+            $('[data-toggle="tooltip"]').tooltip({
+                placement: 'top'
+            });
+        });
+        document.getElementById('inpClaveRepetidaCambiar').setAttribute('class', 'form-group has-feedback has-error');
+        return false;
+    } else if (clave.value !== clave1.value) {
+        document.getElementById('ccClaveRepetida').setAttribute('data-toggle', 'tooltip');
+        document.getElementById('ccClaveRepetida').setAttribute('data-original-title', 'Los contraseñas no coinciden, verifique');
+        $(document).ready(function() {
+            // Initialize tooltip
+            $('[data-toggle="tooltip"]').tooltip({
+                placement: 'top'
+            });
+        });
+        document.getElementById('inpClaveRepetidaCambiar').setAttribute('class', 'form-group has-feedback has-error');
+    } else {
+        document.getElementById('ccClaveRepetida').removeAttribute('data-toggle', 'tooltip');
+        document.getElementById('ccClaveRepetida').removeAttribute('data-original-title');
+        document.getElementById('inpClaveRepetidaCambiar').setAttribute('class', 'form-group has-feedback has-success');
+    }
+
 }

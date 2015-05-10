@@ -6,6 +6,8 @@
 package utilidades;
 
 import java.sql.Connection;
+import modulo.usuarios.FUsuario;
+import modulo.usuarios.dto.UsuarioDto;
 //import java.util.ArrayList;
 //import modulo.ofertas.FOferta;
 //import modulo.ofertas.dto.OfertaDto;
@@ -32,7 +34,7 @@ public class Verificar {
         if (cnn != null) {
             System.out.println("Run");
         }
-//        FUsuario f = new FUsuario();
+        FUsuario f = new FUsuario();
 //        FOferta fa = new FOferta();
 //        FPedido fe = new FPedido();
 
@@ -134,5 +136,9 @@ public class Verificar {
 //            System.out.println(a);
 //        }
 //        Array fa.obtenerRankingProductor(idUsuario);
+//        UsuarioDto us = new UsuarioDto();
+//       us = f.obtenerUsuarioPorCorreo("sebasco9703@hotmail.com");
+//        System.out.println(us);
+        
     }
 }

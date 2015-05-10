@@ -284,13 +284,12 @@
                                         <h4 class="modal-title text-center" id="myModalLabel">Cambiar Contraseña</h4>
                                     </div>
                                     <div class="modal-body">
-
-                                        <form class="form-horizontal" method="POST" action="../GestionUsuarios" id="formCambiarClave">
+                                        <form class="form-horizontal" method="POST" action="../ControladorUsuarios" id="formCambiarClave">
                                             <div class="form-group has-feedback" id="inpClaveAntigua">
-                                                <label for="ccClaveAntigua" class="col-sm-4 control-label">Contraseña Antigua</label>
+                                                <label for="ccClaveAntigua" class="col-sm-4 control-label">Contraseña Actual</label>
                                                 <div class="col-sm-7">
                                                     <input type="password" class="form-control" 
-                                                           id="ccClaveAntigua" placeholder="Ingrese la contraseña antigua"
+                                                           id="ccClaveAntigua" placeholder="Ingrese la contraseña actual"
                                                            name="ccClaveAntigua" onblur="validarClaveEnCambiar(this)">
                                                     <!-- Al momento de validar, se le manda la class a la i para agregar icon-->
                                                     <i id="iconFeedbackClaveCambiar"></i>
@@ -309,7 +308,7 @@
                                             </div>
 
                                             <div class="form-group has-feedback" id="inpClaveRepetidaCambiar">
-                                                <label for="ccClaveRepetida" class="col-sm-4 control-label">Repetir Contraseña</label>
+                                                <label for="ccClaveRepetida" class="col-sm-4 control-label">Confirmar Contraseña</label>
                                                 <div class="col-sm-7">                                                        
                                                     <input type="password" class="form-control" 
                                                            id="ccClaveRepetida" placeholder="Ingrese una nueva contraseña"
@@ -317,62 +316,53 @@
                                                     <!-- Al momento de validar, se le manda la class a la i para agregar icon-->
                                                     <i id="iconFeedbackClaveNuevaCambiar2"></i>
                                                 </div>
-                                            </div>                                                
-
-                                            <input hidden="true" name="ccViene" value="indexp">
-                                            <input hidden="true" name="ccDocumento" id="ccDocumento" value="<%= actualUsuario.getIdUsuario()%>">
-                                            <input hidden="true" name="formCambiarClave" id="formCambiarClave" value="ok">
-                                        </form>                                                                                        
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
-                                        <button type="button" id="botonEnviarCambiarClave" class="btn btn-success"  onclick="enviarFormulario('formCambiarClave')">Cambiar Contraseña</button>
-                                    </div>
+                                            </div>
+                                            <input hidden="true" name="ccDocumento" id="ccDocumento" value="<%=actualUsuario.getIdUsuario()%>">                                            
+                                            <legend></legend>
+                                            <div class="text-right">
+                                                <input type="button" class="btn btn-danger" data-dismiss="modal" value="Cancelar">
+                                                <input type="submit" name="cambiarPass" id="cambiarPass"class="btn btn-success" value="Cambiar contraseña">
+                                            </div>
+                                        </form>                                                                 
+                                    </div>                                    
                                 </div>
                             </div>
                         </div>
                         <!-- Fin de Cambiar Contraseña -->
 
                         <!-- Formulario de Contáctenos -->                        
-                        <div class="modal fade" id="modalContactenos" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                            <div class="modal-dialog">
-                                <div class="modal-content">
-                                    <div class="modal-header">
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                        <h4 class="modal-title text-center" id="myModalLabel">Contáctenos | Farmer's Market</h4>
-                                    </div>
-                                    <div class="modal-body">
-                                        <form class="form-horizontal" method="POST" action="../GestionUsuarios" id="formContactenos">
-                                            <div class="form-group">
-                                                <label for="mcNombre" class="col-sm-2 control-label">Nombre</label>
-                                                <div class="col-sm-10">
-                                                    <input type="text" class="form-control" name="mcNombre"
-                                                           id="mcNombre" placeholder="Ingrese su nombre">
-                                                </div>
-                                            </div>
+                        <div>
+                            <div class="modal fade" id="modalContactenos" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                            <h4 class="modal-title text-center" id="myModalLabel">Contáctenos | Farmer's Market</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form class="form-horizontal" method="POST" action="../ControladorContacto" id="formContactenos">
+                                                <div class="form-group" id="dmAsunto">
+                                                    <label for="mcNombre" class="col-sm-2 control-label">Asunto</label>
+                                                    <div class="col-sm-10">
+                                                        <input type="text" class="form-control" name="mcAsunto"
+                                                               id="mcAsunto">
+                                                    </div>
+                                                </div>                                
 
-                                            <div class="form-group">
-                                                <label for="mcCorreo" class="col-sm-2 control-label">Correo</label>
-                                                <div class="col-sm-10">
-                                                    <input type="text" class="form-control" name="mcCorreo"
-                                                           id="mcCorreo" placeholder="Ingrese su correo electrónico">
+                                                <div class="form-group" id="dmMensaje">
+                                                    <label for="inputPassword3" class="col-sm-2 control-label">Mensaje</label>
+                                                    <div class="col-sm-10">
+                                                        <textarea name="mcMensaje" id="mcMensaje" class="form-control" rows="4" placeholder="Ingrese su mensaje para la compañía Farmer's Market"></textarea>
+                                                    </div>
                                                 </div>
-                                            </div>
-
-                                            <div class="form-group">
-                                                <label for="inputPassword3" class="col-sm-2 control-label">Mensaje</label>
-                                                <div class="col-sm-10">
-                                                    <textarea name="mcMensaje" class="form-control" rows="4" placeholder="Ingrese su mensaje para la compañía Farmer's Market"></textarea>
+                                                <input hidden="true" name="mcViene" value="">
+                                                <input hidden="true" name="usuario" value="<%=actualUsuario.getNombres() + " " + actualUsuario.getApellidos()%>">
+                                                <input hidden="true" name="correo" value="<%=actualUsuario.getCorreo()%>">
+                                                <div class="text-right">
+                                                    <input type="submit" name="contactarAdmin" id="contactarAdmin"class="btn btn-success" value="Enviar Mensaje">
                                                 </div>
-                                            </div>
-
-                                            <input hidden="true" name="mcViene" value="indexp">
-                                            <input type="hidden" name="mcEnviar" value="ok">
-                                        </form>
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
-                                        <button type="button" class="btn btn-success" onclick="enviarFormulario('formContactenos')">Enviar Mensaje</button>
+                                            </form>
+                                        </div>                                    
                                     </div>
                                 </div>
                             </div>
@@ -433,7 +423,7 @@
                             <div class="modal fade bs-example-modal-sm" id="modalConfirmarEliminarProducto" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
                                 <div class="modal-dialog modal-sm">
                                     <div class="modal-content" id="modalEliminarProducto">
-                                        
+
                                     </div>
                                 </div>
                             </div>

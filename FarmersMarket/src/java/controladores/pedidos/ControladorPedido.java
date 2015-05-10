@@ -131,8 +131,8 @@ public class ControladorPedido extends HttpServlet {
         cuerpo += "<br>";
         cuerpo += "<body>";
         cuerpo += "<center>";
-        cuerpo += "<h2> <Strong>Sus Pedidos </Strong></h2>";
-        cuerpo += "<Table>";
+        cuerpo += "<h2> <Strong>Su Pedido</Strong></h2>";
+        cuerpo += "<table>";
         cuerpo += "<tr>";
         cuerpo += "<th>Nombre producto";
         cuerpo += "</th>";

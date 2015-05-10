@@ -20,6 +20,10 @@
         <servlet-name>ControladorPedido</servlet-name>
         <servlet-class>controladores.pedidos.ControladorPedido</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ControladorContacto</servlet-name>
+        <servlet-class>controladores.usuarios.ControladorContacto</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ControladorUsuarios</servlet-name>
         <url-pattern>/ControladorUsuarios</url-pattern>
@@ -40,6 +44,10 @@
         <servlet-name>ControladorPedido</servlet-name>
         <url-pattern>/ControladorPedido</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ControladorContacto</servlet-name>
+        <url-pattern>/ControladorContacto</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>
             30
@@ -47,5 +55,13 @@
     </session-config>
     <welcome-file-list>
         <welcome-file>index.jsp</welcome-file>
-    </welcome-file-list>
+    </welcome-file-list>   
+    <error-page>
+        <error-code>404</error-code>
+        <location>/pages/errorpage.jsp?no=true</location>
+    </error-page>    
+    <error-page>
+        <error-code>500</error-code>
+        <location>/pages/errorpage.jsp</location>
+    </error-page> 
 </web-app>

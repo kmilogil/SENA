@@ -13,6 +13,9 @@ import javax.servlet.http.HttpServletResponse;
 import modulo.usuarios.FUsuario;
 import modulo.usuarios.dto.RolDto;
 import modulo.usuarios.dto.UsuarioDto;
+import org.apache.commons.codec.EncoderException;
+import utilidades.Correo;
+import utilidades.Encriptar;
 
 /**
  *
@@ -32,12 +35,15 @@ public class ControladorUsuarios extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        request.setCharacterEncoding("iso-8859-1");
         FUsuario faUsu = new FUsuario();
+        UsuarioDto usuario;
+        Encriptar encript;
         String salida;
         if (request.getParameter("botonRegistro") != null) {
             RolDto suRol = new RolDto();
             suRol.setIdRol(Integer.parseInt(request.getParameter("ruRol")));
-
+            
             UsuarioDto nuevoUsuario = new UsuarioDto();
             nuevoUsuario.setIdUsuario(Long.parseLong(request.getParameter("ruDocumento")));
             nuevoUsuario.setNombres(request.getParameter("ruNombres"));
@@ -50,9 +56,8 @@ public class ControladorUsuarios extends HttpServlet {
             nuevoUsuario.setImagen(null);
             nuevoUsuario.setEstado(1);
             
-            salida = faUsu.registrarUsuario(nuevoUsuario, suRol);            
+            salida = faUsu.registrarUsuario(nuevoUsuario, suRol);
             
-
             if (salida.equals("ok")) {
                 response.sendRedirect("index.jsp?msg=<strong><i class='glyphicon glyphicon-ok'></i> ¡Registro Éxitoso!</strong> Revise su correo para activar cuenta, puede iniciar sesión.&tipoAlert=success");
             } else if (salida.equals("okno")) {
@@ -60,6 +65,68 @@ public class ControladorUsuarios extends HttpServlet {
             } else {
                 response.sendRedirect("index.jsp?msg=<strong><i class='glyphicon glyphicon-exclamation-sign'></i> ¡Ocurrió un error!</strong> Detalle: " + salida + "&tipoAlert=danger");
             }
+        } else if (request.getParameter("recuperar") != null) {
+            encript = new Encriptar();
+            
+            usuario = faUsu.obtenerUsuarioPorCorreo(request.getParameter("rcCorreo"));
+            String correo = usuario.getCorreo();
+            
+            if (!correo.equals("")) {
+                try {
+                    
+                    String con = Long.toString(usuario.getIdUsuario());
+                    String ced = encript.encode(con);
+                    
+                    String url = "http://localhost:8088/FarmersMarket/index.jsp?id=" + (ced);
+                    String mensaje = "<!DOCTYPE html>";
+                    mensaje += "<body>";
+                    mensaje += "<p>Que tal usuario por favor ingresa a la siguiente enlace para poder recuperar tu contraseña</p>";
+                    mensaje += "<a href=" + url + ">Recuperar contraseña</a>";
+                    if (Correo.sendMail("Recuperar Contraseña", mensaje, correo)) {
+                        response.sendRedirect("index.jsp?msg=<strong><i class='glyphicon glyphicon-ok'></i> ¡Solicitud enviada!</strong> Por favor revise su correo.&tipoAlert=success");
+                    } else {
+                        response.sendRedirect("index.jsp?msg=<strong><i class='glyphicon glyphicon-exclamation-sign'></i> ¡Ha ocurrido algo!</strong> Vuelva a intentarlo.&tipoAlert=warning");
+                    }
+                    
+                } catch (EncoderException ex) {
+                    response.sendRedirect("index.jsp?msg=<strong><i class='glyphicon glyphicon-exclamation-sign'></i> ¡Ocurrió un error!</strong> Detalle: " + ex.getMessage() + "&tipoAlert=danger");
+                }
+            } else if (correo.equals("")) {
+                response.sendRedirect("index.jsp?msg=<strong><i class='glyphicon glyphicon-exclamation-sign'></i> ¡Lo sentimos!</strong> El correo no se encuentra registrado." + correo + "&tipoAlert=warning");
+            }
+        } else if (request.getParameter("recuperarCodigo") != null) {
+            encript = new Encriptar();
+            if (request.getParameter("rcCodigo").trim().equals(request.getParameter("codigo"))) {
+                
+                try {
+                    String cedula = encript.Decode(request.getParameter("encriptacion"));
+                    usuario = faUsu.obtenerUsuarioPorDocumento(Long.parseLong(cedula));
+                    if (!usuario.getClave().equals("")) {
+                        response.sendRedirect("index.jsp?msg=<strong><i class='glyphicon glyphicon-ok'></i> ¡Hemos recuperado tu contraseña :D es la siguiente: <i>" + usuario.getClave() + "</i>!</strong> te recomendamos  cambiarla lo antes posible.&tipoAlert=success");
+                    } else {
+                        response.sendRedirect("index.jsp?msg=<strong><i class='glyphicon glyphicon-exclamation-sign'></i> ¡Ha ocurrido algo!</strong> Vuelva a intentarlo.&tipoAlert=warning");
+                    }
+                } catch (Exception ex) {
+                    response.sendRedirect("index.jsp?msg=<strong><i class='glyphicon glyphicon-exclamation-sign'></i> ¡Ocurrió un error!</strong> Detalle: " + ex.getMessage() + "&tipoAlert=danger");
+                }
+            } else {
+                response.sendRedirect("index.jsp?msg=<strong><i class='glyphicon glyphicon-exclamation-sign'></i> ¡El codigo que ingreso no es correcto!</strong> Intentelo de nuevo.&tipoAlert=warning");
+            }
+        } else if (request.getParameter("cambiarPass") != null) {
+            
+            usuario = faUsu.obtenerUsuarioPorDocumento(Long.parseLong(request.getParameter("ccDocumento")));
+            if (usuario.getClave().equals(request.getParameter("ccClaveAntigua"))) {
+                salida = faUsu.cambiarContrasena(request.getParameter("ccClaveNueva"), Long.parseLong(request.getParameter("ccDocumento")));
+                if (salida.equals("ok")) {
+                    response.sendRedirect("pages/indexp.jsp?msg=<strong><i class='glyphicon glyphicon-ok'></i> ¡Su contraseña a sido cambiada!</strong>&tipoAlert=success");
+                } else if (salida.equals("okno")) {
+                    response.sendRedirect("pages/indexp.jsp?msg=<strong><i class='glyphicon glyphicon-exclamation-sign'></i> ¡Ha ocurrido algo!</strong> Vuelva a intentarlo.&tipoAlert=warning");
+                }
+                
+            } else {
+                response.sendRedirect("pages/indexp.jsp?msg=<strong><i class='glyphicon glyphicon-exclamation-sign'></i> ¡La contraseña no es correcta!</strong> Vuelva a intentarlo.&tipoAlert=warning");
+            }
+            
         }
     }
 

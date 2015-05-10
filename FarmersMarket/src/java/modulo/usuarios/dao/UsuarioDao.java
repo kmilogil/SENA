@@ -22,7 +22,7 @@ public class UsuarioDao {
 
     PreparedStatement pstm = null;
     ResultSet rs = null;
-    String mensaje = "";    
+    String mensaje = "";
     int rtdo = 0;
     String sqlTemp = "";
 
@@ -178,8 +178,8 @@ public class UsuarioDao {
     }
 
     public UsuarioDto obtenerUsuarioPorId(long idUsuario, Connection unaConexion) {
-        sqlTemp = "SELECT `idUsuario`, `Nombres`, `Apellidos`, `Clave`, `Correo`,`FechaNac`, `Direccion`, `idCiudad`"
-                + ", `FechaSistema`, `imagen`,`Estado` FROM `usuarios` WHERE `idUsuario` = ?";
+        sqlTemp = "select idUsuario, nombres,apellidos,clave, correo, fechaNac,direccion,idCiudad,fechaSistema,imagen,estado "
+                + "from usuarios where idUsuario = ?;";
         UsuarioDto salidaUsuario = new UsuarioDto();
         try {
             pstm = unaConexion.prepareStatement(sqlTemp);
@@ -187,18 +187,17 @@ public class UsuarioDao {
             rs = pstm.executeQuery();
 
             while (rs.next()) {
-
                 salidaUsuario.setIdUsuario(rs.getLong("idUsuario"));
-                salidaUsuario.setNombres(rs.getString("Nombres"));
-                salidaUsuario.setApellidos(rs.getString("Apellidos"));
-                salidaUsuario.setClave(rs.getString("Clave"));
-                salidaUsuario.setCorreo(rs.getString("Correo"));
-                salidaUsuario.setFechaNacimiento(rs.getString("FechaNac"));
-                salidaUsuario.setDireccion(rs.getString("Direccion"));
+                salidaUsuario.setNombres(rs.getString("nombres"));
+                salidaUsuario.setApellidos(rs.getString("apellidos"));
+                salidaUsuario.setClave(rs.getString("clave"));
+                salidaUsuario.setCorreo(rs.getString("correo"));
+                salidaUsuario.setFechaNacimiento(rs.getString("fechaNac"));
+                salidaUsuario.setDireccion(rs.getString("direccion"));
                 salidaUsuario.setIdCiudad(rs.getInt("idCiudad"));
-                salidaUsuario.setFechaSistema(rs.getString("FechaSistema"));
+                salidaUsuario.setFechaSistema(rs.getString("fechaSistema"));
                 salidaUsuario.setImagen(rs.getString("imagen"));
-                salidaUsuario.setEstado(rs.getInt("idEstado"));
+                salidaUsuario.setEstado(rs.getInt("estado"));
             }
         } catch (SQLException ex) {
             System.out.println("Error, detalle: " + ex.getMessage());
@@ -207,9 +206,8 @@ public class UsuarioDao {
     }
 
     public UsuarioDto obtenerUsuarioPorCorreo(String correo, Connection unaConexion) {
-        sqlTemp = "SELECT `idUsuario`, `Nombres`, `Apellidos`, `Clave`, `Correo`, "
-                + "`FechaNacimiento`, `Direccion`, `idCiudad`, `FechaSistema`, `Imagen`, "
-                + "`idEstado` FROM `usuarios` WHERE `Correo` = ?";
+        sqlTemp = "select idUsuario, nombres,apellidos,clave, correo, fechaNac,direccion,idCiudad,fechaSistema,imagen,estado "
+                + "from usuarios where correo = ?;";
         UsuarioDto salidaUsuario = new UsuarioDto();
         try {
             pstm = unaConexion.prepareStatement(sqlTemp);
@@ -218,16 +216,16 @@ public class UsuarioDao {
 
             while (rs.next()) {
                 salidaUsuario.setIdUsuario(rs.getLong("idUsuario"));
-                salidaUsuario.setNombres(rs.getString("Nombres"));
-                salidaUsuario.setApellidos(rs.getString("Apellidos"));
-                salidaUsuario.setClave(rs.getString("Clave"));
-                salidaUsuario.setCorreo(rs.getString("Correo"));
-                salidaUsuario.setFechaNacimiento(rs.getString("FechaNacimiento"));
-                salidaUsuario.setDireccion(rs.getString("Direccion"));
+                salidaUsuario.setNombres(rs.getString("nombres"));
+                salidaUsuario.setApellidos(rs.getString("apellidos"));
+                salidaUsuario.setClave(rs.getString("clave"));
+                salidaUsuario.setCorreo(rs.getString("correo"));
+                salidaUsuario.setFechaNacimiento(rs.getString("fechaNac"));
+                salidaUsuario.setDireccion(rs.getString("direccion"));
                 salidaUsuario.setIdCiudad(rs.getInt("idCiudad"));
-                salidaUsuario.setFechaSistema(rs.getString("FechaSistema"));
-                salidaUsuario.setImagen(rs.getString("Imagen"));
-                salidaUsuario.setEstado(rs.getInt("idEstado"));
+                salidaUsuario.setFechaSistema(rs.getString("fechaSistema"));
+                salidaUsuario.setImagen(rs.getString("imagen"));
+                salidaUsuario.setEstado(rs.getInt("estado"));
             }
         } catch (SQLException ex) {
             System.out.println("Error, detalle: " + ex.getMessage());
@@ -237,7 +235,7 @@ public class UsuarioDao {
 
     public String actualizarClave(String nuevaClave, long documento, Connection unaConexion) {
         try {
-            String sqlInsert = "UPDATE `usuarios` SET `Clave` = ? WHERE `idUsuario` = ?";
+            String sqlInsert = "UPDATE usuarios SET clave = ? WHERE idUsuario = ?";
             pstm = unaConexion.prepareStatement(sqlInsert);
 
             pstm.setString(1, nuevaClave);
