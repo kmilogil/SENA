@@ -7,10 +7,13 @@ package controladores.usuarios;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import modulo.usuarios.dto.RolDto;
 import utilidades.CorreoContactenos;
 
 /**
@@ -32,8 +35,7 @@ public class ControladorContacto extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
 
-        if (request.getParameter("contactar") != null) {
-
+        if (request.getParameter("contactar") != null) {            
             String persona = request.getParameter("mcNombre");
             String correoElectronico = request.getParameter("mcCorreo");
             String texto = request.getParameter("mcMensaje");
@@ -44,13 +46,16 @@ public class ControladorContacto extends HttpServlet {
             mensaje += "<p>Correo de la persona:<br><Strong>" + correoElectronico + "</Strong></p>";
             mensaje += "<p>" + texto + "</p>";
 
-            if (CorreoContactenos.sendMail("Inquietud cliente", mensaje, "mercadosagricultor@gmail.com")) {
+            if (CorreoContactenos.sendMail("Inquietud cliente", mensaje, "mercadosagricultor@gmail.com")) {                
                 response.sendRedirect("index.jsp?msg=<strong><i class='glyphicon glyphicon-ok'></i> ¡Mensaje enviado!</strong> Por favor este atento a nuestro respuesta.&tipoAlert=success");
+                
             } else {
+               
                 response.sendRedirect("index.jsp?msg=<strong><i class='glyphicon glyphicon-exclamation-sign'></i> ¡Ha ocurrido algo!</strong> Por favor intentelo de nuevo.&tipoAlert=warning");
             }
 
-        } else if (request.getParameter("contactarAdmin") != null) {
+        } else if (request.getParameter("contactarAdmin") != null) {            
+            
             String persona = request.getParameter("usuario");
             String correoElectronico = request.getParameter("correo");
             String texto = request.getParameter("mcMensaje");

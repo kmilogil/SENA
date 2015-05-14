@@ -82,7 +82,7 @@ public class ControladorSesiones extends HttpServlet {
                     } else if (paraCliente) {
                         response.sendRedirect("pages/indexp.jsp");
                     } else if (paraAdmin) {
-                        response.sendRedirect("pages/indexa.jsp");
+                        response.sendRedirect("pages/indexadmin.jsp");
                     }
                 } else {
                     response.sendRedirect("index.jsp?msg=<strong><i class='glyphicon glyphicon-remove'></i> ¡Los datos son invalidos!</strong> Intente nuevamente.&tipoAlert=warning");

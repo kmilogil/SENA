@@ -24,6 +24,14 @@
         <servlet-name>ControladorContacto</servlet-name>
         <servlet-class>controladores.usuarios.ControladorContacto</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ControladorAdministrador</servlet-name>
+        <servlet-class>controladoresAdministrador.ControladorAdministrador</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ControladorCargarInicial</servlet-name>
+        <servlet-class>controladoresAdministrador.ControladorCargarInicial</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ControladorUsuarios</servlet-name>
         <url-pattern>/ControladorUsuarios</url-pattern>
@@ -48,6 +56,14 @@
         <servlet-name>ControladorContacto</servlet-name>
         <url-pattern>/ControladorContacto</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ControladorAdministrador</servlet-name>
+        <url-pattern>/ControladorAdministrador</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ControladorCargarInicial</servlet-name>
+        <url-pattern>/ControladorCargarInicial</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>
             30
@@ -55,13 +71,13 @@
     </session-config>
     <welcome-file-list>
         <welcome-file>index.jsp</welcome-file>
-    </welcome-file-list>   
+    </welcome-file-list>
     <error-page>
         <error-code>404</error-code>
         <location>/pages/errorpage.jsp?no=true</location>
-    </error-page>    
+    </error-page>
     <error-page>
         <error-code>500</error-code>
         <location>/pages/errorpage.jsp</location>
-    </error-page> 
+    </error-page>
 </web-app>

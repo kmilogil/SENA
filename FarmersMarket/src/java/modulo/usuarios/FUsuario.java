@@ -117,4 +117,23 @@ public class FUsuario {
     public List obtenerCiudadesPorDepartamento(int idDepartamento) {
         return ciDao.obtenerCiudadesPorId(idDepartamento, miConexion);
     }
+
+    public List obtenerUsuarios() {
+        return uDao.obtenerUsuarios(miConexion);
+    }
+
+    public List obtenerPermisosUsuario(long idUsuario) {
+        return uDao.obtenerPermisosUsuario(idUsuario, miConexion);
+    }
+
+    public String suspenderUsuario(long idUsuario) {
+        return uDao.supenderUsuario(idUsuario, miConexion);
+    }
+
+    public int cambiarRol(long idUsuario, int idRol) {
+        return perDao.cambiarRol(idUsuario,idRol, miConexion);
+    }
+    public String activarUsuario(long idUsuario){
+        return uDao.activarUsuario(idUsuario, miConexion);
+    }
 }

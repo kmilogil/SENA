@@ -3,6 +3,7 @@ package modulo.usuarios.dao;
 /**
  * @author Kennit David Ruz Romero Fecha: 4 de de Enero de 2015
  */
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.PreparedStatement;
@@ -18,6 +19,7 @@ public class PermisoDao {
     ResultSet rs = null;
     String mensaje = "";
     String sqlTemp = "";
+    CallableStatement ctm = null;
 
     public List obtenerPermisosPorRol(int rol, Connection unaConexion) {
         ArrayList<PermisoDto> permisos = null;
@@ -42,6 +44,18 @@ public class PermisoDao {
             System.out.println("Error, detalle: " + sqle.getMessage());
         }
         return permisos;
+    }
+    
+    
+    public int cambiarRol(long idUsuario, int idRol,Connection unaConexion){
+        try{
+            ctm = unaConexion.prepareCall("");
+            ctm.setLong(1, idUsuario);
+            ctm.setInt(2, idRol);
+        }catch (SQLException ex) {
+            
+        }
+        return rtdo;
     }
 
 }

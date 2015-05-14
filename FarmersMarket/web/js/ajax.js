@@ -262,3 +262,57 @@ function resultadoEliminar() {
         document.getElementById("modalEliminarProducto").innerHTML = xmlHttp.responseText;
     }
 }
+
+var xmlHttp;
+function getUsuarioAdmin(idUsuario) {
+
+
+    if (window.XMLHttpRequest) {
+        xmlHttp = new XMLHttpRequest();
+    }
+    else if (window.ActiveXObject) {
+        xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
+    } else {
+        alert("El navegador no soporta Ajax!");
+        return;
+    }
+
+    var url = "../ajax/AdministrarPermisos.jsp?idUsuario=" + idUsuario;
+    xmlHttp.onreadystatechange = resultadoUsuarioAdmin;
+    xmlHttp.open("GET", url, true);
+    xmlHttp.send(null);
+
+}
+
+function resultadoUsuarioAdmin() {
+    if (xmlHttp.readyState === 4) {
+        document.getElementById("didUsuarioCambio").innerHTML = xmlHttp.responseText;
+    }
+}
+
+var xmlHttp;
+function getSuspencion(idUsuario, estado) {
+
+
+    if (window.XMLHttpRequest) {
+        xmlHttp = new XMLHttpRequest();
+    }
+    else if (window.ActiveXObject) {
+        xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
+    } else {
+        alert("El navegador no soporta Ajax!");
+        return;
+    }
+
+    var url = "../ajax/AdministrarPermisos.jsp?idUsuarioSus=" + idUsuario + "&estado=" + estado;
+    xmlHttp.onreadystatechange = resultadoSuspencion;
+    xmlHttp.open("GET", url, true);
+    xmlHttp.send(null);
+
+}
+
+function resultadoSuspencion() {
+    if (xmlHttp.readyState === 4) {
+        document.getElementById("didUsuario").innerHTML = xmlHttp.responseText;
+    }
+}

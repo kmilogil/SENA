@@ -8,7 +8,7 @@
 <%@page import="modulo.usuarios.dao.DepartamentoDao"%>
 <%@page import="modulo.usuarios.dto.DepartamentoDto"%>
 <%@page import="java.util.ArrayList"%>
-<%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html>
     <head>
@@ -294,10 +294,16 @@
                                         </div>
                                         <legend></legend>
                                         <div class="form-inline">
-                                            <div class="checkbox has-feedback pull-left" id="inpTerminos">
+                                            <div class="checkbox has-feedback pull-left" id="notificaciones">
+                                                <label class="control-label">
+                                                    <input type="checkbox" id="notificaciones" name="notificaciones" tabindex="12"> ¿Recibir notificaciones de nuevas ofertas? </a>
+                                                </label>                                                
+                                            </div>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            <div class="checkbox has-feedback" id="inpTerminos">
                                                 <label class="control-label">
                                                     <input type="checkbox" id="ruTerminos" name="ruTerminos" tabindex="12" onblur="validarTerminos()"> Acepto <a href="#" data-toggle="modal" data-target="#modalTerminos">Terminos y Condiciones</a>
-                                                </label>
+                                                </label>                                                
                                             </div>
                                             <input type="submit" id="botonRegistro" name="botonRegistro" class="btn btn-success pull-right" value="Registrarme" >
                                         </div><br>

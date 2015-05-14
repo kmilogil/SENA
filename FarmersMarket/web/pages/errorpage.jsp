@@ -7,6 +7,8 @@
 
 
 
+<%@page import="modulo.usuarios.dto.RolDto"%>
+<%@page import="java.util.ArrayList"%>
 <%@page import="modulo.usuarios.dto.UsuarioDto"%>
 <%@page import="java.io.File"%>
 <%@page import="java.io.FileNotFoundException"%>
@@ -15,8 +17,12 @@
 <html>   
     <%
         UsuarioDto actualUsuario;
+        HttpSession miSesionRoles = request.getSession(false);
+        ArrayList<RolDto> rolesActuales;
         HttpSession miSesion = request.getSession(false);
         actualUsuario = (UsuarioDto) miSesion.getAttribute("usuarioEntro");
+        rolesActuales = (ArrayList<RolDto>) miSesionRoles.getAttribute("roles");
+        boolean admin = false;
     %>
     <head>
 
@@ -24,10 +30,11 @@
         <%
             if (actualUsuario != null) {
 
+
         %>
         <link rel="shortcut icon" href="../img/favicon.ico">
         <link rel="stylesheet" type="text/css" href="../css/bootstrap.css">
-        
+
         <%        } else if (actualUsuario == null) {
 
         %>
@@ -37,10 +44,16 @@
 
         %>
         <title>Ha ocurrido algo!</title>
-        
-    </head>
-    <body><%        if (actualUsuario != null) {
 
+    </head>
+    <body>
+
+        <%   if (actualUsuario != null) {
+                for (RolDto rol : rolesActuales) {
+                    if (rol.getIdRol() == 3) {
+                        admin = true;
+                    }
+                }
 
         %>
     <center>
@@ -53,11 +66,22 @@
         %>
         <h1 style="color:#2b542c">Error Interno!</h1>
         <%            }
+
         %>
 
         <h2>Contacte con el administrador para más información</h2>
-        <h2><a href="../pages/indexp.jsp" class="alert-link">Regresar</a></h2>
-        <img src="../img/errorpage.jpg" width="800" height="700">
+        <%            if (admin) {
+        %>
+        <h2><a href="/FarmersMarket/pages/indexadmin.jsp" class="alert-link">Regresar</a></h2>    
+        <%
+        } else {
+        %>
+        <h2><a href="/FarmersMarket/pages/indexp.jsp" class="alert-link">Regresar</a></h2>
+        <%
+            }
+        %>
+
+        <img src="/FarmersMarket/img/errorpage.jpg" width="800" height="700">
     </center>
 
     <%            } else if (actualUsuario == null) {

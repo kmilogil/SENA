@@ -4,18 +4,14 @@
     Author     : kennross
 --%>
 
-<%@page import="modulo.pedidos.FPedido"%>
-<%@page import="modulo.ofertas.dto.PresentacionDto"%>
-<%@page import="modulo.ofertas.dto.PromocionDto"%>
-<%@page import="modulo.ofertas.dto.ProductoDto"%>
-<%@page import="modulo.ofertas.FOferta"%>
 <%@page import="modulo.usuarios.FUsuario"%>
 <%@page import="modulo.usuarios.dto.PermisoDto"%>
-<%@page import="modulo.usuarios.dao.PermisoDao"%>
 <%@page import="modulo.usuarios.dto.RolDto"%>
+<%@page import="modulo.usuarios.dao.PermisoDao"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="modulo.usuarios.dto.UsuarioDto"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+
 
 <%
     HttpSession miSesion = request.getSession(false);
@@ -23,7 +19,7 @@
 
     UsuarioDto actualUsuario;
     ArrayList<RolDto> rolesActuales;
-    FOferta fOferta = new FOferta();
+
     actualUsuario = (UsuarioDto) miSesion.getAttribute("usuarioEntro");
     rolesActuales = (ArrayList<RolDto>) miSesionRoles.getAttribute("roles");
 
@@ -33,15 +29,13 @@
         RolDto primerRol = rolesActuales.get(0);
 
         FUsuario faUsu = new FUsuario();
-        FOferta faOfer = new FOferta();
-        FPedido faPedi = new FPedido();
-        String pagActual = "misproductos.jsp";
+        String pagActual = "indexadmin.jsp";
 
         // Validación para poder entrar
         boolean poderEntrar = false;
 
         for (RolDto rol : rolesActuales) {
-            if (rol.getIdRol() == 1) {
+            if (rol.getIdRol() == 3) {
                 poderEntrar = true;
             }
         }
@@ -55,23 +49,29 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link rel="shortcut icon" href="../img/favicon.ico">
-        <script type="text/javascript" src="../js/jquery-1.11.2.js"></script>
-        <script type="text/javascript" src="../js/Validacion.js"></script>
-        <script type="text/javascript" src="../js/bootstrap.js"></script>        
         <link rel="stylesheet" type="text/css" href="../css/bootstrap.css">
-        <link rel="stylesheet" type="text/css" href="../css/font-awesome.css">        
+        <link rel="stylesheet" type="text/css" href="../css/font-awesome.css">
+        <script type="text/javascript" src="../js/jquery-1.11.2.js"></script>
+        <script type="text/javascript" src="../js/bootstrap.js"></script>
         <script type="text/javascript" src="../js/ajax.js"></script>
-        <script type="text/javascript" src="../js/validacionesAjax.js"></script>
-
-        <title>Mis Productos - Farmer's Market</title>
-
-        <script>
+        <script type="text/javascript" src="../js/Validacion.js"></script>
+        <script type="text/javascript" src="../js/jquery.dataTables.min.js"></script>
+        <script type="text/javascript" src="../js/dataTables.bootstrap.js"></script>
+        <script type="text/javascript" src="../js/bootstrap-filestyle.min.js"></script>
+        <title>Cliente - Farmer's Market</title>
+        <script type="text/javascript">
             $(document).ready(function() {
                 // Initialize tooltip
                 $('[data-toggle="tooltip"]').tooltip({
                     placement: 'top'
                 });
             });
+            $(document).ready(function() {
+                $('#tblReport').dataTable();
+            });
+            
+            $(":file").filestyle();
+            $(":file").filestyle({input: false});
         </script>
 
     </head>
@@ -80,11 +80,11 @@
             <!-- Banner Farmer's Market -->
             <div class="row">
                 <div class="col-md-12">
-                    <img src="../img/banner.jpg" alt="Banner de Farmer's Market" width="1000px">
+                    <a href="indexadmin.jsp"><img src="../img/banner.jpg" alt="Banner Farmers Market"></a>
                 </div>
             </div>
             <!-- Fin del Banner  -->
-            <br>
+
             <!-- Contenedor Principal de la Página -->
             <div class="row">
                 <!-- Dashboard -->
@@ -112,7 +112,7 @@
                         <div class="media-body">
                             <p></p>
                             <h4 class="media-heading">
-                                Productor
+                                Administrador
                             </h4>
                             <%= actualUsuario.getNombres() + " " + actualUsuario.getApellidos()%>
                         </div>
@@ -138,8 +138,7 @@
                         <%
                             }
                         %>
-                    </ul>
-                    <!-- Fin del menú de navegación -->
+                        <!-- Fin del menú de navegación -->
 
                 </div>
                 <!-- Fin de la Dashboard -->
@@ -149,19 +148,12 @@
                 <div class="col-md-10">
                     <!-- Menú de Sesion, buscar, idiomas y info -->
                     <nav class="navbar navbar-default">
-                        <div class="container-fluid">
-                            <div class="navbar-header">
-                                <%
-                                    int ofertadas = faOfer.obtenerOfertasOfertadas(actualUsuario.getIdUsuario());
-                                    int pedidos = faPedi.obtenerPedidosPendientesProductor(actualUsuario.getIdUsuario());
-                                %>
-                                <a href="mispedidos.jsp" class="navbar-brand text-success">
-                                    Pedidos <span class="badge info"><%=pedidos%></span> 
-                                </a>
-                                <a href="misofertas.jsp" class="navbar-brand text-success">
-                                    Ofertas <span class="badge"><%=ofertadas%></span>
-                                </a>
-                            </div>
+                        <div class="container-fluid">                            
+                             <form action="../ControladorCargarInicial" method="post" enctype="multipart/form-data" class="navbar-brand form-inline">
+                                 <input type="file" class="filestyle" data-input="false" name="archivo" value="">
+                                <button type="submit" class="btn btn-default" title="Subir archivo" data-toggle="alert" data-tarjet=""><i class="fa fa-arrow-circle-up"></i></button>
+                            </form> 
+                            
                             <!-- Collect the nav links, forms, and other content for toggling -->
                             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                                 <ul class="nav navbar-nav navbar-right">                                    
@@ -189,9 +181,7 @@
                                             </span>
                                         </div>
                                     </div>
-                                </form>
-
-
+                                </form>                               
                             </div>
                         </div>
                     </nav>
@@ -199,8 +189,7 @@
 
                     <!-- Miga de pan -->
                     <ol class="breadcrumb">
-                        <li><a href="indexp.jsp">Inicio</a></li>
-                        <li class="active"><a href="misproductos.jsp">Mis Productos (Asociados)</a></li>
+                        <li><a href="indexadmin.jsp">Inicio</a></li>                        
                     </ol>
                     <!-- Fin de miga de pan -->
 
@@ -220,56 +209,149 @@
                     <!-- Fin de mensajes de alertas -->
 
                     <!-- Contenedor de contenido especifico -->
-                    <div class="container-fluid">
-                        <div class="row">
+
+                    <div class="row">
+                        <div class="col-md-12">
                             <div class="page-header">
-                                <h3 class="text-center">Lista de mis productos asociados</h3>
+                                <h4 class="text-center lead">Sección de reportes</h4>
                             </div>
-                            <%
-                                ArrayList<ProductoDto> misProductos;
-                                misProductos = (ArrayList<ProductoDto>) faOfer.obtenerProductosAsociados(actualUsuario.getIdUsuario());
-                                if (misProductos.size() != 0) {
-                                    for (ProductoDto p : misProductos) {
-
-                            %>
-                            <div class="col-md-6">
-                                <div class="media">
-                                    <div class="media-left">
-                                        <a href="#">
-                                            <img class="media-object" src="<%= p.getImagen()%>" alt="Producto mío, lechuga" width="200">
+                            <!-- Botonoes de razones -->
+                            <div class="row text-center">
+                                <div class="btn btn-primary" role="tab" id="headingOne">
+                                    <h4 class="panel-title">
+                                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                                            Reporte 1
                                         </a>
-                                    </div>
-                                    <div class="media-body">
-                                        <h4 class="media-heading"><%= p.getNombres()%></h4>                                        
-                                        <p><strong>Categoria: </strong> <%= faOfer.obtenerNombreDeCategoriaPorId(p.getIdCategoria())%></p>
-                                        <button type="button" onclick="getNumeroOfertas(<%=p.getIdProducto()%>,<%= faOfer.obtenerIdPaPorIds(actualUsuario.getIdUsuario(), p.getIdProducto())%>,<%=actualUsuario.getIdUsuario()%>)" href="#" data-toggle="modal" data-target="#modalOfertarProducto" class="btn btn-success">Ofertar</button>
-                                        <!--<button type="button" onclick="getFormOfertar(<%=faOfer.obtenerIdPaPorIds(actualUsuario.getIdUsuario(), p.getIdProducto())%>)" href="#" data-toggle="modal" data-target="#modalConfirmarEliminarProducto" class="btn btn-danger">Eliminar</button>
-                                        <form action="../ControladorOferta?op=eliaso&idProductoAso=<%=faOfer.obtenerIdPaPorIds(actualUsuario.getIdUsuario(), p.getIdProducto())%>" method="post" id="EliminarProducto">
-                                        </form>-->
-
-                                        <button type="button" onclick="getEliminar(<%=faOfer.obtenerIdPaPorIds(actualUsuario.getIdUsuario(), p.getIdProducto())%>)" href="#" data-toggle="modal" data-target="#modalConfirmarEliminarProducto" class="btn btn-danger">Eliminar producto</button>
-                                        <!--<a href="../ControladorOferta?idProAsoc=<%=faOfer.obtenerIdPaPorIds(actualUsuario.getIdUsuario(), p.getIdProducto())%>" class="btn btn-danger" id="eliminar">Eliminar Producto</a>-->
-
-                                    </div>
-                                </div>                                        
-                            </div>                            
-                            <%
-                                }
-                            } else {
-                            %>
-                            <div class="col-md-12">
-                                <div class="alert alert-info">
-                                    <p>
-                                        <strong>No tiene productos asociados</strong> Por lo tanto aún no puede publicar ofertas
-                                        <strong><a href="asociarproducto.jsp"> Ir a Asociar Productos </a></strong>
-                                    </p>
+                                    </h4>
+                                </div>
+                                &nbsp;&nbsp;&nbsp;&nbsp;                            
+                                <div class="btn btn-primary" role="tab" id="headingTwo">
+                                    <h4 class="panel-title">
+                                        <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                                            Reporte 1
+                                        </a>
+                                    </h4>
+                                </div>
+                                &nbsp;&nbsp;&nbsp;&nbsp;
+                                <div class="btn btn-primary" role="tab" id="headingThree">
+                                    <h4 class="panel-title">
+                                        <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                                            Reporte 1
+                                        </a>
+                                    </h4>
                                 </div>
                             </div>
-                            <%
-                                }
-                            %>                            
-                        </div>                        
+                            <br>
+                            <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+                                <div class="panel">                                    
+                                    <div id="collapseOne" class="collapse in" role="tabpanel" aria-labelledby="headingOne">
+                                        <div >
+                                            <form>
+                                                <div class="form-group">
+                                                    <label for="exampleInputEmail1">Email address</label>
+                                                    <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="exampleInputPassword1">Password</label>
+                                                    <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="exampleInputFile">File input</label>
+                                                    <input type="file" id="exampleInputFile">
+                                                    <p class="help-block">Example block-level help text here.</p>
+                                                </div>
+                                                <div class="checkbox">
+                                                    <label>
+                                                        <input type="checkbox"> Check me out
+                                                    </label>
+                                                </div>
+                                                <button type="submit" class="btn btn-default">Submit</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel">
+
+                                    <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo">
+                                        <div >
+                                            <form>
+                                                <div class="form-group">
+                                                    <label for="exampleInputEmail1">Email address</label>
+                                                    <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="exampleInputPassword1">Password</label>
+                                                    <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="exampleInputFile">File input</label>
+                                                    <input type="file" id="exampleInputFile">
+                                                    <p class="help-block">Example block-level help text here.</p>
+                                                </div>
+                                                <div class="checkbox">
+                                                    <label>
+                                                        <input type="checkbox"> Check me out
+                                                    </label>
+                                                </div>
+                                                <button type="submit" class="btn btn-default">Submit</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel">
+
+                                    <div id="collapseThree" class="collapse" role="tabpanel" aria-labelledby="headingThree">
+                                        <div >
+                                            <form>
+                                                <div class="form-group">
+                                                    <label for="exampleInputEmail1">Email address</label>
+                                                    <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="exampleInputPassword1">Password</label>
+                                                    <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label for="exampleInputFile">File input</label>
+                                                    <input type="file" id="exampleInputFile">
+                                                    <p class="help-block">Example block-level help text here.</p>
+                                                </div>
+                                                <div class="checkbox">
+                                                    <label>
+                                                        <input type="checkbox"> Check me out
+                                                    </label>
+                                                </div>
+                                                <button type="submit" class="btn btn-default">Submit</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
                     </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h2>Reporte de ventas</h2>
+                            <table class="table table-hover" id="tblReport">
+                                <thead>
+                                    <tr>
+                                        <th>asfas</th>
+                                        <th>afawf</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>awfwa</td>
+                                        <td>afwafwa</td>
+                                    </tr>
+
+                                </tbody>
+                            </table>                            
+                        </div>
+                    </div>
+
                     <!-- Fin de contenedor de contenido especifico -->
 
 
@@ -323,14 +405,13 @@
                                                 <input type="button" class="btn btn-danger" data-dismiss="modal" value="Cancelar">
                                                 <input type="submit" name="cambiarPass" id="cambiarPass"class="btn btn-success" value="Cambiar contraseña">
                                             </div>
-                                        </form>                                                                 
+                                        </form>                                                                                        
                                     </div>                                    
                                 </div>
                             </div>
-                        </div>
-                        <!-- Fin de Cambiar Contraseña -->
+                        </div>                      
 
-                        <!-- Formulario de Contáctenos -->                        
+                        <!-- Formulario de Contáctenos -->
                         <div>
                             <div class="modal fade" id="modalContactenos" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                                 <div class="modal-dialog">
@@ -370,72 +451,12 @@
                         <!-- Fin de formulario de Contáctenos -->
 
 
-                        <!-- Ofertar un producto -->
-                        <div class="row">
-                            <div class="modal fade" id="modalOfertarProducto" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <!-- Título  -->
-                                        <div class="modal-header">
-                                            <button type="button" onclick="limpiarIndex()" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                            <h2 class="modal-title text-center">Ofertar Producto</h2>
-                                        </div>
-                                        <!-- Fin del título -->
-                                        <br>
-                                        <div class="container-fluid" >
-                                            <form   action="../ControladorOferta" method="post" id="formOfertar">
-                                                <div class="col-md-12"  id="modalOferta">
-
-                                                </div>
-                                                <legend></legend>
-                                                <div class="text-right">
-                                                    <button type="button" id="asd" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
-                                                    <input type="submit" class="btn btn-success" name="productoOferta" id="productoOferta" value="Publicar Oferta" >
-                                                </div>
-                                                <br>
-                                            </form>
-
-                                        </div>
-
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-
-
-                        <!-- <div class="modal fade" id="modalOfertarProducto" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                             <div class="modal-dialog">
-                                 <div class="modal-content">
-                                     <div class="modal-header">
-                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                         <h3 class="modal-title text-center" id="myModalLabel">Ofertar Producto</h3>
-                                     </div>
-                                     <div class="container-fluid" id="modalOferta">
-                                         
-                                     </div>                                    
-                                 </div>
-                             </div>
-                         </div>-->
-                        <!-- Ofertar un producto -->
-                        <!-- Modal para confirmación de asociar productos -->
-                        <div>
-                            <div class="modal fade bs-example-modal-sm" id="modalConfirmarEliminarProducto" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
-                                <div class="modal-dialog modal-sm">
-                                    <div class="modal-content" id="modalEliminarProducto">
-
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- Fin de modal para confirmación eliminar productos -->
-
                     </div>
-                    <!-- Fin de Ventanas Modales -->
+
                 </div>
                 <!-- Contenedor de Segundo-->
             </div>
-            <!-- Contenedor Principal de la Página -->
+            <!-- Fin de contenedor Principal de la Página -->
             <p></p>
             <!-- Footer (Nota: Escribir el código que permita que esto quede abajo fijo) -->
             <div class="row">
@@ -443,16 +464,16 @@
                     <!-- Footer (Nota: Escribir el código que permita que esto quede abajo fijo) -->
                     <ol class="breadcrumb container-fluid">
                         <em class="text-center">Todos los derechos reservados / <a href="http://getbootstrap.com/">Bootstrap</a> / <a href="http://fortawesome.github.io/Font-Awesome/">Font-Awesome</a> / <a href="http://jquery.com/">JQuery</a></em>
-                        <em class="pull-right"><a href="#" data-toggle="modal" data-target="#modalContactenos">Contactar un Administrador</a></em>
+
                     </ol>
 
                 </div>
             </div>
             <!-- Fin del Footer -->
         </div>
-        <!-- Fin de Container-->
     </body>
 </html>
-<%        }
+<%
+        }
     }
 %>

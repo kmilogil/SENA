@@ -13,6 +13,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import modulo.usuarios.dto.PermisoDto;
 
 /**
  *
@@ -28,7 +29,7 @@ public class UsuarioDao {
 
     public String insertUsuarioProcedimiento(UsuarioDto nuevoUsuario, RolDto suRol, Connection unaConexion) {
         try {
-            String sqlInsert = "CALL ProceRegistrarUsuarioCompleto(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            String sqlInsert = "CALL ProceRegistrarUsuarioCompleto(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)";
             pstm = unaConexion.prepareStatement(sqlInsert);
 
             pstm.setLong(1, nuevoUsuario.getIdUsuario());
@@ -42,6 +43,7 @@ public class UsuarioDao {
             pstm.setString(9, nuevoUsuario.getImagen());
             pstm.setInt(10, nuevoUsuario.getEstado());
             pstm.setInt(11, suRol.getIdRol());
+            pstm.setInt(12, nuevoUsuario.getNotifaciones());
 
             rtdo = pstm.executeUpdate();
 
@@ -54,37 +56,6 @@ public class UsuarioDao {
             mensaje = "Error, detalle " + sqle.getMessage();
         }
         return mensaje;
-    }
-
-    public List obtenerUsuarios(Connection unaConexion) {
-        ArrayList<UsuarioDto> usuarios = null;
-        sqlTemp = "SELECT `idUsuario`, `Nombres`, `Apellidos`, `Clave`, `Correo`, "
-                + "`FechaNacimiento`, `Direccion`, `idCiudad`, `FechaSistema`, "
-                + "`Imagen`, `idEstado` FROM `usuarios`";
-        try {
-            pstm = unaConexion.prepareStatement(sqlTemp);
-            rs = pstm.executeQuery();
-
-            usuarios = new ArrayList();
-            while (rs.next()) {
-                UsuarioDto temp = new UsuarioDto();
-                temp.setIdUsuario(rs.getLong("idUsuario"));
-                temp.setNombres(rs.getString("Nombres"));
-                temp.setApellidos(rs.getString("Apellidos"));
-                temp.setClave(rs.getString("Clave"));
-                temp.setCorreo(rs.getString("Correo"));
-                temp.setFechaNacimiento(rs.getString("FechaNacimiento"));
-                temp.setDireccion(rs.getString("Direccion"));
-                temp.setIdCiudad(rs.getInt("idCiudad"));
-                temp.setFechaSistema(rs.getString("FechaSistema"));
-                temp.setImagen(rs.getString("Imagen"));
-                temp.setEstado(rs.getInt("idEstado"));
-                usuarios.add(temp);
-            }
-        } catch (SQLException ex) {
-            System.out.println("Error, detalle: " + ex.getMessage());
-        }
-        return usuarios;
     }
 
     public String actualizarUsuario(UsuarioDto usuarioActualizado, Connection unaConexion) {
@@ -178,8 +149,8 @@ public class UsuarioDao {
     }
 
     public UsuarioDto obtenerUsuarioPorId(long idUsuario, Connection unaConexion) {
-        sqlTemp = "select idUsuario, nombres,apellidos,clave, correo, fechaNac,direccion,idCiudad,fechaSistema,imagen,estado "
-                + "from usuarios where idUsuario = ?;";
+        sqlTemp = "select u.idUsuario, nombres,apellidos,clave, correo, fechaNac,direccion,idCiudad,fechaSistema,imagen,estado, rl.idRol\n"
+                + "from usuarios u join rolesusuario rl on u.idUsuario = rl.idUsuario where u.idUsuario = ?;";
         UsuarioDto salidaUsuario = new UsuarioDto();
         try {
             pstm = unaConexion.prepareStatement(sqlTemp);
@@ -198,6 +169,7 @@ public class UsuarioDao {
                 salidaUsuario.setFechaSistema(rs.getString("fechaSistema"));
                 salidaUsuario.setImagen(rs.getString("imagen"));
                 salidaUsuario.setEstado(rs.getInt("estado"));
+                salidaUsuario.getRol().setIdRol(rs.getInt("idRol"));
             }
         } catch (SQLException ex) {
             System.out.println("Error, detalle: " + ex.getMessage());
@@ -268,5 +240,104 @@ public class UsuarioDao {
             System.out.println("Error, detalle: " + ex.getMessage());
         }
         return mensaje;
+    }
+
+    public List obtenerUsuarios(Connection unaConexion) {
+        ArrayList<UsuarioDto> usuarios = new ArrayList();
+        try {
+            pstm = unaConexion.prepareStatement("select ru.idRol, u.idUsuario, u.nombres, u.apellidos, u.estado "
+                    + "from usuarios u join rolesusuario ru on u.idUsuario = ru.idUsuario where ru.idRol not in (3);");
+            rs = pstm.executeQuery();
+            while (rs.next()) {
+                UsuarioDto usuario = new UsuarioDto();
+                usuario.setIdUsuario(rs.getLong("idUsuario"));
+                usuario.setNombres(rs.getString("nombres"));
+                usuario.setApellidos(rs.getString("apellidos"));
+                usuario.setEstado(rs.getInt("estado"));
+                usuario.getRol().setIdRol(rs.getInt("idRol"));
+                usuarios.add(usuario);
+            }
+        } catch (SQLException ex) {
+
+        }
+        return usuarios;
+    }
+
+    public List obtenerPermisosUsuario(long idUsuario, Connection unaConexion) {
+        ArrayList<PermisoDto> permisos = new ArrayList();
+        try {
+            pstm = unaConexion.prepareStatement("select p.idPermisos, p.permisos from usuarios u join rolesusuario ru on u.idUsuario = ru.idUsuario "
+                    + "join roles r on ru.idRol = r.idRol join permisosrol pr on r.idRol = pr.idRol join permisos p on pr.idPermisos = p.idPermisos "
+                    + "where u.idUsuario = ?");
+            pstm.setLong(1, idUsuario);
+            rs = pstm.executeQuery();
+            while (rs.next()) {
+                PermisoDto permiso = new PermisoDto();
+                permiso.setIdPermiso(rs.getInt("idPermisos"));
+                permiso.setPermiso(rs.getString("permisos"));
+                permisos.add(permiso);
+            }
+        } catch (SQLException ex) {
+
+        }
+        return permisos;
+    }
+
+    public String supenderUsuario(long idUsuario, Connection unaConexion) {
+        try {
+            pstm = unaConexion.prepareStatement("update usuarios set estado = 3 where idUsuario = ?;");
+            pstm.setLong(1, idUsuario);
+            rtdo = pstm.executeUpdate();
+            if (rtdo != 0) {
+                mensaje = "ok";
+            } else {
+                mensaje = "no";
+            }
+        } catch (SQLException ex) {
+            mensaje = ex.getMessage();
+        }
+        return mensaje;
+    }
+    public String activarUsuario(long idUsuario, Connection unaConexion) {
+        try {
+            pstm = unaConexion.prepareStatement("update usuarios set estado = 1 where idUsuario = ?;");
+            pstm.setLong(1, idUsuario);
+            rtdo = pstm.executeUpdate();
+            if (rtdo != 0) {
+                mensaje = "ok";
+            } else {
+                mensaje = "no";
+            }
+        } catch (SQLException ex) {
+            mensaje = ex.getMessage();
+        }
+        return mensaje;
+    }
+
+    public List obtenerPermisosUsuarioRol(long idUsuario, Connection unaConexion) {
+
+        ArrayList<PermisoDto> permisos = new ArrayList();
+        try {
+            pstm = unaConexion.prepareStatement("select roles.idRol, permisos.idPermisos, permisos.permisos from permisos\n"
+                    + "       inner join permisosrol on permisos.idPermisos = permisosrol.idPermisos\n"
+                    + "       inner join roles on permisosrol.idRol = roles.idRol \n"
+                    + "       where permisos.idPermisos not in (select permisos.idPermisos from permisos\n"
+                    + "       inner join permisosrol on permisos.idPermisos = permisosrol.idPermisos\n"
+                    + "       inner join roles on permisosrol.idRol = roles.idRol\n"
+                    + "       inner join rolesusuario on roles.idRol = rolesusuario.idRol\n"
+                    + "       inner join usuarios on rolesusuario.idUsuario = usuarios.idUsuario\n"
+                    + "       where usuarios.idUsuario = ?) and permisos.idPermisos not in (8, 9);");
+            pstm.setLong(1, idUsuario);
+            rs = pstm.executeQuery();
+            while (rs.next()) {
+                PermisoDto permiso = new PermisoDto();
+                permiso.setIdPermiso(rs.getInt("idPermisos"));
+                permiso.setPermiso(rs.getString("permisos"));
+                permisos.add(permiso);
+            }
+        } catch (SQLException ex) {
+
+        }
+        return permisos;
     }
 }

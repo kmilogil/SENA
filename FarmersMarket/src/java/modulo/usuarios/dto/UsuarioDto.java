@@ -17,12 +17,15 @@ public class UsuarioDto {
     private String fechaSistema = "";
     private String imagen = "";
     private int estado = 0;
+    private int notifaciones = 0;
     private CiudadDto ciDto = new CiudadDto();
+    private RolDto rol = new RolDto();
 
     @Override
     public String toString() {
-        return "UsuarioDto{" + "idUsuario=" + idUsuario + ", nombres=" + nombres + ", apellidos=" + apellidos + ", clave=" + clave + ", correo=" + correo + ", fechaNacimiento=" + fechaNacimiento + ", direccion=" + direccion + ", idCiudad=" + idCiudad + ", fechaSistema=" + fechaSistema + ", imagen=" + imagen + ", estado=" + estado + ", ciDto=" + getCiDto() + '}';
+        return "UsuarioDto{" + "idUsuario=" + idUsuario + ", nombres=" + nombres + ", apellidos=" + apellidos + ", clave=" + clave + ", correo=" + correo + ", fechaNacimiento=" + fechaNacimiento + ", direccion=" + direccion + ", idCiudad=" + idCiudad + ", fechaSistema=" + fechaSistema + ", imagen=" + imagen + ", estado=" + estado + ", notifaciones=" + notifaciones + ", ciDto=" + ciDto + ", rol=" + rol + '}';
     }
+    
 
     /**
      * @return the idUsuario
@@ -190,5 +193,33 @@ public class UsuarioDto {
      */
     public void setCiDto(CiudadDto ciDto) {
         this.ciDto = ciDto;
+    }
+
+    /**
+     * @return the notifaciones
+     */
+    public int getNotifaciones() {
+        return notifaciones;
+    }
+
+    /**
+     * @param notifaciones the notifaciones to set
+     */
+    public void setNotifaciones(int notifaciones) {
+        this.notifaciones = notifaciones;
+    }
+
+    /**
+     * @return the rol
+     */
+    public RolDto getRol() {
+        return rol;
+    }
+
+    /**
+     * @param rol the rol to set
+     */
+    public void setRol(RolDto rol) {
+        this.rol = rol;
     }
 }

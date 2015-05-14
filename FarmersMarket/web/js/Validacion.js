@@ -29,9 +29,9 @@ $(document).ready(function() {
             document.getElementById('inpDocumento').setAttribute('class', 'form-group has-feedback has-error');
             document.getElementById('iconFeedbackDocumento').setAttribute('class', 'glyphicon glyphicon-remove form-control-feedback');
             return false;
-        } else if (numeroDocumento.length < 10) {
+        } else if (numeroDocumento.length < 8) {
             document.getElementById('ruDocumento').setAttribute('data-toggle', 'tooltip');
-            document.getElementById('ruDocumento').setAttribute('data-original-title', 'Debe ser de 10 digitos el campo');
+            document.getElementById('ruDocumento').setAttribute('data-original-title', 'Debe ser de 8 digitos el campo');
             $(document).ready(function() {
                 // Initialize tooltip
                 $('[data-toggle="tooltip"]').tooltip({
@@ -762,7 +762,7 @@ $(document).ready(function() {
 
         else if (difx < 18) {
             document.getElementById('ruFecha').setAttribute('data-toggle', 'tooltip');
-            document.getElementById('ruFecha').setAttribute('data-original-title', 'No se permiten permiten personas menores de edad');
+            document.getElementById('ruFecha').setAttribute('data-original-title', 'No se permiten personas menores de edad');
             $(document).ready(function() {
                 // Initialize tooltip
                 $('[data-toggle="tooltip"]').tooltip({
