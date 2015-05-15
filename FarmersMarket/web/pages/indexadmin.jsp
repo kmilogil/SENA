@@ -41,6 +41,7 @@
         }
 
         if (poderEntrar) {
+            
 
 %>
 
@@ -58,7 +59,7 @@
         <script type="text/javascript" src="../js/jquery.dataTables.min.js"></script>
         <script type="text/javascript" src="../js/dataTables.bootstrap.js"></script>
         <script type="text/javascript" src="../js/bootstrap-filestyle.min.js"></script>
-        <title>Cliente - Farmer's Market</title>
+        <title>Administrador - Farmer's Market</title>
         <script type="text/javascript">
             $(document).ready(function() {
                 // Initialize tooltip
@@ -219,53 +220,27 @@
                             <div class="row text-center">
                                 <div class="btn btn-primary" role="tab" id="headingOne">
                                     <h4 class="panel-title">
-                                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                            Reporte 1
+                                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne" onclick="getHistorialVentas()">
+                                            Historico de ventas
                                         </a>
                                     </h4>
                                 </div>
                                 &nbsp;&nbsp;&nbsp;&nbsp;                            
                                 <div class="btn btn-primary" role="tab" id="headingTwo">
                                     <h4 class="panel-title">
-                                        <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                            Reporte 1
+                                        <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo" onclick="getVentasCiudad()">
+                                            Ventas por ciudad
                                         </a>
                                     </h4>
-                                </div>
-                                &nbsp;&nbsp;&nbsp;&nbsp;
-                                <div class="btn btn-primary" role="tab" id="headingThree">
-                                    <h4 class="panel-title">
-                                        <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                                            Reporte 1
-                                        </a>
-                                    </h4>
-                                </div>
+                                </div>                                
                             </div>
                             <br>
                             <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
                                 <div class="panel">                                    
                                     <div id="collapseOne" class="collapse in" role="tabpanel" aria-labelledby="headingOne">
                                         <div >
-                                            <form>
-                                                <div class="form-group">
-                                                    <label for="exampleInputEmail1">Email address</label>
-                                                    <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="exampleInputPassword1">Password</label>
-                                                    <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="exampleInputFile">File input</label>
-                                                    <input type="file" id="exampleInputFile">
-                                                    <p class="help-block">Example block-level help text here.</p>
-                                                </div>
-                                                <div class="checkbox">
-                                                    <label>
-                                                        <input type="checkbox"> Check me out
-                                                    </label>
-                                                </div>
-                                                <button type="submit" class="btn btn-default">Submit</button>
+                                            <form>                                                
+                                                
                                             </form>
                                         </div>
                                     </div>
@@ -275,53 +250,16 @@
                                     <div id="collapseTwo" class="collapse" role="tabpanel" aria-labelledby="headingTwo">
                                         <div >
                                             <form>
-                                                <div class="form-group">
-                                                    <label for="exampleInputEmail1">Email address</label>
-                                                    <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="exampleInputPassword1">Password</label>
-                                                    <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="exampleInputFile">File input</label>
-                                                    <input type="file" id="exampleInputFile">
-                                                    <p class="help-block">Example block-level help text here.</p>
-                                                </div>
-                                                <div class="checkbox">
-                                                    <label>
-                                                        <input type="checkbox"> Check me out
-                                                    </label>
-                                                </div>
-                                                <button type="submit" class="btn btn-default">Submit</button>
+                                               
                                             </form>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="panel">
-
                                     <div id="collapseThree" class="collapse" role="tabpanel" aria-labelledby="headingThree">
                                         <div >
                                             <form>
-                                                <div class="form-group">
-                                                    <label for="exampleInputEmail1">Email address</label>
-                                                    <input type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="exampleInputPassword1">Password</label>
-                                                    <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
-                                                </div>
-                                                <div class="form-group">
-                                                    <label for="exampleInputFile">File input</label>
-                                                    <input type="file" id="exampleInputFile">
-                                                    <p class="help-block">Example block-level help text here.</p>
-                                                </div>
-                                                <div class="checkbox">
-                                                    <label>
-                                                        <input type="checkbox"> Check me out
-                                                    </label>
-                                                </div>
-                                                <button type="submit" class="btn btn-default">Submit</button>
+                                               
                                             </form>
                                         </div>
                                     </div>
@@ -332,23 +270,8 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-12">
-                            <h2>Reporte de ventas</h2>
-                            <table class="table table-hover" id="tblReport">
-                                <thead>
-                                    <tr>
-                                        <th>asfas</th>
-                                        <th>afawf</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>awfwa</td>
-                                        <td>afwafwa</td>
-                                    </tr>
-
-                                </tbody>
-                            </table>                            
+                        <div class="col-md-12" id="tablaReporte">
+                                                        
                         </div>
                     </div>
 

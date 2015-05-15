@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="38acb36e-c69b-4c47-9ca4-b3069b73413a">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<field name="productor" class="java.lang.String"/>
+	<field name="ciudad" class="java.lang.String"/>
+	<field name="total" class="java.lang.String"/>
+	<field name="mes" class="java.lang.String"/>
+	<group name="Ventas">
+		<groupExpression><![CDATA[$F{ciudad}]]></groupExpression>
+	</group>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="72" splitType="Stretch">
+			<staticText>
+				<reportElement x="166" y="19" width="233" height="31" uuid="bc4d61dd-500f-404e-aba8-d2681dae4982"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="24"/>
+				</textElement>
+				<text><![CDATA[Ventas por ciudad]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="35" splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="28" splitType="Stretch">
+			<rectangle>
+				<reportElement x="0" y="0" width="555" height="28" backcolor="#CCFFCC" uuid="51c6a73b-50dc-4b72-abba-9ee035f43294"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="48" y="4" width="100" height="20" uuid="c0a5419c-a89a-4c03-8e17-8978d323e50c"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Productor]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="170" y="4" width="100" height="20" uuid="c3652cec-d78e-46ab-a312-60bd46e1276a"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Ciudad]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="292" y="4" width="100" height="20" uuid="5c4ea4c6-5c16-4b83-8ba8-2b5d6ec3dded"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Total]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="414" y="4" width="100" height="20" uuid="a455b608-a8ad-4c62-be5a-94d3d967910e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Mes]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="36" splitType="Stretch">
+			<textField>
+				<reportElement x="50" y="8" width="100" height="20" uuid="572d0a05-fcc3-47f9-ba59-da31c2bca9de"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{productor}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="172" y="8" width="100" height="20" uuid="358c6e51-3b97-4021-8e58-c03449c2bd5e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{ciudad}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="294" y="8" width="100" height="20" uuid="eeed54a6-8dfe-4c77-8b90-13aa7c5e1796"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{total}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="414" y="8" width="100" height="20" uuid="a972999a-3744-447b-b59d-205e1099007e"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{mes}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="0" width="1" height="36" uuid="a89590bc-b7e6-4114-9ac1-b3e6fdd8e1e1"/>
+			</line>
+			<line>
+				<reportElement x="554" y="0" width="1" height="36" uuid="563bf890-7cac-4a44-aabe-f3a92b160933"/>
+			</line>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="54" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band height="53" splitType="Stretch"/>
+	</summary>
+</jasperReport>

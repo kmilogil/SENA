@@ -8,6 +8,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 import modulo.usuarios.dto.PermisoDto;
@@ -49,11 +50,14 @@ public class PermisoDao {
     
     public int cambiarRol(long idUsuario, int idRol,Connection unaConexion){
         try{
-            ctm = unaConexion.prepareCall("");
+            ctm = unaConexion.prepareCall("call sp_cambiarRol(?,?,?)");
             ctm.setLong(1, idUsuario);
             ctm.setInt(2, idRol);
+            ctm.registerOutParameter(3, Types.INTEGER);
+            ctm.execute();
+            rtdo = ctm.getInt(3);
         }catch (SQLException ex) {
-            
+           ex.getMessage();
         }
         return rtdo;
     }

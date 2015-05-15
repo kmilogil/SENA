@@ -165,7 +165,7 @@ public class PedidoDao {
         return pedidos;
     }
 
-    public List obtenerDetallePedidosProductor(long idUsuario,int idPedido, Connection unaConexion) {
+    public List obtenerDetallePedidosProductor(long idUsuario, int idPedido, Connection unaConexion) {
         ArrayList<CarritoDto> pedidos = new ArrayList();
         try {
             pstm = unaConexion.prepareStatement("select ca.idPedido, pr.nombres as producto, pre.descripcion as unidad, ca.cantidad, us.direccion, ci.Nombre as ciudad from carrito ca\n"
@@ -243,7 +243,7 @@ public class PedidoDao {
         }
         return rtdo;
     }
-    
+
     public List<ProductoCarritoDto> obtenerUltimopedido(long idCliente, Connection unaConexion) {
         ArrayList<ProductoCarritoDto> pedidos = new ArrayList();
         try {
@@ -260,7 +260,7 @@ public class PedidoDao {
                     + "where pedidos.idPedido=(select pedidos.idPedido from pedidos order by pedidos.fechaPedido desc limit 1) and pedidos.idCliente=?");
             pstm.setLong(1, idCliente);
             rs = pstm.executeQuery();
-            while (rs.next()){
+            while (rs.next()) {
                 ProductoCarritoDto pedido = new ProductoCarritoDto();
                 pedido.setNombre(rs.getString("nombres"));
                 pedido.setPresentacion(rs.getString("descripcion"));
@@ -270,13 +270,37 @@ public class PedidoDao {
                 pedido.setTotal(rs.getLong("Total"));
                 pedidos.add(pedido);
             }
-            
-            
-        }catch (SQLException ex) {
+
+        } catch (SQLException ex) {
             ex.getMessage();
         }
         return pedidos;
 
+    }
+
+    public StringBuilder buscarCorreos(int idPedido, Connection unaConexion) {
+        StringBuilder sb = new StringBuilder("");
+        try {
+            pstm = unaConexion.prepareStatement("select distinct concat(uc.nombres, ' ', uc.apellidos) as 'Cliente', concat(up.nombres, ' ', up.apellidos) as 'Productor', up.correo\n"
+                    + "from usuarios uc\n"
+                    + "inner join pedidos pe on uc.idUsuario = pe.idCliente\n"
+                    + "inner join carrito ca on pe.idPedido = ca.idPedido\n"
+                    + "inner join ofertas of on ca.idOferta = of.idOferta\n"
+                    + "inner join productoasociado pa on of.idProdAsoc = pa.idProdAsoc\n"
+                    + "inner join usuarios up on pa.idUsuario = up.idUsuario\n"
+                    + "where pe.idPedido = ?;");
+            pstm.setInt(1, idPedido);
+            rs = pstm.executeQuery();
+            while(rs.next()){
+                sb.append(rs.getString("correo"));
+                if (rs.next()) {
+                    sb.append(", ");
+                }
+            }
+        } catch (SQLException ex) {
+
+        }
+        return sb;
     }
 
 }

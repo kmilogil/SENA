@@ -288,7 +288,7 @@
 
                                         ArrayList<OfertaDto> ofertas = new ArrayList();
                                         ofertas = (ArrayList<OfertaDto>) miSesion.getAttribute("oferta");
-                                        if (ofertas.size() != 0) {
+                                        if (!ofertas.isEmpty()) {
                                             for (OfertaDto oferta : ofertas) {
 
                                 %>
@@ -353,7 +353,7 @@
                                     </div>
                                 </div>
                                 <%
-                                    }
+                                    }                                                                                                  
                                 } else {
                                     ArrayList<OfertaDto> ofertas = new ArrayList();
                                     ofertas = (ArrayList<OfertaDto>) faOfer.obtenerOfertas(actualUsuario.getIdUsuario(), "", 0, 0);
@@ -361,7 +361,7 @@
                                         for (OfertaDto oferta : ofertas) {
 
                                 %>
-                                <div class="panel panel-success" id="filtroOfertas">
+                               <div class="panel panel-success" id="filtroOfertas">
                                     <div class="panel-heading">
                                         <h2 class="panel-title">
                                             Por <em><strong><a href="#"><%=oferta.getProAso().getUsDto().getNombres()%></a></strong></em>                                            
@@ -412,9 +412,9 @@
 
                                             }
                                         }
-
                                     }
                                 %>  
+                                
                             </div>                                                                     
 
 

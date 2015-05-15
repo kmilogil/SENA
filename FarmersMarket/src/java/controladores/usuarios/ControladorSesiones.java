@@ -33,8 +33,8 @@ public class ControladorSesiones extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=iso-8859-1");        
-         request.setCharacterEncoding("UTF-8");
+        response.setContentType("text/html;charset=iso-8859-1");
+        request.setCharacterEncoding("UTF-8");
 
         FUsuario faUsu = new FUsuario();
 
@@ -76,13 +76,17 @@ public class ControladorSesiones extends HttpServlet {
                             paraAdmin = true;
                         }
                     }
+                    if (queryPersona.getEstado() == 3) {
+                        response.sendRedirect("index.jsp?msg=<strong><i class='glyphicon glyphicon-remove'></i> ¡Su usuario a sido inhabilitado!</strong> Para mas información contacte un administrador.&tipoAlert=warning");
+                    } else {
 
-                    if (paraProductor) {
-                        response.sendRedirect("pages/indexp.jsp");
-                    } else if (paraCliente) {
-                        response.sendRedirect("pages/indexp.jsp");
-                    } else if (paraAdmin) {
-                        response.sendRedirect("pages/indexadmin.jsp");
+                        if (paraProductor) {
+                            response.sendRedirect("pages/indexp.jsp");
+                        } else if (paraCliente) {
+                            response.sendRedirect("pages/indexp.jsp");
+                        } else if (paraAdmin) {
+                            response.sendRedirect("pages/indexadmin.jsp");
+                        }
                     }
                 } else {
                     response.sendRedirect("index.jsp?msg=<strong><i class='glyphicon glyphicon-remove'></i> ¡Los datos son invalidos!</strong> Intente nuevamente.&tipoAlert=warning");
@@ -90,7 +94,7 @@ public class ControladorSesiones extends HttpServlet {
             } else {
                 response.sendRedirect("index.jsp?msg=<strong><i class='glyphicon glyphicon-remove'></i> ¡CAMPOS VACIOS!</strong> Intente nuevamente.&tipoAlert=warning");
             }
-            
+
             //Cerrar sesión en el sistema.
         } else if (request.getParameter("op").equals("salir")) {
             HttpSession miSesion = request.getSession();

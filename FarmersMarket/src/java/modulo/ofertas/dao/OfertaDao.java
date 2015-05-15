@@ -34,17 +34,6 @@ public class OfertaDao {
         ArrayList<OfertaDto> ofertas = new ArrayList();
         StringBuilder sb = new StringBuilder();
         try {
-//            pstm = unaConexion.prepareStatement("select o.idOferta as oferta, concat(u.nombres, ' ',u.apellidos) as productor, o.precioVenta as precio, o.fechaFin as vence \n"
-//                    + ", i.cantidad as cantidad, pre.descripcion as presentacion, p.nombres as producto\n"
-//                    + "from ofertas as o \n"
-//                    + "join inventario as i on i.idOferta = o.idOferta\n"
-//                    + "join presentaciones as pre on pre.idPresentacion = o.idPresentacion   \n"
-//                    + "join productoasociado as pa on pa.idProdAsoc = o.idProdAsoc\n"
-//                    + "join productos as p on p.idProducto = pa.idProducto\n"
-//                    + "join usuarios as u on u.idUsuario = pa.idUsuario \n"
-//                    + "where i.cantidad  > 0 and o.fechaFin > curdate() \n"
-//                    + "and o.idOferta not in (select carrito.idOferta from ofertas join carrito on ofertas.idOferta = carrito.idOferta "
-//                    + "join pedidos on pedidos.idPedido = carrito.idPedido where pedidos.estadoPedido = 1 and pedidos.idCliente = ?);");
             sb.append("select o.idOferta as oferta, concat(u.nombres, ' ',u.apellidos) as productor, o.precioVenta as precio, o.fechaFin as vence \n"
                     + ", i.cantidad as cantidad, pre.descripcion as presentacion, p.nombres as producto\n"
                     + "from ofertas as o \n"

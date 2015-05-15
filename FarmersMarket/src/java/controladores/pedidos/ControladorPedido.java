@@ -105,11 +105,15 @@ public class ControladorPedido extends HttpServlet {
             faPedi = new FPedido();
             int estado = faPedi.obtenerEstadoPedido(Integer.parseInt(request.getParameter("idPedido")));
             if (estado == 2) {
-
+                StringBuilder correos = faPedi.buscarCorreos(Integer.parseInt(request.getParameter("idPedido")));
+                String enviado = "";
                 ArrayList<CarritoDto> ofertas = (ArrayList<CarritoDto>) faPedi.obtenerDetallePedidosCliente(Integer.parseInt(request.getParameter("idPedido")));
                 mensaje = faPedi.cancelarPedido(Integer.parseInt(request.getParameter("idPedido")), ofertas);
+                if (Correo.sendMail("Cancelacion del pedido", "Se le notificacion la cancelacion de un pedido", correos.toString())) {
+                    enviado = "Notificado";
+                }
                 if (mensaje.equals("ok")) {
-                    response.sendRedirect("pages/mispedidos.jsp?msg=<strong>¡El pedido ha sido cancelado! <i class='glyphicon glyphicon-ok'></i></strong> .&tipoAlert=success");
+                    response.sendRedirect("pages/mispedidos.jsp?msg=<strong>¡El pedido ha sido cancelado! " + enviado + " <i class='glyphicon glyphicon-ok'></i></strong> .&tipoAlert=success");
                 } else if (estado == 3 || estado == 4) {
                     response.sendRedirect("pages/mispedidos.jsp?msg=<strong><i class='glyphicon glyphicon-exclamation-sign'></i> ¡El pedido ya se encuentra cancelado!</strong>&tipoAlert=warning");
                 } else if (mensaje.equals("no")) {
@@ -119,6 +123,7 @@ public class ControladorPedido extends HttpServlet {
             }
         }
     }
+
     private boolean enviarCorreo(long documento) {
         FUsuario usuariof = new FUsuario();
         String correo = usuariof.obtenerCorreoPorDocumento(documento);
@@ -165,11 +170,8 @@ public class ControladorPedido extends HttpServlet {
         cuerpo += "<br>El total de su pedido es: " + totalp;
 
         cuerpo += "</center></body></html>";
-        
-        
 
         return Correo.sendMail("Pedido activo", cuerpo, correo);
-        
 
     }
 

@@ -58,7 +58,7 @@
         <script type="text/javascript" src="../js/jquery.dataTables.min.js"></script>
         <script type="text/javascript" src="../js/dataTables.bootstrap.js"></script>
         <script type="text/javascript" src="../js/bootstrap-filestyle.min.js"></script>
-        <title>Cliente - Farmer's Market</title>
+        <title>Administrador - Farmer's Market</title>
         <script type="text/javascript">
             $(document).ready(function () {
                 // Initialize tooltip
@@ -215,6 +215,7 @@
                             <%
                                 ArrayList<UsuarioDto> usuarios = (ArrayList<UsuarioDto>) faUsu.obtenerUsuarios();
                                 String rol = "";
+                                String activar = "";
                                 if (usuarios.isEmpty()) {
                             %>
                             <div class="alert alert-success" role="alert">
@@ -238,12 +239,12 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <%for (UsuarioDto usuario : usuarios) {
-                                            String activar = "";
+                                    <%
+                                    for (UsuarioDto usuario : usuarios) {                                            
                                             if (usuario.getEstado() == 1) {
-                                                activar = "Suspender usuario";
+                                                activar = "Inhabilitar usuario";
                                             } else if (usuario.getEstado() == 3) {
-                                                activar = "Activar usuario";
+                                                activar = "Habilitar usuario";
                                             }
                                             if (usuario.getRol().getIdRol() == 1) {
                                                 rol = "Productor";
@@ -394,7 +395,7 @@
                             <div class="modal-dialog modal-sm">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h4 class="modal-title text-center" id="myModalLabel">¿Está seguro que desea suspender este usuario?</h4>
+                                        <h4 class="modal-title text-center" id="myModalLabel">¿Está seguro que desea <%=activar%>?</h4>
                                     </div>
                                     <form action="../ControladorAdministrador" method="post">
                                         <div id="didUsuario"><input type="hidden" name="idUsuario" id="idUsuario" value="">

@@ -33,7 +33,7 @@ public class ControladorAdministrador extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         FUsuario faUsu = new FUsuario();
         String salida = "";
-        if (request.getParameter("cambiarEstado") != null) {
+        if (request.getParameter("cambiarRol") != null) {
 
             int resultado = faUsu.cambiarRol(Long.parseLong(request.getParameter("idUsuarioCambio")), Integer.parseInt(request.getParameter("idRolCambio")));
             if (resultado == 0) {
@@ -47,7 +47,7 @@ public class ControladorAdministrador extends HttpServlet {
             if (Integer.parseInt(request.getParameter("estado")) == 3) {
                 salida = faUsu.activarUsuario(Long.parseLong(request.getParameter("idUsuario")));
                 if (salida.equals("ok")) {
-                    response.sendRedirect("pages/permisos.jsp?msg=<strong>¡Usuario Activado! <i class='glyphicon glyphicon-ok'></i></strong>&tipoAlert=success");
+                    response.sendRedirect("pages/permisos.jsp?msg=<strong>¡Usuario habilitado! <i class='glyphicon glyphicon-ok'></i></strong>&tipoAlert=success");
                 } else if (salida.equals("no")) {
                     response.sendRedirect("pages/permisos.jsp?msg=<strong><i class='glyphicon glyphicon-exclamation-sign'></i> ¡Algo salió mal!</strong> Por favor intentelo de nuevo.&tipoAlert=warning");
                 } else {
@@ -57,7 +57,7 @@ public class ControladorAdministrador extends HttpServlet {
 
                 salida = faUsu.suspenderUsuario(Long.parseLong(request.getParameter("idUsuario")));
                 if (salida.equals("ok")) {
-                    response.sendRedirect("pages/permisos.jsp?msg=<strong>¡Usuario suspendido! <i class='glyphicon glyphicon-ok'></i></strong>&tipoAlert=success");
+                    response.sendRedirect("pages/permisos.jsp?msg=<strong>¡Usuario inhabilitado! <i class='glyphicon glyphicon-ok'></i></strong>&tipoAlert=success");
                 } else if (salida.equals("no")) {
                     response.sendRedirect("pages/permisos.jsp?msg=<strong><i class='glyphicon glyphicon-exclamation-sign'></i> ¡Algo salió mal!</strong> Por favor intentelo de nuevo.&tipoAlert=warning");
                 } else {

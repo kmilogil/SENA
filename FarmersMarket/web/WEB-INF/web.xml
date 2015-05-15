@@ -32,6 +32,10 @@
         <servlet-name>ControladorCargarInicial</servlet-name>
         <servlet-class>controladoresAdministrador.ControladorCargarInicial</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>ControladorReportes</servlet-name>
+        <servlet-class>controladores.reportes.ControladorReportes</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>ControladorUsuarios</servlet-name>
         <url-pattern>/ControladorUsuarios</url-pattern>
@@ -63,6 +67,10 @@
     <servlet-mapping>
         <servlet-name>ControladorCargarInicial</servlet-name>
         <url-pattern>/ControladorCargarInicial</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ControladorReportes</servlet-name>
+        <url-pattern>/ControladorReportes</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

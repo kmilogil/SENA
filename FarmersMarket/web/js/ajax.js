@@ -316,3 +316,58 @@ function resultadoSuspencion() {
         document.getElementById("didUsuario").innerHTML = xmlHttp.responseText;
     }
 }
+
+var xmlHttp;
+function getHistorialVentas() {
+
+
+    if (window.XMLHttpRequest) {
+        xmlHttp = new XMLHttpRequest();
+    }
+    else if (window.ActiveXObject) {
+        xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
+    } else {
+        alert("El navegador no soporta Ajax!");
+        return;
+    }
+
+    var url = "../ajax/cargaReportes.jsp?tblHistorial=1";
+    xmlHttp.onreadystatechange = resultadoHistorial;
+    xmlHttp.open("GET", url, true);
+    xmlHttp.send(null);
+
+}
+
+function resultadoHistorial() {
+    if (xmlHttp.readyState === 4) {
+        document.getElementById("tablaReporte").innerHTML = xmlHttp.responseText;
+    }
+}
+
+
+var xmlHttp;
+function getVentasCiudad() {
+
+
+    if (window.XMLHttpRequest) {
+        xmlHttp = new XMLHttpRequest();
+    }
+    else if (window.ActiveXObject) {
+        xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
+    } else {
+        alert("El navegador no soporta Ajax!");
+        return;
+    }
+
+    var url = "../ajax/cargaReportes.jsp?tblVentas=1";
+    xmlHttp.onreadystatechange = resultadoCiudad;
+    xmlHttp.open("GET", url, true);
+    xmlHttp.send(null);
+
+}
+
+function resultadoCiudad() {
+    if (xmlHttp.readyState === 4) {
+        document.getElementById("tablaReporte").innerHTML = xmlHttp.responseText;
+    }
+}
