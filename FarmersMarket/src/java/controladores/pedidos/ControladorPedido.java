@@ -13,10 +13,12 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import modulo.pedidos.FPedido;
 import modulo.pedidos.dto.CarritoDto;
 import modulo.pedidos.dto.ProductoCarritoDto;
 import modulo.usuarios.FUsuario;
+import modulo.usuarios.dto.UsuarioDto;
 import utilidades.Correo;
 
 /**
@@ -105,15 +107,40 @@ public class ControladorPedido extends HttpServlet {
             faPedi = new FPedido();
             int estado = faPedi.obtenerEstadoPedido(Integer.parseInt(request.getParameter("idPedido")));
             if (estado == 2) {
-                StringBuilder correos = faPedi.buscarCorreos(Integer.parseInt(request.getParameter("idPedido")));
+                ArrayList<String> correos = (ArrayList<String>) faPedi.buscarCorreos(Integer.parseInt(request.getParameter("idPedido")));
+                StringBuilder correo = new StringBuilder("");
+                for (int i = 0; i < correos.size(); i++) {
+                    correo.append(correos.get(i));
+                    if (correos.size() > i) {
+                        correo.append(", ");
+                    }
+                }
+                String cuerpo = "";
+                HttpSession miSesion = request.getSession(false);
+                UsuarioDto usuario = (UsuarioDto) miSesion.getAttribute("usuarioEntro");
+                cuerpo += "<h3>Estimado Usuario:</h3>";
+                cuerpo += "<p>Le notificamos que uno de sus pedidos a sido cancelado.</p>";
+                cuerpo += "<p>Le proporcionamos la información del usuario en caso de que desee contactarse con el:</p>";
+                cuerpo += "<p>Nombre del cliente: " + usuario.getNombres() + " " + usuario.getApellidos() + " </p>";
+                cuerpo += "<p>Dirección de residencia: " + usuario.getDireccion() + "</p>";
+                cuerpo += "<p>Dirección de correo eletronico: " + usuario.getCorreo() + "</p>";
+                cuerpo += "<p>Ciudad: " + usuario.getCiDto().getNombre() + " en el departamento de " + usuario.getCiDto().getDepartamento().getDepartamento() + "</p>";
+                cuerpo += "<p>Para saber mas sobre los detalles del pedido cancelado por favor ingrese en nuestro sistema y en la sección del historial encontra el pedido que le fue cancelado</p>";
+                cuerpo += "<br>-----------------------------------------------------------------------------------------------------------------";
+                cuerpo += "<p>Por favor no responder a este correo, es de uso exclusivo para notificaciones y solicitudes."
+                        + "<br>No se le dara una respuesta por motivos de administración y seguridad, si tiene algun inconveniente por favor"
+                        + " contacte a nuestros administradores desde nuestro sistema en el siguiente enlace</p>";
+                cuerpo += "<a href='http://localhost:8080/FarmersMarket/index.jsp'>Farmers Market</a>";
+                cuerpo += "<br>-----------------------------------------------------------------------------------------------------------------";
+
                 String enviado = "";
                 ArrayList<CarritoDto> ofertas = (ArrayList<CarritoDto>) faPedi.obtenerDetallePedidosCliente(Integer.parseInt(request.getParameter("idPedido")));
                 mensaje = faPedi.cancelarPedido(Integer.parseInt(request.getParameter("idPedido")), ofertas);
-                if (Correo.sendMail("Cancelacion del pedido", "Se le notificacion la cancelacion de un pedido", correos.toString())) {
-                    enviado = "Notificado";
+                if (Correo.sendMail("Cancelacion del pedido", cuerpo, correo.toString())) {
+                    enviado = " y notificado";
                 }
                 if (mensaje.equals("ok")) {
-                    response.sendRedirect("pages/mispedidos.jsp?msg=<strong>¡El pedido ha sido cancelado! " + enviado + " <i class='glyphicon glyphicon-ok'></i></strong> .&tipoAlert=success");
+                    response.sendRedirect("pages/mispedidos.jsp?msg=<strong>¡El pedido ha sido cancelado" + enviado + " ! <i class='glyphicon glyphicon-ok'></i></strong> .&tipoAlert=success");
                 } else if (estado == 3 || estado == 4) {
                     response.sendRedirect("pages/mispedidos.jsp?msg=<strong><i class='glyphicon glyphicon-exclamation-sign'></i> ¡El pedido ya se encuentra cancelado!</strong>&tipoAlert=warning");
                 } else if (mensaje.equals("no")) {

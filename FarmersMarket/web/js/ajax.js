@@ -316,6 +316,33 @@ function resultadoEliminar() {
 }
 
 var xmlHttp;
+function getCancelarPedido(idPedido) {
+
+
+    if (window.XMLHttpRequest) {
+        xmlHttp = new XMLHttpRequest();
+    }
+    else if (window.ActiveXObject) {
+        xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
+    } else {
+        alert("El navegador no soporta Ajax!");
+        return;
+    }
+
+    var url = "../ajax/eliminarProducto.jsp?idPedido=" + idPedido;
+    xmlHttp.onreadystatechange = resultadoCancelarPedido;
+    xmlHttp.open("GET", url, true);
+    xmlHttp.send(null);
+
+}
+
+function resultadoCancelarPedido() {
+    if (xmlHttp.readyState === 4) {
+        document.getElementById("cancelarPedidomodal").innerHTML = xmlHttp.responseText;
+    }
+}
+
+var xmlHttp;
 function getUsuarioAdmin(idUsuario) {
 
 

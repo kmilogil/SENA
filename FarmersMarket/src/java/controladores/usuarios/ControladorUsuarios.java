@@ -83,11 +83,18 @@ public class ControladorUsuarios extends HttpServlet {
                     String con = Long.toString(usuario.getIdUsuario());
                     String ced = encript.encode(con);
 
-                    String url = "http://localhost:8088/FarmersMarket/index.jsp?id=" + (ced);
+                    String url = "http://localhost:8080/FarmersMarket/index.jsp?id=" + (ced);
                     String mensaje = "<!DOCTYPE html>";
                     mensaje += "<body>";
-                    mensaje += "<p>Que tal usuario por favor ingresa a la siguiente enlace para poder recuperar tu contraseña</p>";
+                    mensaje += "<p>Se nos ha notificado la solicitud de recuperar tu contraseña, por favor ingresa al siguiente enlace y sigue las instrucciones"
+                            + " para poder obtener tu contraseña lo antes posible</p>";
                     mensaje += "<a href=" + url + ">Recuperar contraseña</a>";
+                    mensaje +="<br>-----------------------------------------------------------------------------------------------------------------";
+                    mensaje +="<p>Por favor no responder a este correo, es de uso exclusivo para notificaciones y solicitudes."
+                            + "<br>No se le dara una respuesta por motivos de administración y seguridad, si tiene algun inconveniente por favor"
+                            + " contacte a nuestros administradores desde nuestro sistema en el siguiente enlace</p>";
+                    mensaje +="<a href='http://localhost:8080/FarmersMarket/index.jsp'>Farmers Market</a>";
+                    mensaje +="<br>-----------------------------------------------------------------------------------------------------------------";
                     if (Correo.sendMail("Recuperar Contraseña", mensaje, correo)) {
                         response.sendRedirect("index.jsp?msg=<strong><i class='glyphicon glyphicon-ok'></i> ¡Solicitud enviada!</strong> Por favor revise su correo.&tipoAlert=success");
                     } else {

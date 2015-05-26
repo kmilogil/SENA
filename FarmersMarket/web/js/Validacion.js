@@ -104,7 +104,7 @@ $(document).ready(function() {
         var campoNombres = $('#ruNombres').val();
         if (campoNombres === null || campoNombres === "") {
             document.getElementById('ruNombres').setAttribute('data-toggle', 'tooltip');
-            document.getElementById('ruNombres').setAttribute('data-original-title', 'El campo no puede estar vacio');
+            document.getElementById('ruNombres').setAttribute('data-original-title', 'Ingrese su nombre');
             $(document).ready(function() {
                 // Initialize tooltip
                 $('[data-toggle="tooltip"]').tooltip({
@@ -158,7 +158,7 @@ $(document).ready(function() {
         var campoApellidos = $('#ruApellidos').val();
         if (campoApellidos === null || campoApellidos === "") {
             document.getElementById('ruApellidos').setAttribute('data-toggle', 'tooltip');
-            document.getElementById('ruApellidos').setAttribute('data-original-title', 'El campo no puede estar vacio');
+            document.getElementById('ruApellidos').setAttribute('data-original-title', 'Ingrese su apellido');
             $(document).ready(function() {
                 // Initialize tooltip
                 $('[data-toggle="tooltip"]').tooltip({
@@ -210,7 +210,7 @@ $(document).ready(function() {
         var correo = $('#ruCorreo').val();
         if (correo === null || correo === "") {
             document.getElementById('ruCorreo').setAttribute('data-toggle', 'tooltip');
-            document.getElementById('ruCorreo').setAttribute('data-original-title', 'El campo no puede estar vacio');
+            document.getElementById('ruCorreo').setAttribute('data-original-title', 'Ingrese su correo electronico');
             $(document).ready(function() {
                 // Initialize tooltip
                 $('[data-toggle="tooltip"]').tooltip({
@@ -254,7 +254,7 @@ $(document).ready(function() {
         var correo2 = $('#ruCorreo').val();
         if (correo1 === null || correo1 === "") {
             document.getElementById('ruCorreo2').setAttribute('data-toggle', 'tooltip');
-            document.getElementById('ruCorreo2').setAttribute('data-original-title', 'El campo no puede estar vacio');
+            document.getElementById('ruCorreo2').setAttribute('data-original-title', 'Confirme su correo electronico');
             $(document).ready(function() {
                 // Initialize tooltip
                 $('[data-toggle="tooltip"]').tooltip({
@@ -294,7 +294,7 @@ $(document).ready(function() {
         var direccion = $('#ruDireccion').val();
         if (direccion === null || direccion === "") {
             document.getElementById('ruDireccion').setAttribute('data-toggle', 'tooltip');
-            document.getElementById('ruDireccion').setAttribute('data-original-title', 'El campo no puede estar vacio');
+            document.getElementById('ruDireccion').setAttribute('data-original-title', 'Ingrese su direccion de residencia');
             $(document).ready(function() {
                 // Initialize tooltip
                 $('[data-toggle="tooltip"]').tooltip({

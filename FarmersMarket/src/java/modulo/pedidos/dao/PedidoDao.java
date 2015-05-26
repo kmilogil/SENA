@@ -399,8 +399,8 @@ public class PedidoDao {
 
     }
 
-    public StringBuilder buscarCorreos(int idPedido, Connection unaConexion) {
-        StringBuilder sb = new StringBuilder("");
+    public List buscarCorreos(int idPedido, Connection unaConexion) {
+         ArrayList<String> correos = new ArrayList();
         try {
             pstm = unaConexion.prepareStatement("select distinct concat(uc.nombres, ' ', uc.apellidos) as 'Cliente', concat(up.nombres, ' ', up.apellidos) as 'Productor', up.correo\n"
                     + "from usuarios uc\n"
@@ -413,15 +413,14 @@ public class PedidoDao {
             pstm.setInt(1, idPedido);
             rs = pstm.executeQuery();
             while (rs.next()) {
-                sb.append(rs.getString("correo"));
-                if (rs.next()) {
-                    sb.append(", ");
-                }
+                String correo = rs.getString("correo");
+                correos.add(correo);
             }
         } catch (SQLException ex) {
 
         }
-        return sb;
+        return correos;
     }
+    
 
 }

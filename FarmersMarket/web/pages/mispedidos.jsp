@@ -315,14 +315,13 @@
 
                                     </div>
                                     <div class="panel-footer">
-                                        <h3 class="panel-title">                                            
-                                            <form action="../ControladorPedido" id="formCancelarPedido" method="post">
-                                                <input hidden="true" value="<%=pedido.getIdPedido()%>" name="idPedido">
-                                                <a href="#" data-toggle="modal" data-target="#modalConfirmarCancelar">
-                                                    <i class="fa fa-remove pull-left"></i> <span class="pull-left text-success">Cancelar pedido</span>
-                                                </a>
-                                            </form>
-                                                <!-- link para modal para mostrar novedades -->
+                                        <h3 class="panel-title">                               
+
+                                            <a href="#" onclick="getCancelarPedido(<%=pedido.getIdPedido()%>)" data-toggle="modal" data-target="#modalConfirmarCancelar">
+                                                <i class="fa fa-remove pull-left"></i> <span class="pull-left text-success">Cancelar pedido</span>
+                                            </a>
+
+                                            <!-- link para modal para mostrar novedades -->
                                             <a href="#" data-toggle="modal" data-target="#modalPedidocliente" onclick="getDetalleCliente(<%=pedido.getIdPedido()%>)">
                                                 <i class="fa fa-bar-chart pull-right"> </i> <span class="pull-right text-success">Ver Detalle(s)</span>
                                             </a>                                  
@@ -420,16 +419,8 @@
                         <div>
                             <div class="modal fade bs-example-modal-sm" id="modalConfirmarCancelar" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
                                 <div class="modal-dialog modal-sm">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h4 class="modal-title text-center" id="myModalLabel">¿Está seguro que desea cancelar el pedido?</h4>
-                                        </div>
-                                        <div class="modal-footer">                                            
-                                            <center>
-                                                <button type="button" class="btn btn-success" onclick="enviarFormulario('formCancelarPedido');">Sí</button>
-                                                <button type="button" class="btn btn-danger" data-dismiss="modal">No</button>                                                
-                                            </center>                                            
-                                        </div>                                        
+                                    <div class="modal-content" id="cancelarPedidomodal">
+
                                     </div>
                                 </div>
                             </div>

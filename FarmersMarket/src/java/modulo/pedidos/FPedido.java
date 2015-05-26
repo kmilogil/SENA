@@ -132,7 +132,7 @@ public class FPedido {
     public List obtenerUltimopedido(long idCliente){
         return peDao.obtenerUltimopedido(idCliente, miConexion);
     }
-    public StringBuilder buscarCorreos(int idPedido){
+    public List buscarCorreos(int idPedido){
         return peDao.buscarCorreos(idPedido, miConexion);
     }
             

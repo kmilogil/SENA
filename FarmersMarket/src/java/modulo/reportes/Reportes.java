@@ -50,7 +50,7 @@ public class Reportes {
                     + "					inner join ofertas ofe on pas.idProdAsoc = ofe.idProdAsoc\n"
                     + "					inner join carrito car on ofe.idOferta = car.idOferta\n"
                     + "					inner join pedidos ped on car.idPedido = ped.idPedido\n"
-                    + "					where ped.fechaPedido between '2015/05/11' and '2015/05/20'\n"
+                    + "					where ped.fechaPedido between '2015/05/11' and '2015/05/30'\n"
                     + "					group by idProd) v2\n"
                     + "                    on pr.idProducto = v2.idProd\n"
                     + "group by up.idUsuario, pr.idProducto;");

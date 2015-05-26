@@ -90,9 +90,9 @@
             <thead>
                 <tr>
                     <th>Productor</th>
-                    <th>Producto</th>
-                    <th>Primer Mes</th>
-                    <th>Segundo Mes</th>
+                    <th>Ciudad</th>
+                    <th>Mes</th>
+                    <th>Total Venta</th>
                 </tr>
             </thead>
             <tbody>

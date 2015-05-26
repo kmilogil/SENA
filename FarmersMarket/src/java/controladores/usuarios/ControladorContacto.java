@@ -35,27 +35,36 @@ public class ControladorContacto extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
 
-        if (request.getParameter("contactar") != null) {            
+        if (request.getParameter("contactar") != null) {
             String persona = request.getParameter("mcNombre");
             String correoElectronico = request.getParameter("mcCorreo");
             String texto = request.getParameter("mcMensaje");
 
             String mensaje = "<!DOCTYPE html>";
             mensaje += "<body>";
+            mensaje +="<p>En el siguiente correo podra encontrar la persona que ha enviado su inquitud, queja o reclamo, su correspondiente correo"
+                    + " y la inquitud, queja o reclamo que nos quiere dar a conocer</p>";
             mensaje += "<p class=" + "pull-right" + ">Nombre de la persona:<br><Strong>" + persona + "</Strong></p>";
             mensaje += "<p>Correo de la persona:<br><Strong>" + correoElectronico + "</Strong></p>";
             mensaje += "<p>" + texto + "</p>";
+            mensaje += "<p>Podra dar respuesta al usuario a traves del correo que el proporciona, asegurece de por aclarar todas las inquietudes del usuario"
+                    + "</p>";
+            mensaje += "-----------------------------------------------------------------------------------------------------------------";
+            mensaje += "<p>Por favor no responder a este correo, es de uso exclusivo para notificaciones y solicitudes."
+                    + "<br>No se le dara una respuesta por motivos de administración y seguridad</p>";
+            mensaje += "<a href='http://localhost:8080/FarmersMarket/index.jsp'>Farmers Market</a>";
+            mensaje += "<br>-----------------------------------------------------------------------------------------------------------------";
 
-            if (CorreoContactenos.sendMail("Inquietud cliente", mensaje, "mercadosagricultor@gmail.com")) {                
+            if (CorreoContactenos.sendMail("Inquietud cliente", mensaje, "mercadosagricultor@gmail.com")) {
                 response.sendRedirect("index.jsp?msg=<strong><i class='glyphicon glyphicon-ok'></i> ¡Mensaje enviado!</strong> Por favor este atento a nuestro respuesta.&tipoAlert=success");
-                
+
             } else {
-               
+
                 response.sendRedirect("index.jsp?msg=<strong><i class='glyphicon glyphicon-exclamation-sign'></i> ¡Ha ocurrido algo!</strong> Por favor intentelo de nuevo.&tipoAlert=warning");
             }
 
-        } else if (request.getParameter("contactarAdmin") != null) {            
-            
+        } else if (request.getParameter("contactarAdmin") != null) {
+
             String persona = request.getParameter("usuario");
             String correoElectronico = request.getParameter("correo");
             String texto = request.getParameter("mcMensaje");
@@ -66,6 +75,8 @@ public class ControladorContacto extends HttpServlet {
             mensaje += "<p class=" + "pull-right" + ">Nombre del usuario:<br><Strong>" + persona + "</Strong></p>";
             mensaje += "<p>Correo de la persona:<br><Strong>" + correoElectronico + "</Strong></p>";
             mensaje += "<p>" + texto + "</p>";
+            mensaje += "<p>Podra dar respueta al usuario a traves del correo que el proporciona, asegurece de por aclarar todas las inquietudes del usuario"
+                    + "</p>";
 
             if (CorreoContactenos.sendMail(asunto, mensaje, "mercadosagricultor@gmail.com")) {
                 response.sendRedirect("pages/indexp.jsp?msg=<strong><i class='glyphicon glyphicon-ok'></i> ¡Mensaje enviado!</strong> Por favor este atento a nuestra respuesta.&tipoAlert=success");
