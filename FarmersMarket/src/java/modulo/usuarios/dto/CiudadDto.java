@@ -1,20 +1,19 @@
 package modulo.usuarios.dto;
 
-/** 
- * @author Kennit David Ruz Romero
- * Hora de creación: 11:18 a.m.
- * Fecha: 4 de Marzo de 2015
+/**
+ * @author Kennit David Ruz Romero Hora de creación: 11:18 a.m. Fecha: 4 de
+ * Marzo de 2015
  */
-
 public class CiudadDto {
 
     private int idCiudad = 0;
     private String nombre = "";
     private int idDepartamento = 0;
+    private DepartamentoDto departamento = new DepartamentoDto();
 
     @Override
     public String toString() {
-        return "idCiudad: " + idCiudad + " Nombre: " + nombre + " idDepart: " + idDepartamento;
+        return "CiudadDto{" + "idCiudad=" + idCiudad + ", nombre=" + nombre + ", idDepartamento=" + idDepartamento + ", departamento=" + departamento + '}';
     }
 
     /**
@@ -57,5 +56,19 @@ public class CiudadDto {
      */
     public void setIdDepartamento(int idDepartamento) {
         this.idDepartamento = idDepartamento;
+    }
+
+    /**
+     * @return the departamento
+     */
+    public DepartamentoDto getDepartamento() {
+        return departamento;
+    }
+
+    /**
+     * @param departamento the departamento to set
+     */
+    public void setDepartamento(DepartamentoDto departamento) {
+        this.departamento = departamento;
     }
 }

@@ -163,12 +163,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <!-- Footer (Nota: Escribir el código que permita que esto quede abajo fijo) -->
-                    <ol class="breadcrumb container-fluid">
-                        <em class="text-center">Todos los derechos reservados / 
-                            <a href="http://getbootstrap.com/">Bootstrap</a> / 
-                            <a href="http://fortawesome.github.io/Font-Awesome/">Font-Awesome</a> / 
-                            <a href="http://jquery.com/">JQuery</a>
-                        </em>
+                    <ol class="breadcrumb container-fluid">                        
                         <em class="pull-right">
                             <a href="#" data-toggle="modal" data-target="#modalContactenos">Contactar un Administrador</a>
                         </em>
@@ -279,7 +274,7 @@
 
                                             <div class="form-group has-feedback" id="inpCiudad">
                                                 <label class="control-label" for="ruCiudad">Ciudad:</label>
-                                                <select name="ruCiudad" id="ruCiudad" class="form-control" tabindex="10" onblur="validarCiudad(this)" >
+                                                <select name="ruCiudad" id="ruCiudad" class="form-control" tabindex="10" onblur="validarCiudad(this)">
                                                     <option value="">Seleccione una ciudad</option>
 
                                                 </select>

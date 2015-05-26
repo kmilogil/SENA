@@ -18,14 +18,13 @@
         <%
             FPedido faPedi = new FPedido();
             if (request.getParameter("idpc") != null) {
-                ArrayList<CarritoDto> pedidos = (ArrayList<CarritoDto>) faPedi.obtenerDetallePedidosCliente(Integer.parseInt(request.getParameter("idpc")));
+                ArrayList<CarritoDto> pedidos = (ArrayList<CarritoDto>) faPedi.obtenerHistorialPedidosCliente(Integer.parseInt(request.getParameter("idpc")));                
 
         %>
 
         <table class="table table-striped">
             <thead>
                 <tr>
-                    <th>Productor</th>
                     <th>Producto</th>
                     <th>Unidad</th>
                     <th>Cantidad</th>                                                    
@@ -36,7 +35,6 @@
                 <%                    for (CarritoDto pedido : pedidos) {
                 %> 
                 <tr>
-                    <td><a href="../ControladorUsuarios?idUsuarioConsulta=<%=pedido.getOfDto().getProAso().getUsDto().getIdUsuario()%>"><%=pedido.getOfDto().getProAso().getUsDto().getNombres()%></a></td>
                     <td><%=pedido.getOfDto().getProAso().getProDto().getNombres()%></td>
                     <td><%=pedido.getOfDto().getPreDto().getDescripcion()%></td>
                     <td><%=pedido.getCantidad()%></td>                                                    
@@ -48,7 +46,7 @@
         </table> 
         <%
         } else if (request.getParameter("idpp") != null) {
-            ArrayList<CarritoDto> pedidos = (ArrayList<CarritoDto>) faPedi.obtenerDetallePedidosProductor(Long.parseLong(request.getParameter("idus")),Integer.parseInt(request.getParameter("idpp")));
+            ArrayList<CarritoDto> pedidos = (ArrayList<CarritoDto>) faPedi.obtenerHistorialPedidosProductor(Long.parseLong(request.getParameter("idus")),Integer.parseInt(request.getParameter("idpp")));
 
         %>
         <table class="table table-striped">

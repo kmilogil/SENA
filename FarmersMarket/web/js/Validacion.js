@@ -665,28 +665,6 @@ $(document).ready(function() {
         }
     });
 });
-//$(document).ready(function() {
-//
-//    $("#productoOferta").bind("click", function() {
-//        if ($('#promocion').val().trim() === '') {
-//            document.getElementById('promocion').setAttribute('data-toggle', 'tooltip');
-//            document.getElementById('promocion').setAttribute('data-original-title', 'Debe seleccionar una promocion');
-//            $(document).ready(function() {
-//                $('[data-toggle="tooltip"]').tooltip({
-//                    placement: 'top'
-//                });
-//            });
-//            document.getElementById('ofPromocion').setAttribute('class', 'form-group has-error');
-//            return false;
-//        } else {
-//            document.getElementById('promocion').removeAttribute('data-toggle', 'tooltip');
-//            document.getElementById('promocion').removeAttribute('data-original-title', 'Debe seleccionar una promocion');
-//            document.getElementById('ofPromocion').setAttribute('class', 'form-group has-success');
-//
-//        }
-//
-//    });
-//});
 
 
 $(document).ready(function() {
@@ -1085,6 +1063,70 @@ $(document).ready(function() {
 
 
 
+$(document).ready(function() {
+    $("#actualizarDatos").bind("click", function() {
+        var correo = $('#pffCorreo').val();
+        if (correo === null || correo === "") {
+            document.getElementById('pffCorreo').setAttribute('data-toggle', 'tooltip');
+            document.getElementById('pffCorreo').setAttribute('data-original-title', 'Ingrese su correo electronico');
+            $(document).ready(function() {
+                // Initialize tooltip
+                $('[data-toggle="tooltip"]').tooltip({
+                    placement: 'left'
+                });
+            });
+            document.getElementById('pfCorreo').setAttribute('class', 'form-group has-feedback has-error');
+            document.getElementById('iconFeedbackpfCorreo').setAttribute('class', 'glyphicon glyphicon-remove form-control-feedback');
+            return false;
+        } else if (!(/^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/.test(correo))) {
+            document.getElementById('pffCorreo').setAttribute('data-toggle', 'tooltip');
+            document.getElementById('pffCorreo').setAttribute('data-original-title', 'El correo no está en un formato correcto, correo@ejemplo.com');
+            $(document).ready(function() {
+                // Initialize tooltip
+                $('[data-toggle="tooltip"]').tooltip({
+                    placement: 'left'
+                });
+            });
+            document.getElementById('pfCorreo').setAttribute('class', 'form-group has-feedback has-error');
+            document.getElementById('iconFeedbackpfCorreo').setAttribute('class', 'glyphicon glyphicon-remove form-control-feedback');
+            return false;
+        } else {
+            document.getElementById('pffCorreo').removeAttribute('data-toggle', 'tooltip');
+            document.getElementById('pffCorreo').removeAttribute('data-original-title', 'El correo no está en un formato correcto, correo@ejemplo.com');
+            document.getElementById('pfCorreo').setAttribute('class', 'form-group has-feedback has-success');
+            document.getElementById('iconFeedbackpfCorreo').setAttribute('class', 'glyphicon glyphicon-ok form-control-feedback');
+        }
+    });
+});
+
+
+$(document).ready(function() {
+    $("#actualizarDatos").bind("click", function() {
+        var direccion = $('#pffDireccion').val();
+        if (direccion === null || direccion === "") {
+            document.getElementById('pffDireccion').setAttribute('data-toggle', 'tooltip');
+            document.getElementById('pffDireccion').setAttribute('data-original-title', 'Ingrese su direccion');
+            $(document).ready(function() {
+                // Initialize tooltip
+                $('[data-toggle="tooltip"]').tooltip({
+                    placement: 'left'
+                });
+            });
+            document.getElementById('pfDireccion').setAttribute('class', 'form-group has-feedback has-error');
+            document.getElementById('iconFeedbackpfDireccion').setAttribute('class', 'glyphicon glyphicon-remove form-control-feedback');
+            return false;
+        } else {
+            document.getElementById('pffDireccion').removeAttribute('data-toggle', 'tooltip');
+            document.getElementById('pffDireccion').removeAttribute('data-original-title');
+            document.getElementById('pfDireccion').setAttribute('class', 'form-group has-feedback has-success');
+            document.getElementById('iconFeedbackpfDireccion').setAttribute('class', 'glyphicon glyphicon-ok form-control-feedback');
+        }
+    });
+});
+
+
+
+
 
 
 
@@ -1170,7 +1212,7 @@ function validarNombres(campoNombres) {
     var letras = /^[a-zA-Z-ZáéíóúàèìòùÀÈÌÒÙÁÉÍÓÚñÑüÜñÑ ]+$/;
     if (campoNombres.value === null || campoNombres.value === "") {
         document.getElementById('ruNombres').setAttribute('data-toggle', 'tooltip');
-        document.getElementById('ruNombres').setAttribute('data-original-title', 'El campo no puede estar vacio');
+        document.getElementById('ruNombres').setAttribute('data-original-title', 'Ingrese su nombre');
         $(document).ready(function() {
             // Initialize tooltip
             $('[data-toggle="tooltip"]').tooltip({
@@ -1222,7 +1264,7 @@ function validarApellidos(campoApellidos) {
 
     if (campoApellidos.value === null || campoApellidos.value === "") {
         document.getElementById('ruApellidos').setAttribute('data-toggle', 'tooltip');
-        document.getElementById('ruApellidos').setAttribute('data-original-title', 'El campo no puede estar vacio');
+        document.getElementById('ruApellidos').setAttribute('data-original-title', 'Ingrese su apellido');
         $(document).ready(function() {
             // Initialize tooltip
             $('[data-toggle="tooltip"]').tooltip({
@@ -1271,7 +1313,7 @@ function validarApellidos(campoApellidos) {
 function validarCorreo(correo) {
     if (correo.value === null || correo.value === "") {
         document.getElementById('ruCorreo').setAttribute('data-toggle', 'tooltip');
-        document.getElementById('ruCorreo').setAttribute('data-original-title', 'El campo no puede estar vacio');
+        document.getElementById('ruCorreo').setAttribute('data-original-title', 'Ingrese su correo electronico');
         $(document).ready(function() {
             // Initialize tooltip
             $('[data-toggle="tooltip"]').tooltip({
@@ -1304,11 +1346,65 @@ function validarCorreo(correo) {
     }
 }
 
+function validarCorreoPerfil(correo) {
+    if (correo.value === null || correo.value === "") {
+        document.getElementById('pffCorreo').setAttribute('data-toggle', 'tooltip');
+        document.getElementById('pffCorreo').setAttribute('data-original-title', 'Ingrese su correo electronico');
+        $(document).ready(function() {
+            // Initialize tooltip
+            $('[data-toggle="tooltip"]').tooltip({
+                placement: 'left'
+            });
+        });
+        document.getElementById('pfCorreo').setAttribute('class', 'form-group has-feedback has-error');
+        document.getElementById('iconFeedbackpfCorreo').setAttribute('class', 'glyphicon glyphicon-remove form-control-feedback');
+        return false;
+    } else if (!(/^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/.test(correo.value))) {
+        document.getElementById('pffCorreo').setAttribute('data-toggle', 'tooltip');
+        document.getElementById('pffCorreo').setAttribute('data-original-title', 'El correo no está en un formato correcto, correo@ejemplo.com');
+        $(document).ready(function() {
+            // Initialize tooltip
+            $('[data-toggle="tooltip"]').tooltip({
+                placement: 'left'
+            });
+        });
+        document.getElementById('pfCorreo').setAttribute('class', 'form-group has-feedback has-error');
+        document.getElementById('iconFeedbackpfCorreo').setAttribute('class', 'glyphicon glyphicon-remove form-control-feedback');
+        return false;
+    } else {
+        document.getElementById('pffCorreo').removeAttribute('data-toggle', 'tooltip');
+        document.getElementById('pffCorreo').removeAttribute('data-original-title', 'El correo no está en un formato correcto, correo@ejemplo.com');
+        document.getElementById('pfCorreo').setAttribute('class', 'form-group has-feedback has-success');
+        document.getElementById('iconFeedbackpfCorreo').setAttribute('class', 'glyphicon glyphicon-ok form-control-feedback');
+    }
+}
+
+function validarDireccionPerfil(direccion) {
+    if (direccion.value === null || direccion.value === "") {
+        document.getElementById('pffDireccion').setAttribute('data-toggle', 'tooltip');
+        document.getElementById('pffDireccion').setAttribute('data-original-title', 'Ingrese su direccion');
+        $(document).ready(function() {
+            // Initialize tooltip
+            $('[data-toggle="tooltip"]').tooltip({
+                placement: 'left'
+            });
+        });
+        document.getElementById('pfDireccion').setAttribute('class', 'form-group has-feedback has-error');
+        document.getElementById('iconFeedbackpfDireccion').setAttribute('class', 'glyphicon glyphicon-remove form-control-feedback');
+        return false;
+    } else {
+        document.getElementById('pffDireccion').removeAttribute('data-toggle', 'tooltip');
+        document.getElementById('pffDireccion').removeAttribute('data-original-title');
+        document.getElementById('pfDireccion').setAttribute('class', 'form-group has-feedback has-success');
+        document.getElementById('iconFeedbackpfDireccion').setAttribute('class', 'glyphicon glyphicon-ok form-control-feedback');
+    }
+}
+
 function validarRepetirCorreo(correo1) {
     var correo2 = document.getElementById('ruCorreo');
     if (correo1.value === null || correo1.value === "") {
         document.getElementById('ruCorreo2').setAttribute('data-toggle', 'tooltip');
-        document.getElementById('ruCorreo2').setAttribute('data-original-title', 'El campo no puede estar vacio');
+        document.getElementById('ruCorreo2').setAttribute('data-original-title', 'Confirme su correo electronico');
         $(document).ready(function() {
             // Initialize tooltip
             $('[data-toggle="tooltip"]').tooltip({
@@ -1342,7 +1438,7 @@ function validarRepetirCorreo(correo1) {
 function validarDireccion(direccion) {
     if (direccion.value === null || direccion.value === "") {
         document.getElementById('ruDireccion').setAttribute('data-toggle', 'tooltip');
-        document.getElementById('ruDireccion').setAttribute('data-original-title', 'El campo no puede estar vacio');
+        document.getElementById('ruDireccion').setAttribute('data-original-title', 'Ingrese su direccion');
         $(document).ready(function() {
             // Initialize tooltip
             $('[data-toggle="tooltip"]').tooltip({

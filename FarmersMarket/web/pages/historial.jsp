@@ -33,14 +33,15 @@
         FUsuario faUsu = new FUsuario();
         FPedido faPedi = new FPedido();
         FOferta faOfer = new FOferta();
-        String pagActual = "mispedidos.jsp";
+        String pagActual = "historial.jsp";
 
         // Validación para poder entrar
         boolean poderEntrar = false;
-
+        int rolActual = 0;
         for (RolDto rol : rolesActuales) {
             if (rol.getIdRol() == 1 || rol.getIdRol() == 2) {
                 poderEntrar = true;
+                rolActual = rol.getIdRol();
             }
         }
 
@@ -57,9 +58,9 @@
         <link rel="stylesheet" type="text/css" href="../css/font-awesome.css">
         <script type="text/javascript" src="../js/jquery-1.11.2.js"></script>
         <script type="text/javascript" src="../js/bootstrap.js"></script>
-        <script type="text/javascript" src="../js/ajax.js"></script>
-        <script type="text/javascript" src="../js/Validacion.js"></script>
-        <title>Mis Pedidos - Farmer's Market</title>
+        <script type="text/javascript" src="../js/ajax.js"></script>        
+        <script type="text/javascript" src="../js/Validacion.js"></script>        
+        <title>Historial pedidos- Farmer's Market</title>   
         <script type="text/javascript">
             $(document).ready(function() {
                 // Initialize tooltip
@@ -94,7 +95,8 @@
                         <div class="media-body">
                             <p></p>
                             <h4 class="media-heading">
-                                <%                                    for (RolDto rol : rolesActuales) {
+                                <%
+                                    for (RolDto rol : rolesActuales) {
                                         if (rol.getIdRol() == 1) {
 
 
@@ -188,7 +190,7 @@
                                             <li class="text-center"><a href="ayuda.jsp">Ayuda <i class="fa fa-exclamation-circle"></i></a></li>
                                         </ul>
                                     </li>
-                                </ul>
+                                </ul>                                
                             </div>
                         </div>
                     </nav>
@@ -221,19 +223,21 @@
                             <div class="col-md-9">
                                 <!-- Titutlo -->
                                 <div class="page-header">
-                                    <h2 class="text-center">Mis Pedidos</h2>
+                                    <h2 class="text-center">Historial de pedidos</h2>
                                 </div> 
                                 <%
                                     for (RolDto rol : rolesActuales) {
                                         if (rol.getIdRol() == 1) {
 
-                                            ArrayList<PedidoDto> pedidos = (ArrayList<PedidoDto>) faPedi.obtenerPedidosProductor(actualUsuario.getIdUsuario());
+                                            ArrayList<PedidoDto> pedidos = (ArrayList<PedidoDto>) faPedi.obtenerHistorialProductor(actualUsuario.getIdUsuario());
                                             if (pedidos.size() != 0) {
                                                 for (PedidoDto pedido : pedidos) {
 
                                                     String estado = "";
-                                                    if (pedido.getEstadoPedido() == 2) {
-                                                        estado = "Activo";
+                                                    if (pedido.getEstadoPedido() == 3) {
+                                                        estado = "Finalizado";
+                                                    } else if (pedido.getEstadoPedido() == 4) {
+                                                        estado = "Cancelado";
                                                     }
 
                                 %>
@@ -248,7 +252,7 @@
                                     <div class="panel-body">
 
                                         <span class="pull-left"><span class="lead">Fecha Entrega: </span><%=pedido.getFechaEntrega()%></span>
-                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                        &nbsp;&nbsp;&nbsp;&nbsp;
                                         <span class="text-center"><span class="lead">Pago total: </span><%=pedido.getTotal()%> $</span>
                                         <span class="lead text-center pull-right"><%=estado%></span>                                           
                                     </div>
@@ -259,7 +263,7 @@
 
 
                                             <!-- link para modal para mostrar novedades -->
-                                            <a href="#" data-toggle="modal" data-target="#modalPedidoProductor" onclick="getDetalleProductor(<%=pedido.getIdPedido()%>,<%=actualUsuario.getIdUsuario()%>)">
+                                            <a href="#" data-toggle="modal" data-target="#modalPedidoProductor" onclick="getHistorialProductor(<%=pedido.getIdPedido()%>,<%=actualUsuario.getIdUsuario()%>)">
                                                 <i class="fa fa-bar-chart pull-left"> </i> <span class="pull-left text-success">Ver Detalle(s)</span>
                                             </a>                                                                                        
                                             <!-- Fin de novedades -->
@@ -274,7 +278,7 @@
                                     <div class="alert alert-info text-center" id="alert">
                                         <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                         <p>
-                                            <strong>No le han solicitado ningun pedido</strong>
+                                            <strong>No hay ningun historial de sus pedidos</strong>
                                         </p>
                                     </div>
                                 </div>
@@ -285,14 +289,12 @@
                                 %>
 
                                 <%
-                                    ArrayList<PedidoDto> pedidos = (ArrayList<PedidoDto>) faPedi.obtenerPedidosCliente(actualUsuario.getIdUsuario());
+                                    ArrayList<PedidoDto> pedidos = (ArrayList<PedidoDto>) faPedi.obtenerHistorialCliente(actualUsuario.getIdUsuario());
                                     if (pedidos.size() != 0) {
                                         for (PedidoDto pedido : pedidos) {
 
                                             String estado = "";
-                                            if (pedido.getEstadoPedido() == 2) {
-                                                estado = "Activo";
-                                            } else if (pedido.getEstadoPedido() == 3) {
+                                            if (pedido.getEstadoPedido() == 3) {
                                                 estado = "Finalizado";
                                             } else if (pedido.getEstadoPedido() == 4) {
                                                 estado = "Cancelado";
@@ -315,17 +317,13 @@
 
                                     </div>
                                     <div class="panel-footer">
-                                        <h3 class="panel-title">                                            
-                                            <form action="../ControladorPedido" id="formCancelarPedido" method="post">
-                                                <input hidden="true" value="<%=pedido.getIdPedido()%>" name="idPedido">
-                                                <a href="#" data-toggle="modal" data-target="#modalConfirmarCancelar">
-                                                    <i class="fa fa-remove pull-left"></i> <span class="pull-left text-success">Cancelar pedido</span>
-                                                </a>
-                                            </form>
-                                                <!-- link para modal para mostrar novedades -->
-                                            <a href="#" data-toggle="modal" data-target="#modalPedidocliente" onclick="getDetalleCliente(<%=pedido.getIdPedido()%>)">
-                                                <i class="fa fa-bar-chart pull-right"> </i> <span class="pull-right text-success">Ver Detalle(s)</span>
-                                            </a>                                  
+                                        <h3 class="panel-title">                                                
+
+                                            <!-- link para modal para mostrar novedades -->
+                                            <a href="#" data-toggle="modal" data-target="#modalPedidocliente" onclick="getHistorialCliente(<%=pedido.getIdPedido()%>)">
+                                                <i class="fa fa-bar-chart pull-left"> </i> <span class="pull-left text-success">Ver Detalle(s)</span>
+                                            </a>                                                                                        
+
                                             &nbsp;
                                         </h3>
                                     </div>
@@ -338,7 +336,7 @@
                                     <div class="alert alert-info text-center" id="alert">
                                         <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                         <p>
-                                            <strong>No tiene ningun pedido</strong>
+                                            <strong>No hay ningun historial de sus pedidos</strong>
                                         </p>
                                     </div>
                                 </div>
@@ -415,25 +413,8 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- Fin de Cambiar Contraseña --> 
-                        <!-- Confirmacion cancelar pedido-->
-                        <div>
-                            <div class="modal fade bs-example-modal-sm" id="modalConfirmarCancelar" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
-                                <div class="modal-dialog modal-sm">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h4 class="modal-title text-center" id="myModalLabel">¿Está seguro que desea cancelar el pedido?</h4>
-                                        </div>
-                                        <div class="modal-footer">                                            
-                                            <center>
-                                                <button type="button" class="btn btn-success" onclick="enviarFormulario('formCancelarPedido');">Sí</button>
-                                                <button type="button" class="btn btn-danger" data-dismiss="modal">No</button>                                                
-                                            </center>                                            
-                                        </div>                                        
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <!-- Fin de Cambiar Contraseña -->                        
+
                         <!-- Formulario de Contáctenos -->
                         <div>
                             <div class="modal fade" id="modalContactenos" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -480,7 +461,7 @@
                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                         <h3 class="modal-title text-center">Detalle del pedido</h3>
                                     </div>
-                                    <div class="modal-body" id="tablaDetalleCliente">
+                                    <div class="modal-body" id="tablaHistorialCliente">
 
                                     </div>
                                     <div class="modal-footer">
@@ -499,7 +480,7 @@
                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                         <h3 class="modal-title text-center">Detalle del pedido</h3>
                                     </div>
-                                    <div class="modal-body" id="tablaDetalleProductor">
+                                    <div class="modal-body" id="tablaHistorialProductor">
 
                                     </div>
                                     <div class="modal-footer">

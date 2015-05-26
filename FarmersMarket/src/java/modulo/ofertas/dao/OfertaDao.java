@@ -34,7 +34,7 @@ public class OfertaDao {
         ArrayList<OfertaDto> ofertas = new ArrayList();
         StringBuilder sb = new StringBuilder();
         try {
-            sb.append("select o.idOferta as oferta, concat(u.nombres, ' ',u.apellidos) as productor, o.precioVenta as precio, o.fechaFin as vence \n"
+            sb.append("select o.idOferta as oferta, concat(u.nombres, ' ',u.apellidos) as productor, u.idUsuario,  o.precioVenta as precio, o.fechaFin as vence \n"
                     + ", i.cantidad as cantidad, pre.descripcion as presentacion, p.nombres as producto\n"
                     + "from ofertas as o \n"
                     + "join inventario as i on i.idOferta = o.idOferta\n"
@@ -61,6 +61,7 @@ public class OfertaDao {
                 OfertaDto oferta = new OfertaDto();
                 oferta.setIdOferta(rs.getInt("oferta"));
                 oferta.getProAso().getUsDto().setNombres(rs.getString("productor"));
+                oferta.getProAso().getUsDto().setIdUsuario(rs.getLong("idUsuario"));
                 oferta.getProAso().getProDto().setNombres(rs.getString("producto"));
                 oferta.getInDto().setCantidad(rs.getInt("cantidad"));
                 oferta.setPrecioVenta(rs.getLong("precio"));

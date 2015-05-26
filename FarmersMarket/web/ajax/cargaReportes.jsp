@@ -23,9 +23,21 @@
                 ArrayList<HistoricoVentas> historico = (ArrayList<HistoricoVentas>) reporte.historicoVentas();
                 sesion.removeAttribute("ventas");
                 sesion.setAttribute("historico", historico);
-
+                if (historico.isEmpty()) {
         %>
-        <h2 class="text-center">Historico de ventas</h2> <a href="../pages/ReporteHistorico.jsp" class="pull-right">Exportar a pdf</a>
+        <div class="col-md-12">
+            <div class="alert alert-info text-center">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <p>
+                    <strong>No se encuentran ningun venta por el momento</strong>
+
+                </p>
+            </div>
+        </div>
+        <%
+        } else {
+        %>
+        <h2 class="text-center">Historico de ventas</h2> <a href="../ControladorReportes" class="pull-right">Exportar a pdf</a>
         <table class="table table-hover" id="tblReport">
             <thead>
                 <tr>
@@ -52,15 +64,28 @@
             </tbody>
         </table> 
 
-        <%                } else if (request.getParameter("tblVentas") != null) {
-                HttpSession sesion = request.getSession(true);
-                Reportes reporte = new Reportes();
-                ArrayList<VentaCiudad> ventas = (ArrayList<VentaCiudad>) reporte.ventaCiudad();
-                sesion.removeAttribute("historico");
-                sesion.setAttribute("ventas", ventas);
-                
+        <%
+            }
+        } else if (request.getParameter("tblVentas") != null) {
+            HttpSession sesion = request.getSession(true);
+            Reportes reporte = new Reportes();
+            ArrayList<VentaCiudad> ventas = (ArrayList<VentaCiudad>) reporte.ventaCiudad();
+            sesion.removeAttribute("historico");
+            sesion.setAttribute("ventas", ventas);
+            if (ventas.isEmpty()) {
         %>
-        <h2 class="text-center">Ventas por ciudad</h2> <a href="../pages/ReporteVentasCiudad.jsp" class="pull-right">Exportar a pdf</a>
+        <div class="col-md-12">
+            <div class="alert alert-info text-center">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <p>
+                    <strong>No se encuentran ningun venta por el momento</strong>
+                </p>
+            </div>
+        </div>
+        <%
+        } else {
+        %>
+        <h2 class="text-center">Ventas por ciudad</h2> <a href="../ControladorReportes" class="pull-right">Exportar a pdf</a>
         <table class="table table-hover" id="tblReport">
             <thead>
                 <tr>
@@ -87,6 +112,7 @@
             </tbody>
         </table>
         <%                }
+            }
 
         %>
     </body>

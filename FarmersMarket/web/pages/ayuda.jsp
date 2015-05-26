@@ -4,6 +4,7 @@
     Author     : kennross
 --%>
 
+<%@page import="modulo.usuarios.dto.DepartamentoDto"%>
 <%@page import="modulo.ofertas.FOferta"%>
 <%@page import="modulo.pedidos.dto.PedidoDto"%>
 <%@page import="modulo.pedidos.FPedido"%>
@@ -33,13 +34,16 @@
         FUsuario faUsu = new FUsuario();
         FPedido faPedi = new FPedido();
         FOferta faOfer = new FOferta();
-        String pagActual = "mispedidos.jsp";
+        String pagActual = "indexp.jsp";
 
         // Validación para poder entrar
         boolean poderEntrar = false;
 
         for (RolDto rol : rolesActuales) {
-            if (rol.getIdRol() == 1 || rol.getIdRol() == 2) {
+            if (rol.getIdRol() == 1 || rol.getIdRol() == 2 || rol.getIdRol() == 3) {
+                if (rol.getIdRol() == 3) {
+                    pagActual = "indexadmin.jsp";
+                }
                 poderEntrar = true;
             }
         }
@@ -59,6 +63,7 @@
         <script type="text/javascript" src="../js/bootstrap.js"></script>
         <script type="text/javascript" src="../js/ajax.js"></script>
         <script type="text/javascript" src="../js/Validacion.js"></script>
+        <script type="text/javascript" src="../js/validacionesAjax.js"></script>
         <title>Mis Pedidos - Farmer's Market</title>
         <script type="text/javascript">
             $(document).ready(function() {
@@ -94,7 +99,8 @@
                         <div class="media-body">
                             <p></p>
                             <h4 class="media-heading">
-                                <%                                    for (RolDto rol : rolesActuales) {
+                                <%
+                                    for (RolDto rol : rolesActuales) {
                                         if (rol.getIdRol() == 1) {
 
 
@@ -185,10 +191,11 @@
                                             <li class="divider"></li>
                                             <li class="text-center"><a href="#" data-toggle="modal" data-target="#modalCambiarClave">Cambiar Contraseña</a></li>
                                             <li class="divider"></li>
-                                            <li class="text-center"><a href="ayuda.jsp">Ayuda <i class="fa fa-exclamation-circle"></i></a></li>
+                                            <li class="text-center"><a href="#">Ayuda <i class="fa fa-exclamation-circle"></i></a></li>
                                         </ul>
                                     </li>
-                                </ul>
+                                </ul>                              
+
                             </div>
                         </div>
                     </nav>
@@ -197,7 +204,7 @@
                     <!-- Miga de pan -->
                     <ol class="breadcrumb">
                         <li><a href="indexp.jsp">Inicio</a></li>
-                        <li class="active"><a href="mispedidos.jsp">Mis pedidos</a></li>                    
+                        <li class="active"><a href="ayuda.jsp">Ayuda</a></li>                    
                     </ol>
                     <!-- Fin de miga de pan -->
 
@@ -217,142 +224,72 @@
 
                     <!-- Contenedor de contenido especifico -->
                     <div class="container-fluid">
+                        <legend class="text-center">Preguntas frecuentes</legend> 
                         <div class="row">
-                            <div class="col-md-9">
-                                <!-- Titutlo -->
-                                <div class="page-header">
-                                    <h2 class="text-center">Mis Pedidos</h2>
-                                </div> 
-                                <%
-                                    for (RolDto rol : rolesActuales) {
-                                        if (rol.getIdRol() == 1) {
 
-                                            ArrayList<PedidoDto> pedidos = (ArrayList<PedidoDto>) faPedi.obtenerPedidosProductor(actualUsuario.getIdUsuario());
-                                            if (pedidos.size() != 0) {
-                                                for (PedidoDto pedido : pedidos) {
-
-                                                    String estado = "";
-                                                    if (pedido.getEstadoPedido() == 2) {
-                                                        estado = "Activo";
-                                                    }
-
-                                %>
-
-                                <!-- Fin de formato de un pedido -->
-                                <div class="panel panel-success">
-                                    <div class="panel-heading">
-                                        <h2 class="panel-title">
-                                            Por <em><strong><a href="../ControladorUsuarios?idUsuarioConsulta=<%=pedido.getUsDto().getIdUsuario()%>"><%=pedido.getUsDto().getNombres()%></a></strong></em>                                            
-                                        </h2>
-                                    </div>
-                                    <div class="panel-body">
-
-                                        <span class="pull-left"><span class="lead">Fecha Entrega: </span><%=pedido.getFechaEntrega()%></span>
-                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                        <span class="text-center"><span class="lead">Pago total: </span><%=pedido.getTotal()%> $</span>
-                                        <span class="lead text-center pull-right"><%=estado%></span>                                           
-                                    </div>
-                                    <div class="panel-footer">
-                                        <h3 class="panel-title">
-                                            <!-- Novedades -->
-                                            <!-- link para modal para agregar novedad -->
-
-
-                                            <!-- link para modal para mostrar novedades -->
-                                            <a href="#" data-toggle="modal" data-target="#modalPedidoProductor" onclick="getDetalleProductor(<%=pedido.getIdPedido()%>,<%=actualUsuario.getIdUsuario()%>)">
-                                                <i class="fa fa-bar-chart pull-left"> </i> <span class="pull-left text-success">Ver Detalle(s)</span>
-                                            </a>                                                                                        
-                                            <!-- Fin de novedades -->
-                                            &nbsp;
-                                        </h3>
-                                    </div>
-                                </div>  
-                                <%              }
-                                } else {
-                                %>
-                                <div class="col-md-12">
-                                    <div class="alert alert-info text-center" id="alert">
-                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                        <p>
-                                            <strong>No le han solicitado ningun pedido</strong>
-                                        </p>
-                                    </div>
-                                </div>
-                                <%
-                                    }
-
-                                } else if (rol.getIdRol() == 2) {
-                                %>
-
-                                <%
-                                    ArrayList<PedidoDto> pedidos = (ArrayList<PedidoDto>) faPedi.obtenerPedidosCliente(actualUsuario.getIdUsuario());
-                                    if (pedidos.size() != 0) {
-                                        for (PedidoDto pedido : pedidos) {
-
-                                            String estado = "";
-                                            if (pedido.getEstadoPedido() == 2) {
-                                                estado = "Activo";
-                                            } else if (pedido.getEstadoPedido() == 3) {
-                                                estado = "Finalizado";
-                                            } else if (pedido.getEstadoPedido() == 4) {
-                                                estado = "Cancelado";
-                                            }
-                                %>
-                                <!-- Fin de formato de un pedido -->
-                                <div class="panel panel-success">
-                                    <div class="panel-heading">
-                                        <h2 class="panel-title">
-                                            Por <em><strong><%=actualUsuario.getNombres() + " " + actualUsuario.getApellidos()%></strong></em>                                            
-                                        </h2>
-                                    </div>
-                                    <div class="panel-body">
-
-                                        <span class="pull-left"><span class="lead">Fecha Entrega: </span><%=pedido.getFechaEntrega()%></span>
-                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                        <span class="text-center"><span class="lead">Pago total: </span><%=pedido.getTotal()%> $</span>
-
-                                        <span class="lead text-center pull-right"><%=estado%></span>
-
-                                    </div>
-                                    <div class="panel-footer">
-                                        <h3 class="panel-title">                                            
-                                            <form action="../ControladorPedido" id="formCancelarPedido" method="post">
-                                                <input hidden="true" value="<%=pedido.getIdPedido()%>" name="idPedido">
-                                                <a href="#" data-toggle="modal" data-target="#modalConfirmarCancelar">
-                                                    <i class="fa fa-remove pull-left"></i> <span class="pull-left text-success">Cancelar pedido</span>
-                                                </a>
-                                            </form>
-                                                <!-- link para modal para mostrar novedades -->
-                                            <a href="#" data-toggle="modal" data-target="#modalPedidocliente" onclick="getDetalleCliente(<%=pedido.getIdPedido()%>)">
-                                                <i class="fa fa-bar-chart pull-right"> </i> <span class="pull-right text-success">Ver Detalle(s)</span>
-                                            </a>                                  
-                                            &nbsp;
-                                        </h3>
-                                    </div>
-                                </div>
-                                <%
-                                    }
-                                } else {
-                                %>
-                                <div class="col-md-12">
-                                    <div class="alert alert-info text-center" id="alert">
-                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                        <p>
-                                            <strong>No tiene ningun pedido</strong>
-                                        </p>
-                                    </div>
-                                </div>
-                                <%
-                                            }
-                                        }
-                                    }
-                                %>
-                            </div>
-                            <!-- Publicidad -->
                             <div class="col-md-3">
-                                <img src="../img/bann.jpg" alt="Publicidad de frutas">                                
+                                <div class="container-fluid">
+                                    <img src="../img/ayudaoferta.jpg" class="img-circle " style="max-width: 100%;">
+                                </div>
                             </div>
-                            <!-- Fin de publicidad -->
+                            <div class="col-md-9">
+                                <h2>¿Como ofertar mis productos?</h2>
+                                <p>Asegurese de haber asociados unos productos a su usuario, esto lo puede verificar en la sección de mis productos
+                                cada uno de los productos en esta sección cuenta con una opcion de oferta y otra de eliminacion si por alguna razon desea eliminarlo
+                                en la opcion de oferta, encontrara lo que debe contener su oferta para poder ser publicada en el sistema.
+                                Ingrese el precio al cual vendera su producto, seleccion la presentacion a la cual vendera sus productos, tenga en cuenta que los productos
+                                seran vendidos segun la presentacion, segun la presentacion se ira descontando de su inventario una vez realize la oferta del producto.</p>
+                            </div>                              
+                        </div><br>
+                        <div class="row">
+
+                            <div class="col-md-3">
+                                <div class="container-fluid">
+                                    <img src="../img/ayudapedido.jpg" class="img-rounded" style="max-width: 100%;">
+                                </div>
+                            </div>
+                            <div class="col-md-9">
+                                <h2>¿Como realizo la compra de productos?</h2>
+                                <p>Usted podra comprar los productos que usted desea el cual se encuentren en la sección de ofertas
+                                Cada una de las ofertas contiene un producto a vender, usted podra seleccionar uno de estos y realizar la cantidad
+                                que uste desea pedir del producto.
+                                Tenga en cuenta que usted solo podra realizar 5 pedidos el cual se encuentren activos, usted puede revizar el estdo de sus pedidos
+                                en mis pedidos y en el historial de pedidos.
+                                Una vez usted halla agregado productos podra verlos en la seccion de cotización, esta seccion le permite hacer un balance de costos
+                                permitiendo reducir la cantidad que usted halla indicado de un producto especifico, o podra eliminar el producto de la cotizacion
+                                Si esta a gusto con el pedido que va a realizar, puede proceder a realizar el pedido, el cual se notificara a los productos para poder hacer la debida
+                                entrega de sus productos en un tiempo limite de 8 días.
+                                </p>
+                            </div>                              
+                        </div><br>
+                        <div class="row">
+
+                            <div class="col-md-3">
+                                <div class="container-fluid">
+                                    <img src="../img/ayudapedido1.jpg" class="img-rounded" style="max-width: 100%;">
+                                </div>
+                            </div>
+                            <div class="col-md-9">
+                                <h2>¿Como realizo el pago del pedido que he realizado?</h2>
+                                <p>Farmers market no maneja los pagos online, por lo cual usted podra realizar el pago de sus productos
+                                una vez se le haga la entrega de los mismos por parte del producto,recuerde que el producto tiene un limite maximo
+                                de 8 días para hacer la entrega de los productos que se le han pedido tras las primeras 24 horas de haber realizado el pedido
+                                En caso de algun inconveniente puede contactar un administrador para recivir mayor informacion hacer de su pedido</p>
+                            </div>                              
+                        </div><br>
+                        <div class="row">
+
+                            <div class="col-md-3">
+                                <div class="container-fluid">
+                                    <img src="../img/ayudasoporte.jpg" class="img-circle " style="max-width: 100%;">
+                                </div>
+                            </div>
+                            <div class="col-md-9">
+                                <h2>Contactenos</h2>
+                                <p>En caso de algun inconveniente o duda que no logre resolver en esta sección por favor contacte a alguno de nuestros administrador
+                                podra contactarlo a traves del enlace que se encuentra la parte inferior derecha de la pantalla, por favor describa detalladamente cual 
+                                fue su inconveniente y este atento a nuestra respuesta en su correo electronico.</p>
+                            </div>                              
                         </div>
                     </div>
                     <!-- Fin de contenedor de contenido especifico -->
@@ -415,25 +352,8 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- Fin de Cambiar Contraseña --> 
-                        <!-- Confirmacion cancelar pedido-->
-                        <div>
-                            <div class="modal fade bs-example-modal-sm" id="modalConfirmarCancelar" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
-                                <div class="modal-dialog modal-sm">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h4 class="modal-title text-center" id="myModalLabel">¿Está seguro que desea cancelar el pedido?</h4>
-                                        </div>
-                                        <div class="modal-footer">                                            
-                                            <center>
-                                                <button type="button" class="btn btn-success" onclick="enviarFormulario('formCancelarPedido');">Sí</button>
-                                                <button type="button" class="btn btn-danger" data-dismiss="modal">No</button>                                                
-                                            </center>                                            
-                                        </div>                                        
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <!-- Fin de Cambiar Contraseña -->                        
+
                         <!-- Formulario de Contáctenos -->
                         <div>
                             <div class="modal fade" id="modalContactenos" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">

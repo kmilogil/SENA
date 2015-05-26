@@ -24,7 +24,7 @@ public class ProductoDao {
         ArrayList<ProductoDto> todosProductos = null;
         sqlTemp = "select p.idProducto, p.nombres as 'Producto', c.descripcion as 'Categoria', p.imagen as imagen from productos p\n"
                 + "join categorias c on c.idCategoria = p.idCategoria\n"
-                + "where p.idProducto not in(select idProducto from productoAsociado where idUsuario = ? and estado = 1);";
+                + "where p.idProducto not in(select idProducto from productoasociado where idUsuario = ? and estado = 1);";
         try {
             pstm = unaConexion.prepareStatement(sqlTemp);
             pstm.setLong(1, idUsuario);

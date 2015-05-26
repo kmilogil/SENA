@@ -85,17 +85,33 @@ public class FPedido {
     public List obtenerPedidosCliente(long idCliente) {
         return peDao.obtenerPedidosCliente(idCliente, miConexion);
     }
+    
+    public List obtenerHistorialCliente(long idCliente) {
+        return peDao.obtenerHistorialCliente(idCliente, miConexion);
+    }
 
     public List obtenerDetallePedidosCliente(int idPedido) {
         return peDao.obtenerDetallePedidosCliente(idPedido, miConexion);
+    }
+    
+    public List obtenerHistorialPedidosCliente(int idPedido) {
+        return peDao.obtenerHistorialPedidosCliente(idPedido, miConexion);
     }
 
     public List obtenerPedidosProductor(long idProductor) {
         return peDao.obtenerPedidosProductor(idProductor, miConexion);
     }
+    
+    public List obtenerHistorialProductor(long idProductor) {
+        return peDao.obtenerHistorialProductor(idProductor, miConexion);
+    }
 
     public List obtenerDetallePedidosProductor(long idUsuario, int idPedido) {
         return peDao.obtenerDetallePedidosProductor(idUsuario, idPedido, miConexion);
+    }
+    
+    public List obtenerHistorialPedidosProductor(long idUsuario, int idPedido) {
+        return peDao.obtenerHistorialPedidosProductor(idUsuario, idPedido, miConexion);
     }
 
     public String cancelarPedido(int idPedido, ArrayList<CarritoDto> a) {

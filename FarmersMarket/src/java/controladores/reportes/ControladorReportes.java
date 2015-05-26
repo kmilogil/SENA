@@ -46,12 +46,12 @@ public class ControladorReportes extends HttpServlet {
         response.setContentType("application/pdf");
         HttpSession sesion = request.getSession(false);
         if (sesion.getAttribute("historico") != null) {
-
+            response.setHeader("Content-Disposition", "attachment; filename=\"Reporte historico de ventas.pdf\"");
             ServletOutputStream out = response.getOutputStream();
             ArrayList<HistoricoVentas> reportes = (ArrayList<HistoricoVentas>) sesion.getAttribute("historico");
 
             try {
-                JasperReport reporte = (JasperReport) JRLoader.loadObject(getServletContext().getRealPath("reportes/HistoricoVentas.jasper"));
+                JasperReport reporte = (JasperReport) JRLoader.loadObject(getServletContext().getRealPath("WEB-INF/reportes/HistoricoVentas.jasper"));
                 JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, null, new JRBeanCollectionDataSource(reportes));
 
                 JRExporter exporter = new JRPdfExporter();
@@ -64,12 +64,12 @@ public class ControladorReportes extends HttpServlet {
 
             }
         } else if (sesion.getAttribute("ventas") != null) {
-
+            response.setHeader("Content-Disposition", "attachment; filename=\"Reporte ventas por ciudad.pdf\"");
             ServletOutputStream out = response.getOutputStream();
             ArrayList<HistoricoVentas> reportes = (ArrayList<HistoricoVentas>) sesion.getAttribute("ventas");
 
             try {
-                JasperReport reporte = (JasperReport) JRLoader.loadObject(getServletContext().getRealPath("reportes/VentaCiudad.jasper"));
+                JasperReport reporte = (JasperReport) JRLoader.loadObject(getServletContext().getRealPath("WEB-INF/reportes/VentaCiudad.jasper"));
                 JasperPrint jasperPrint = JasperFillManager.fillReport(reporte, null, new JRBeanCollectionDataSource(reportes));
 
                 JRExporter exporter = new JRPdfExporter();

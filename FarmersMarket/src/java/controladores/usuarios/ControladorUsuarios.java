@@ -37,7 +37,7 @@ public class ControladorUsuarios extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-         request.setCharacterEncoding("UTF-8");
+        request.setCharacterEncoding("UTF-8");
         FUsuario faUsu = new FUsuario();
         UsuarioDto usuario;
         Encriptar encript;
@@ -134,9 +134,9 @@ public class ControladorUsuarios extends HttpServlet {
                 salida = faUsu.cambiarContrasena(request.getParameter("ccClaveNueva"), Long.parseLong(request.getParameter("ccDocumento")));
                 if (salida.equals("ok")) {
                     if (admin) {
-                        response.sendRedirect("pages/indexadmin.jsp?msg=<strong><i class='glyphicon glyphicon-ok'></i> ¡Su contraseña a sido cambiada!</strong>&tipoAlert=success");
+                        response.sendRedirect("pages/indexadmin.jsp?msg=<strong><i class='glyphicon glyphicon-ok'></i> ¡Su contraseña a sido modificada!</strong>&tipoAlert=success");
                     } else {
-                        response.sendRedirect("pages/indexp.jsp?msg=<strong><i class='glyphicon glyphicon-ok'></i> ¡Su contraseña a sido cambiada!</strong>&tipoAlert=success");
+                        response.sendRedirect("pages/indexp.jsp?msg=<strong><i class='glyphicon glyphicon-ok'></i> ¡Su contraseña a sido modificada!</strong>&tipoAlert=success");
                     }
                 } else if (salida.equals("okno")) {
                     response.sendRedirect("pages/indexp.jsp?msg=<strong><i class='glyphicon glyphicon-exclamation-sign'></i> ¡Ha ocurrido algo!</strong> Vuelva a intentarlo.&tipoAlert=warning");
@@ -149,21 +149,43 @@ public class ControladorUsuarios extends HttpServlet {
                     response.sendRedirect("pages/indexp.jsp?msg=<strong><i class='glyphicon glyphicon-exclamation-sign'></i> ¡La contraseña no es correcta!</strong> Vuelva a intentarlo.&tipoAlert=warning");
                 }
             }
+        } else if (request.getParameter("idUsuarioConsulta") != null) {
+
+            UsuarioDto informacion = faUsu.obtenerUsuarioPorDocumento(Long.parseLong(request.getParameter("idUsuarioConsulta")));
+            HttpSession miSesion = request.getSession(true);
+            miSesion.setAttribute("infUsuario", informacion);
+            response.sendRedirect("pages/informacionusuario.jsp");
+        } else if (request.getParameter("actualizarDatos") != null) {
+            String correo = faUsu.correoRegistrado(request.getParameter("pffCorreo"), Long.parseLong(request.getParameter("auDocumento")));
+            if (correo.equals("")) {
+                String mensaje = faUsu.actualizarDatos(request.getParameter("pffDireccion"), request.getParameter("pffCorreo"), Long.parseLong(request.getParameter("auDocumento")));
+                if (mensaje.equals("ok")) {
+                    response.sendRedirect("pages/perfil.jsp?msg=<strong><i class='glyphicon glyphicon-ok'></i> ¡Sus datos han sido modificados!</strong>&tipoAlert=success");
+                    HttpSession miSesion = request.getSession(false);
+                    UsuarioDto datosPersona = faUsu.obtenerUsuarioPorDocumento(Long.parseLong(request.getParameter("auDocumento")));
+                    miSesion.setAttribute("usuarioEntro", datosPersona);
+                } else {
+                    response.sendRedirect("pages/perfil.jsp?msg=<strong><i class='glyphicon glyphicon-exclamation-sign'></i> ¡No se logro actualizar sus datos!</strong> Vuelva a intentarlo.&tipoAlert=warning");
+                }
+            } else {
+                response.sendRedirect("pages/perfil.jsp?msg=<strong><i class='glyphicon glyphicon-exclamation-sign'></i> ¡El correo ya se encuentra registrado!</strong> Vuelva a intentarlo.&tipoAlert=warning");
+            }
+        } else {
+            response.sendRedirect("pages/indexp.jsp");
         }
     }
 
-
 // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
-/**
- * Handles the HTTP <code>GET</code> method.
- *
- * @param request servlet request
- * @param response servlet response
- * @throws ServletException if a servlet-specific error occurs
- * @throws IOException if an I/O error occurs
- */
-@Override
-        protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    /**
+     * Handles the HTTP <code>GET</code> method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
@@ -177,7 +199,7 @@ public class ControladorUsuarios extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-        protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
     }
@@ -188,7 +210,7 @@ public class ControladorUsuarios extends HttpServlet {
      * @return a String containing servlet description
      */
     @Override
-        public String getServletInfo() {
+    public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
 

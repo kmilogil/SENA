@@ -93,20 +93,8 @@
                     <div class="media">
                         <div class="media-left">
                             <a href="#" data-toggle="modal" data-target="#modalSubirFoto">
-                                <img class="media-object img-circle" width="50" 
-                                     <% if (actualUsuario.getImagen() != null) {
-
-                                     %>
-                                     src="<%=actualUsuario.getImagen()%>"
-                                     <%
-                                     } else if (actualUsuario.getImagen() == null) {
-
-                                     %>
-                                     src="../img/avatars/user.png"
-                                     data-toggle="tooltip" title="Precione click para subir una foto"
-                                     <%               }
-                                     %>
-                                     alt="Mi foto de perfil">
+                                <img class="media-object img-circle" width="50"                                    
+                                     src="../img/avatars/user.png" alt="Mi foto de perfil">
                             </a>
                         </div>
                         <div class="media-body">
@@ -176,22 +164,10 @@
                                             <li class="divider"></li>
                                             <li class="text-center"><a href="#" data-toggle="modal" data-target="#modalCambiarClave">Cambiar Contraseña</a></li>
                                             <li class="divider"></li>
-                                            <li class="text-center"><a href="#">Ayuda <i class="fa fa-exclamation-circle"></i></a></li>
+                                            <li class="text-center"><a href="ayuda.jsp">Ayuda <i class="fa fa-exclamation-circle"></i></a></li>
                                         </ul>
                                     </li>
                                 </ul>
-                                <form class="navbar-form navbar-right" role="search">
-                                    <div class="form-group">
-                                        <div class="input-group">                                            
-                                            <input type="text" class="form-control" placeholder="¿Qué está buscando?...">
-                                            <span class="input-group-btn">
-                                                <button class="btn btn-default" type="submit">Buscar!</button>
-                                            </span>
-                                        </div>
-                                    </div>
-                                </form>
-
-
                             </div>
                         </div>
                     </nav>
@@ -229,9 +205,19 @@
                                 ArrayList<ProductoDto> misProductos;
                                 misProductos = (ArrayList<ProductoDto>) faOfer.obtenerProductosAsociados(actualUsuario.getIdUsuario());
                                 if (misProductos.size() != 0) {
-                                    for (ProductoDto p : misProductos) {
+                            %>
+                            <div class="col-md-12">
+                                <div class="alert alert-info">
+                                    <p class="text-center">
+                                        <strong>Algunos de su productos no los encontrar aqui debido a que se encuentran en oferta</strong>                                        
+                                    </p>
+                                </div>
+                            </div>
+                            <%
+                                for (ProductoDto p : misProductos) {
 
                             %>
+
                             <div class="col-md-6">
                                 <div class="media">
                                     <div class="media-left">
@@ -259,8 +245,8 @@
                             %>
                             <div class="col-md-12">
                                 <div class="alert alert-info">
-                                    <p>
-                                        <strong>No tiene productos asociados</strong> Por lo tanto aún no puede publicar ofertas
+                                    <p class="text-center">
+                                        <strong>No se encontraros productos</strong> Puede que se encuentren en oferta o no tenga
                                         <strong><a href="asociarproducto.jsp"> Ir a Asociar Productos </a></strong>
                                     </p>
                                 </div>
@@ -402,8 +388,6 @@
                             </div>
                         </div>
 
-
-
                         <!-- <div class="modal fade" id="modalOfertarProducto" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                              <div class="modal-dialog">
                                  <div class="modal-content">
@@ -442,7 +426,7 @@
                 <div class="col-md-13">
                     <!-- Footer (Nota: Escribir el código que permita que esto quede abajo fijo) -->
                     <ol class="breadcrumb container-fluid">
-                        <em class="text-center">Todos los derechos reservados / <a href="http://getbootstrap.com/">Bootstrap</a> / <a href="http://fortawesome.github.io/Font-Awesome/">Font-Awesome</a> / <a href="http://jquery.com/">JQuery</a></em>
+
                         <em class="pull-right"><a href="#" data-toggle="modal" data-target="#modalContactenos">Contactar un Administrador</a></em>
                     </ol>
 

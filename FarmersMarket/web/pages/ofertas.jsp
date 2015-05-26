@@ -121,20 +121,8 @@
                     <div class="media">
                         <div class="media-left">
                             <a href="#" data-toggle="modal" data-target="#modalSubirFoto">
-                                <img class="media-object img-circle" width="50" 
-                                     <% if (actualUsuario.getImagen() != null) {
-
-                                     %>
-                                     src="<%=actualUsuario.getImagen()%>"
-                                     <%
-                                     } else if (actualUsuario.getImagen() == null) {
-
-                                     %>
-                                     src="../img/avatars/user.png"
-                                     data-toggle="tooltip" title="Precione click para subir una foto"
-                                     <%               }
-                                     %>
-                                     alt="Mi foto de perfil">
+                                <img class="media-object img-circle" width="50"                                    
+                                     src="../img/avatars/user.png" alt="Mi foto de perfil">
                             </a>
                         </div>
                         <div class="media-body">
@@ -201,20 +189,10 @@
                                             <li class="divider"></li>
                                             <li class="text-center"><a href="#" data-toggle="modal" data-target="#modalCambiarClave">Cambiar Contraseña</a></li>
                                             <li class="divider"></li>
-                                            <li class="text-center"><a href="#">Ayuda <i class="fa fa-exclamation-circle"></i></a></li>
+                                            <li class="text-center"><a href="ayuda.jsp">Ayuda <i class="fa fa-exclamation-circle"></i></a></li>
                                         </ul>
                                     </li>
-                                </ul>
-                                <form class="navbar-form navbar-right" role="search">
-                                    <div class="form-group">
-                                        <div class="input-group">                                            
-                                            <input type="text" class="form-control" placeholder="¿Qué está buscando?...">
-                                            <span class="input-group-btn">
-                                                <button class="btn btn-default" type="submit">Buscar!</button>
-                                            </span>
-                                        </div>
-                                    </div>
-                                </form>                                
+                                </ul>                                                                
                             </div>
                         </div>
                     </nav>
@@ -296,7 +274,7 @@
                                 <div class="panel panel-success" id="filtroOfertas">
                                     <div class="panel-heading">
                                         <h2 class="panel-title">
-                                            Por <em><strong><a href="#"><%=oferta.getProAso().getUsDto().getNombres()%></a></strong></em>                                            
+                                            Por <em><strong><a href="../ControladorUsuarios?idUsuarioConsulta=<%=oferta.getProAso().getUsDto().getIdUsuario()%>"><%=oferta.getProAso().getUsDto().getNombres()%></a></strong></em>                                            
                                         </h2>
                                     </div>
                                     <div class="panel-body">
@@ -345,15 +323,15 @@
                                 %>
                                 <div class="col-md-12">
                                     <div class="alert alert-info text-center">
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                         <p>
-                                            <strong>No hay se han encontrado ofertas</strong> Revise mas tarde
+                                            <strong>No hay se han encontrado ofertas</strong>
 
                                         </p>
                                     </div>
                                 </div>
                                 <%
-                                    }                                                                                                  
+                                    }
                                 } else {
                                     ArrayList<OfertaDto> ofertas = new ArrayList();
                                     ofertas = (ArrayList<OfertaDto>) faOfer.obtenerOfertas(actualUsuario.getIdUsuario(), "", 0, 0);
@@ -361,10 +339,10 @@
                                         for (OfertaDto oferta : ofertas) {
 
                                 %>
-                               <div class="panel panel-success" id="filtroOfertas">
+                                <div class="panel panel-success" id="filtroOfertas">
                                     <div class="panel-heading">
                                         <h2 class="panel-title">
-                                            Por <em><strong><a href="#"><%=oferta.getProAso().getUsDto().getNombres()%></a></strong></em>                                            
+                                            Por <em><strong><a href="../ControladorUsuarios?idUsuarioConsulta=<%=oferta.getProAso().getUsDto().getIdUsuario()%>"><%=oferta.getProAso().getUsDto().getNombres()%></a></strong></em>                                            
                                         </h2>
                                     </div>
                                     <div class="panel-body">
@@ -410,11 +388,23 @@
                                 </div>     
                                 <%
 
-                                            }
+                                    }
+                                } else {
+                                %>
+                                <div class="col-md-12">
+                                    <div class="alert alert-info text-center">
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                        <p>
+                                            <strong>No hay se han encontrado ofertas</strong> Revise mas tarde
+
+                                        </p>
+                                    </div>
+                                </div>
+                                <%
                                         }
                                     }
                                 %>  
-                                
+
                             </div>                                                                     
 
 
@@ -606,7 +596,7 @@
                 <div class="col-md-13">
                     <!-- Footer (Nota: Escribir el código que permita que esto quede abajo fijo) -->
                     <ol class="breadcrumb container-fluid">
-                        <em class="text-center">Todos los derechos reservados / <a href="http://getbootstrap.com/">Bootstrap</a> / <a href="http://fortawesome.github.io/Font-Awesome/">Font-Awesome</a> / <a href="http://jquery.com/">JQuery</a></em>
+                       
                         <em class="pull-right"><a href="#" data-toggle="modal" data-target="#modalContactenos">Contactar un Administrador</a></em>
                     </ol>
 

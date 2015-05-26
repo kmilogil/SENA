@@ -149,8 +149,10 @@ public class UsuarioDao {
     }
 
     public UsuarioDto obtenerUsuarioPorId(long idUsuario, Connection unaConexion) {
-        sqlTemp = "select u.idUsuario, nombres,apellidos,clave, correo, fechaNac,direccion,idCiudad,fechaSistema,imagen,estado, rl.idRol\n"
-                + "from usuarios u join rolesusuario rl on u.idUsuario = rl.idUsuario where u.idUsuario = ?;";
+        sqlTemp = "select u.idUsuario, nombres,apellidos,clave, correo, fechaNac,direccion,u.idCiudad,fechaSistema,imagen,estado, rl.idRol"
+                + ", c.Nombre as ciudad, d.departamento from usuarios u join rolesusuario rl on u.idUsuario = rl.idUsuario "
+                + "join ciudades c on c.idCiudad = u.idCiudad join departamentos d on d.idDepartamento = c.idDepartamento "
+                + "where u.idUsuario = ?;";
         UsuarioDto salidaUsuario = new UsuarioDto();
         try {
             pstm = unaConexion.prepareStatement(sqlTemp);
@@ -170,6 +172,8 @@ public class UsuarioDao {
                 salidaUsuario.setImagen(rs.getString("imagen"));
                 salidaUsuario.setEstado(rs.getInt("estado"));
                 salidaUsuario.getRol().setIdRol(rs.getInt("idRol"));
+                salidaUsuario.getCiDto().setNombre(rs.getString("ciudad"));
+                salidaUsuario.getCiDto().getDepartamento().setDepartamento(rs.getString("departamento"));
             }
         } catch (SQLException ex) {
             System.out.println("Error, detalle: " + ex.getMessage());
@@ -298,6 +302,7 @@ public class UsuarioDao {
         }
         return mensaje;
     }
+
     public String activarUsuario(long idUsuario, Connection unaConexion) {
         try {
             pstm = unaConexion.prepareStatement("update usuarios set estado = 1 where idUsuario = ?;");
@@ -339,5 +344,42 @@ public class UsuarioDao {
 
         }
         return permisos;
+    }
+
+    public String correoRegistrado(String correo, long idUsuario, Connection unaConexion) {
+        try {
+            pstm = unaConexion.prepareStatement("select correo from usuarios where correo = ? "
+                    + "and correo not in(select correo from usuarios where idUsuario = ?);");
+            pstm.setString(1, correo);
+            pstm.setLong(2, idUsuario);
+            rs = pstm.executeQuery();
+            while (rs.next()) {
+                mensaje = rs.getString("correo");
+            }
+
+        } catch (SQLException ex) {
+            mensaje = ex.getMessage();
+        }
+        return mensaje;
+    }
+    
+    public String actulizarDatos(String direccion, String correo, long idUsuario, Connection unaConexion){
+        
+        try{
+            pstm = unaConexion.prepareStatement("UPDATE usuarios set direccion = ?, correo = ? where idUsuario = ?");
+            pstm.setString(1, direccion);
+            pstm.setString(2, correo);
+            pstm.setLong(3, idUsuario);
+            rtdo = pstm.executeUpdate();
+            if (rtdo != 0) {
+                mensaje = "ok";
+            }else{
+                mensaje = "no";
+            }
+        }catch (SQLException ex) {
+            mensaje = ex.getMessage();
+        }
+        return mensaje;
+        
     }
 }

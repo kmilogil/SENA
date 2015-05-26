@@ -237,6 +237,58 @@ function resultadoDetalleProductor() {
 }
 
 var xmlHttp;
+function getHistorialProductor(idPedido, idUsuario) {
+
+    if (window.XMLHttpRequest) {
+        xmlHttp = new XMLHttpRequest();
+    }
+    else if (window.ActiveXObject) {
+        xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
+    } else {
+        alert("El navegador no soporta Ajax!");
+        return;
+    }
+
+    var url = "../ajax/cargarHistorial.jsp?idpp=" + idPedido + "&idus=" + idUsuario;
+    xmlHttp.onreadystatechange = resultadoHistorialProductor;
+    xmlHttp.open("GET", url, true);
+    xmlHttp.send(null);
+
+}
+
+function resultadoHistorialProductor() {
+    if (xmlHttp.readyState === 4) {
+        document.getElementById("tablaHistorialProductor").innerHTML = xmlHttp.responseText;
+    }
+}
+
+var xmlHttp;
+function getHistorialCliente(idPedido) {
+
+    if (window.XMLHttpRequest) {
+        xmlHttp = new XMLHttpRequest();
+    }
+    else if (window.ActiveXObject) {
+        xmlHttp = new ActiveXObject("Microsoft.XMLHTTP");
+    } else {
+        alert("El navegador no soporta Ajax!");
+        return;
+    }
+
+    var url = "../ajax/cargarDetalle.jsp?idpc=" + idPedido;
+    xmlHttp.onreadystatechange = resultadoHistorialCliente;
+    xmlHttp.open("GET", url, true);
+    xmlHttp.send(null);
+
+}
+
+function resultadoHistorialCliente() {
+    if (xmlHttp.readyState === 4) {
+        document.getElementById("tablaHistorialCliente").innerHTML = xmlHttp.responseText;
+    }
+}
+
+var xmlHttp;
 function getEliminar(idProducto) {
 
 

@@ -136,4 +136,11 @@ public class FUsuario {
     public String activarUsuario(long idUsuario){
         return uDao.activarUsuario(idUsuario, miConexion);
     }
+    
+    public String correoRegistrado(String correo, long idUsuario){
+        return uDao.correoRegistrado(correo, idUsuario, miConexion);
+    }
+    public String actualizarDatos(String direccion, String correo, long idUsuario){
+        return uDao.actulizarDatos(direccion, correo, idUsuario, miConexion);
+    }
 }

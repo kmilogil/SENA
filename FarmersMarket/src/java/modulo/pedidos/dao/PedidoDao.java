@@ -108,7 +108,63 @@ public class PedidoDao {
         return pedidos;
     }
 
+    public List obtenerHistorialCliente(long idCliente, Connection unaConexion) {
+        ArrayList<PedidoDto> pedidos = new ArrayList();
+        try {
+            pstm = unaConexion.prepareStatement("select pe.idPedido ,pe.fechaEntrega as entrega, pe.estadoPedido as estado"
+                    + ", ceil((sum(c.cantidad * o.precioVenta)  - sum((c.cantidad * o.precioVenta)*p.detalle))) as 'total'\n"
+                    + "from carrito c\n"
+                    + "join pedidos pe on c.idPedido = pe.idPedido\n"
+                    + "join ofertas o on c.idOferta = o.idOferta\n"
+                    + "join promociones p on o.idPromocion = p.idPromocion\n"
+                    + "where pe.idCliente = ? and pe.idPedido not in (select ped.idPedido from pedidos as ped where ped.estadoPedido = 2) and pe.estadoPedido = 3 or pe.estadoPedido = 4"
+                    + " group by pe.idPedido;");
+            pstm.setLong(1, idCliente);
+            rs = pstm.executeQuery();
+            while (rs.next()) {
+                PedidoDto pedido = new PedidoDto();
+                pedido.setIdPedido(rs.getInt("idPedido"));
+                pedido.setFechaEntrega(rs.getString("entrega"));
+                pedido.setEstadoPedido(rs.getInt("estado"));
+                pedido.setTotal(rs.getLong("total"));
+                pedidos.add(pedido);
+            }
+        } catch (SQLException ex) {
+            ex.getMessage();
+        }
+        return pedidos;
+    }
+
     public List obtenerDetallePedidosCliente(int idPedido, Connection unaConexion) {
+        ArrayList<CarritoDto> pedidos = new ArrayList();
+        try {
+            pstm = unaConexion.prepareStatement("select concat(u.nombres, ' ' ,u.apellidos) as productor, u.idUsuario , o.idOferta, p.nombres as producto, pre.descripcion as unidad, ca.cantidad as cantidad \n"
+                    + "from pedidos as pe join carrito as ca on pe.idPedido = ca.idPedido\n"
+                    + "join ofertas as o on ca.idOferta = o.idOferta \n"
+                    + "join productoasociado as pa on o.idProdAsoc = pa.idProdAsoc\n"
+                    + "join productos as p on pa.idProducto = p.idProducto\n"
+                    + "join usuarios u on u.idUsuario = pa.idUsuario \n"
+                    + "join presentaciones as pre on o.idPresentacion = pre.idPresentacion\n"
+                    + "where pe.idPedido = ? group by o.idOferta;");
+            pstm.setInt(1, idPedido);
+            rs = pstm.executeQuery();
+            while (rs.next()) {
+                CarritoDto pedido = new CarritoDto();
+                pedido.getOfDto().getProAso().getProDto().setNombres(rs.getString("producto"));
+                pedido.getOfDto().getProAso().getUsDto().setNombres(rs.getString("productor"));
+                pedido.getOfDto().getProAso().getUsDto().setIdUsuario(rs.getLong("idUsuario"));
+                pedido.getOfDto().getPreDto().setDescripcion(rs.getString("unidad"));
+                pedido.setCantidad(rs.getInt("cantidad"));
+                pedido.setIdOferta(rs.getInt("idOferta"));
+                pedidos.add(pedido);
+            }
+        } catch (SQLException ex) {
+            ex.getMessage();
+        }
+        return pedidos;
+    }
+
+    public List obtenerHistorialPedidosCliente(int idPedido, Connection unaConexion) {
         ArrayList<CarritoDto> pedidos = new ArrayList();
         try {
             pstm = unaConexion.prepareStatement("select o.idOferta, p.nombres as producto, pre.descripcion as unidad, ca.cantidad as cantidad \n"
@@ -137,7 +193,7 @@ public class PedidoDao {
     public List obtenerPedidosProductor(long idProductor, Connection unaConexion) {
         ArrayList<PedidoDto> pedidos = new ArrayList();
         try {
-            pstm = unaConexion.prepareStatement("select concat(u.nombres, ' ' ,u.apellidos) as cliente, pe.idPedido ,pe.fechaEntrega as entrega, pe.estadoPedido as estado, ceil((sum(c.cantidad * o.precioVenta)  - sum((c.cantidad * o.precioVenta)*p.detalle))) as 'total'\n"
+            pstm = unaConexion.prepareStatement("select concat(u.nombres, ' ' ,u.apellidos) as cliente, u.idUsuario , pe.idPedido ,pe.fechaEntrega as entrega, pe.estadoPedido as estado, ceil((sum(c.cantidad * o.precioVenta)  - sum((c.cantidad * o.precioVenta)*p.detalle))) as 'total'\n"
                     + "from carrito c\n"
                     + "join pedidos pe on c.idPedido = pe.idPedido\n"
                     + "join usuarios as u on u.idUsuario = pe.idCliente\n"
@@ -156,6 +212,39 @@ public class PedidoDao {
                 pedido.setEstadoPedido(rs.getInt("estado"));
                 pedido.setTotal(rs.getLong("total"));
                 pedido.getUsDto().setNombres(rs.getString("cliente"));
+                pedido.getUsDto().setIdUsuario(rs.getLong("idUsuario"));
+                pedidos.add(pedido);
+            }
+        } catch (SQLException ex) {
+            ex.getMessage();
+        }
+
+        return pedidos;
+    }
+
+    public List obtenerHistorialProductor(long idProductor, Connection unaConexion) {
+        ArrayList<PedidoDto> pedidos = new ArrayList();
+        try {
+            pstm = unaConexion.prepareStatement("select concat(u.nombres, ' ' ,u.apellidos) as cliente, u.idUsuario,  pe.idPedido ,pe.fechaEntrega as entrega, pe.estadoPedido as estado, ceil((sum(c.cantidad * o.precioVenta)  - sum((c.cantidad * o.precioVenta)*p.detalle))) as 'total'\n"
+                    + " from carrito c\n"
+                    + " join pedidos pe on c.idPedido = pe.idPedido\n"
+                    + " join usuarios as u on u.idUsuario = pe.idCliente\n"
+                    + " join ofertas o on c.idOferta = o.idOferta\n"
+                    + " join productoasociado as pa on pa.idProdAsoc = o.idProdAsoc\n"
+                    + " join usuarios as us on us.idUsuario = pa.idUsuario\n"
+                    + " join promociones p on o.idPromocion = p.idPromocion\n"
+                    + " where us.idUsuario = ? and pe.idPedido not in (select ped.idPedido from pedidos as ped where ped.estadoPedido = 2) \n"
+                    + " and pe.estadoPedido = 4 or pe.estadoPedido = 3 group by pe.idPedido;");
+            pstm.setLong(1, idProductor);
+            rs = pstm.executeQuery();
+            while (rs.next()) {
+                PedidoDto pedido = new PedidoDto();
+                pedido.setIdPedido(rs.getInt("idPedido"));
+                pedido.setFechaEntrega(rs.getString("entrega"));
+                pedido.setEstadoPedido(rs.getInt("estado"));
+                pedido.setTotal(rs.getLong("total"));
+                pedido.getUsDto().setNombres(rs.getString("cliente"));
+                pedido.getUsDto().setIdUsuario(rs.getLong("idUsuario"));
                 pedidos.add(pedido);
             }
         } catch (SQLException ex) {
@@ -187,7 +276,39 @@ public class PedidoDao {
                 pedido.getPedDto().getUsDto().setDireccion(rs.getString("direccion"));
                 pedido.getPedDto().getUsDto().getCiDto().setNombre(rs.getString("ciudad"));
                 pedido.getOfDto().getProAso().getProDto().setNombres(rs.getString("producto"));
-                pedido.getOfDto().getPreDto().setDescripcion("unidad");
+                pedido.getOfDto().getPreDto().setDescripcion(rs.getString("unidad"));
+                pedido.setCantidad(rs.getInt("cantidad"));
+                pedidos.add(pedido);
+            }
+        } catch (SQLException ex) {
+            ex.getMessage();
+        }
+        return pedidos;
+    }
+
+    public List obtenerHistorialPedidosProductor(long idUsuario, int idPedido, Connection unaConexion) {
+        ArrayList<CarritoDto> pedidos = new ArrayList();
+        try {
+            pstm = unaConexion.prepareStatement("select ca.idPedido, pr.nombres as producto, pre.descripcion as unidad, ca.cantidad, us.direccion, ci.Nombre as ciudad from carrito ca\n"
+                    + "join ofertas of on ca.idOferta = of.idOferta\n"
+                    + "join pedidos pe on ca.idPedido = pe.idPedido\n"
+                    + "join usuarios us on pe.idCliente = us.idUsuario\n"
+                    + "join ciudades ci on us.idCiudad = ci.idCiudad\n"
+                    + "join presentaciones pre on of.idPresentacion = pre.idPresentacion\n"
+                    + "join productoasociado pa on of.idProdAsoc = pa.idProdAsoc\n"
+                    + "join usuarios usu on pa.idUsuario = usu.idUsuario\n"
+                    + "join productos pr on pa.idProducto = pr.idProducto\n"
+                    + "where pa.idUsuario = ? and pe.idPedido = ? \n"
+                    + "group by ca.idPedido, ca.idOferta;");
+            pstm.setLong(1, idUsuario);
+            pstm.setInt(2, idPedido);
+            rs = pstm.executeQuery();
+            while (rs.next()) {
+                CarritoDto pedido = new CarritoDto();
+                pedido.getPedDto().getUsDto().setDireccion(rs.getString("direccion"));
+                pedido.getPedDto().getUsDto().getCiDto().setNombre(rs.getString("ciudad"));
+                pedido.getOfDto().getProAso().getProDto().setNombres(rs.getString("producto"));
+                pedido.getOfDto().getPreDto().setDescripcion(rs.getString("unidad"));
                 pedido.setCantidad(rs.getInt("cantidad"));
                 pedidos.add(pedido);
             }
@@ -291,7 +412,7 @@ public class PedidoDao {
                     + "where pe.idPedido = ?;");
             pstm.setInt(1, idPedido);
             rs = pstm.executeQuery();
-            while(rs.next()){
+            while (rs.next()) {
                 sb.append(rs.getString("correo"));
                 if (rs.next()) {
                     sb.append(", ");

@@ -4,6 +4,7 @@
     Author     : kennross
 --%>
 
+<%@page import="modulo.usuarios.dto.DepartamentoDto"%>
 <%@page import="modulo.ofertas.FOferta"%>
 <%@page import="modulo.pedidos.dto.PedidoDto"%>
 <%@page import="modulo.pedidos.FPedido"%>
@@ -33,7 +34,7 @@
         FUsuario faUsu = new FUsuario();
         FPedido faPedi = new FPedido();
         FOferta faOfer = new FOferta();
-        String pagActual = "mispedidos.jsp";
+        String pagActual = "indexp.jsp";
 
         // Validación para poder entrar
         boolean poderEntrar = false;
@@ -59,7 +60,8 @@
         <script type="text/javascript" src="../js/bootstrap.js"></script>
         <script type="text/javascript" src="../js/ajax.js"></script>
         <script type="text/javascript" src="../js/Validacion.js"></script>
-        <title>Mis Pedidos - Farmer's Market</title>
+        <script type="text/javascript" src="../js/validacionesAjax.js"></script>
+        <title>Perfil - Farmer's Market</title>
         <script type="text/javascript">
             $(document).ready(function() {
                 // Initialize tooltip
@@ -188,7 +190,8 @@
                                             <li class="text-center"><a href="ayuda.jsp">Ayuda <i class="fa fa-exclamation-circle"></i></a></li>
                                         </ul>
                                     </li>
-                                </ul>
+                                </ul>                              
+
                             </div>
                         </div>
                     </nav>
@@ -197,7 +200,7 @@
                     <!-- Miga de pan -->
                     <ol class="breadcrumb">
                         <li><a href="indexp.jsp">Inicio</a></li>
-                        <li class="active"><a href="mispedidos.jsp">Mis pedidos</a></li>                    
+                        <li class="active"><a href="perfil.jsp">Perfil</a></li>                    
                     </ol>
                     <!-- Fin de miga de pan -->
 
@@ -218,142 +221,71 @@
                     <!-- Contenedor de contenido especifico -->
                     <div class="container-fluid">
                         <div class="row">
-                            <div class="col-md-9">
-                                <!-- Titutlo -->
-                                <div class="page-header">
-                                    <h2 class="text-center">Mis Pedidos</h2>
-                                </div> 
-                                <%
-                                    for (RolDto rol : rolesActuales) {
-                                        if (rol.getIdRol() == 1) {
+                            <div class="col-md-12">
+                                <div class="container-fluid">
+                                    <form class="form-horizontal" action="../ControladorUsuarios" method="post">
+                                        <legend class="text-center">Mis Datos Personales</legend>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="auDocumento" class="col-sm-4 control-label">Documento</label>
+                                                <div class="col-sm-8">
+                                                    <input type="text" name="auDocumento" class="form-control" 
+                                                           id="auDocumento" placeholder="Documento" readonly
+                                                           value="<%= actualUsuario.getIdUsuario()%>">                                                           
+                                                </div>
+                                            </div>
+                                            <div class="form-group" id="pfDireccion">
+                                                <label for="auDireccion" class="col-sm-4 control-label">Dirección</label>
+                                                <div class="col-sm-8">
+                                                    <input type="text" class="form-control" name="pffDireccion" 
+                                                           id="pffDireccion" tabindex="6" value="<%=actualUsuario.getDireccion()%>" maxlength="45" onblur="validarDireccionPerfil(this)" >
+                                                    <i id="iconFeedbackpfDireccion"></i>                                                 
+                                                </div>
+                                            </div>
+                                            <div class="form-group" id="inpDepartamento">
+                                                <label class="col-sm-4 control-label" for="ruDepartamento">Departamento:</label>
+                                                <div class="col-sm-8">
+                                                    <select name="ruDepartamento" readonly id="ruDepartamento" class="form-control" tabindex="9" >
+                                                        <option value="0"><%=actualUsuario.getCiDto().getDepartamento().getDepartamento()%></option>                                                        
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="auNombres" class="col-sm-4 control-label">Nombre</label>
+                                                <div class="col-sm-8">
+                                                    <input type="text" name="auNombres" class="form-control" readonly
+                                                           id="auNombres" placeholder="Sus nombres"
+                                                           value="<%=actualUsuario.getNombres() + " " + actualUsuario.getApellidos()%>">
+                                                </div>
+                                            </div>
 
-                                            ArrayList<PedidoDto> pedidos = (ArrayList<PedidoDto>) faPedi.obtenerPedidosProductor(actualUsuario.getIdUsuario());
-                                            if (pedidos.size() != 0) {
-                                                for (PedidoDto pedido : pedidos) {
+                                            <div class="form-group" id="pfCorreo">
+                                                <label for="ruCorreo" class="col-sm-4 control-label">Correo</label>
+                                                <div class="col-sm-8">
+                                                    <input type="text" name="pffCorreo" class="form-control" id="pffCorreo" value="<%=actualUsuario.getCorreo()%>" onblur="validarCorreoPerfil(this)"> 
+                                                    <i id="iconFeedbackpfCorreo"></i>
+                                                </div>
+                                            </div>
+                                            <div class="form-group" id="inpCiudad">
+                                                <label class="col-sm-4 control-label" for="ruCiudad">Ciudad:</label>
+                                                <div class="col-sm-8">
+                                                    <select name="ruCiudad" id="ruCiudad" class="form-control" tabindex="10" readonly>
+                                                        <option value=""><%=actualUsuario.getCiDto().getNombre()%></option>
 
-                                                    String estado = "";
-                                                    if (pedido.getEstadoPedido() == 2) {
-                                                        estado = "Activo";
-                                                    }
+                                                    </select>
+                                                </div>
+                                            </div>
 
-                                %>
-
-                                <!-- Fin de formato de un pedido -->
-                                <div class="panel panel-success">
-                                    <div class="panel-heading">
-                                        <h2 class="panel-title">
-                                            Por <em><strong><a href="../ControladorUsuarios?idUsuarioConsulta=<%=pedido.getUsDto().getIdUsuario()%>"><%=pedido.getUsDto().getNombres()%></a></strong></em>                                            
-                                        </h2>
-                                    </div>
-                                    <div class="panel-body">
-
-                                        <span class="pull-left"><span class="lead">Fecha Entrega: </span><%=pedido.getFechaEntrega()%></span>
-                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                        <span class="text-center"><span class="lead">Pago total: </span><%=pedido.getTotal()%> $</span>
-                                        <span class="lead text-center pull-right"><%=estado%></span>                                           
-                                    </div>
-                                    <div class="panel-footer">
-                                        <h3 class="panel-title">
-                                            <!-- Novedades -->
-                                            <!-- link para modal para agregar novedad -->
-
-
-                                            <!-- link para modal para mostrar novedades -->
-                                            <a href="#" data-toggle="modal" data-target="#modalPedidoProductor" onclick="getDetalleProductor(<%=pedido.getIdPedido()%>,<%=actualUsuario.getIdUsuario()%>)">
-                                                <i class="fa fa-bar-chart pull-left"> </i> <span class="pull-left text-success">Ver Detalle(s)</span>
-                                            </a>                                                                                        
-                                            <!-- Fin de novedades -->
-                                            &nbsp;
-                                        </h3>
-                                    </div>
-                                </div>  
-                                <%              }
-                                } else {
-                                %>
-                                <div class="col-md-12">
-                                    <div class="alert alert-info text-center" id="alert">
-                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                        <p>
-                                            <strong>No le han solicitado ningun pedido</strong>
-                                        </p>
-                                    </div>
+                                        </div>
+                                        <center>
+                                            <input type="submit" id="actualizarDatos" name="actualizarDatos" class="btn btn-success" value="Actualizar Datos">
+                                        </center>                                        
+                                    </form>
                                 </div>
-                                <%
-                                    }
-
-                                } else if (rol.getIdRol() == 2) {
-                                %>
-
-                                <%
-                                    ArrayList<PedidoDto> pedidos = (ArrayList<PedidoDto>) faPedi.obtenerPedidosCliente(actualUsuario.getIdUsuario());
-                                    if (pedidos.size() != 0) {
-                                        for (PedidoDto pedido : pedidos) {
-
-                                            String estado = "";
-                                            if (pedido.getEstadoPedido() == 2) {
-                                                estado = "Activo";
-                                            } else if (pedido.getEstadoPedido() == 3) {
-                                                estado = "Finalizado";
-                                            } else if (pedido.getEstadoPedido() == 4) {
-                                                estado = "Cancelado";
-                                            }
-                                %>
-                                <!-- Fin de formato de un pedido -->
-                                <div class="panel panel-success">
-                                    <div class="panel-heading">
-                                        <h2 class="panel-title">
-                                            Por <em><strong><%=actualUsuario.getNombres() + " " + actualUsuario.getApellidos()%></strong></em>                                            
-                                        </h2>
-                                    </div>
-                                    <div class="panel-body">
-
-                                        <span class="pull-left"><span class="lead">Fecha Entrega: </span><%=pedido.getFechaEntrega()%></span>
-                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                        <span class="text-center"><span class="lead">Pago total: </span><%=pedido.getTotal()%> $</span>
-
-                                        <span class="lead text-center pull-right"><%=estado%></span>
-
-                                    </div>
-                                    <div class="panel-footer">
-                                        <h3 class="panel-title">                                            
-                                            <form action="../ControladorPedido" id="formCancelarPedido" method="post">
-                                                <input hidden="true" value="<%=pedido.getIdPedido()%>" name="idPedido">
-                                                <a href="#" data-toggle="modal" data-target="#modalConfirmarCancelar">
-                                                    <i class="fa fa-remove pull-left"></i> <span class="pull-left text-success">Cancelar pedido</span>
-                                                </a>
-                                            </form>
-                                                <!-- link para modal para mostrar novedades -->
-                                            <a href="#" data-toggle="modal" data-target="#modalPedidocliente" onclick="getDetalleCliente(<%=pedido.getIdPedido()%>)">
-                                                <i class="fa fa-bar-chart pull-right"> </i> <span class="pull-right text-success">Ver Detalle(s)</span>
-                                            </a>                                  
-                                            &nbsp;
-                                        </h3>
-                                    </div>
-                                </div>
-                                <%
-                                    }
-                                } else {
-                                %>
-                                <div class="col-md-12">
-                                    <div class="alert alert-info text-center" id="alert">
-                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                        <p>
-                                            <strong>No tiene ningun pedido</strong>
-                                        </p>
-                                    </div>
-                                </div>
-                                <%
-                                            }
-                                        }
-                                    }
-                                %>
-                            </div>
-                            <!-- Publicidad -->
-                            <div class="col-md-3">
-                                <img src="../img/bann.jpg" alt="Publicidad de frutas">                                
-                            </div>
-                            <!-- Fin de publicidad -->
-                        </div>
+                            </div>                           
+                        </div>                              
                     </div>
                     <!-- Fin de contenedor de contenido especifico -->
 
@@ -415,25 +347,8 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- Fin de Cambiar Contraseña --> 
-                        <!-- Confirmacion cancelar pedido-->
-                        <div>
-                            <div class="modal fade bs-example-modal-sm" id="modalConfirmarCancelar" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
-                                <div class="modal-dialog modal-sm">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h4 class="modal-title text-center" id="myModalLabel">¿Está seguro que desea cancelar el pedido?</h4>
-                                        </div>
-                                        <div class="modal-footer">                                            
-                                            <center>
-                                                <button type="button" class="btn btn-success" onclick="enviarFormulario('formCancelarPedido');">Sí</button>
-                                                <button type="button" class="btn btn-danger" data-dismiss="modal">No</button>                                                
-                                            </center>                                            
-                                        </div>                                        
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <!-- Fin de Cambiar Contraseña -->                        
+
                         <!-- Formulario de Contáctenos -->
                         <div>
                             <div class="modal fade" id="modalContactenos" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
