@@ -382,4 +382,33 @@ public class UsuarioDao {
         return mensaje;
         
     }
+    public List obtenerCorreoClientes(Long idUsuario, Connection unaConexion) {
+        ArrayList<UsuarioDto> usuarios = null;
+        sqlTemp = "select DISTINCT u.correo as correo from carrito \n"
+                + "join pedidos pe on carrito.idPedido = pe.idPedido\n"
+                + "join usuarios as u on u.idUsuario = pe.idCliente\n"
+                + "join ofertas o on carrito.idOferta = o.idOferta\n"
+                + "join productoasociado as pa on pa.idProdAsoc = o.idProdAsoc\n"
+                + "join usuarios as us on us.idUsuario = pa.idUsuario\n"
+                + "where us.idUsuario=?;";
+        try {
+            pstm = unaConexion.prepareStatement(sqlTemp);
+            pstm.setLong(1, idUsuario);
+            rs = pstm.executeQuery();
+            usuarios = new ArrayList();
+            
+            while (rs.next()) {
+                UsuarioDto usuariosc = new UsuarioDto();
+                usuariosc.setCorreo(rs.getString("correo"));
+                usuarios.add(usuariosc);
+            }
+
+        } catch (SQLException ex) {
+            System.out.println("Error, detalle: " + ex.getMessage());  
+
+        }
+
+        return usuarios;
+
+    }
 }

@@ -15,8 +15,8 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        
-        
+
+
         <title>JSP Page</title>
     </head>
     <body>
@@ -30,7 +30,7 @@
 
             pDto = faOfer.obtenerProductoConIdProductoAso(idProductoAso);
 
-            int salida = faOfer.obtenerNumeroOfertasConProducto(Integer.parseInt(request.getParameter("idProducto")),Long.parseLong(request.getParameter("idProductor")));
+            int salida = faOfer.obtenerNumeroOfertasConProducto(Integer.parseInt(request.getParameter("idProducto")), Long.parseLong(request.getParameter("idProductor")));
             if (salida > 0) {
         %> 
         <h4 class="text-center">Lo sentimos pero ya realizo una oferta con este producto</h4> 
@@ -112,7 +112,11 @@
             </div>
         </div>
     </div>
-
+    <div class="checkbox">
+        <label>
+            <input type="checkbox" id="correom" name="correom" > Enviar copia de la oferta a los clientes
+        </label>
+    </div>  
 
 
     <%            }

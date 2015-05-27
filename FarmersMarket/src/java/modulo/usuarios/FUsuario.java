@@ -143,4 +143,7 @@ public class FUsuario {
     public String actualizarDatos(String direccion, String correo, long idUsuario){
         return uDao.actulizarDatos(direccion, correo, idUsuario, miConexion);
     }
+    public List obtenerCorreoClientes(long idUsuario){
+        return uDao.obtenerCorreoClientes(idUsuario, miConexion);
+    }
 }

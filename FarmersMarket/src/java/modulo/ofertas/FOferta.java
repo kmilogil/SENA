@@ -158,5 +158,7 @@ public class FOferta {
     public String eliminar(int idProAsoc){
         return paDao.eliminar(idProAsoc, miConexion);
     }
-    
+    public OfertaDto obtenerUltimaOfertaPorProductor(long idUsuario){
+        return ofDao.obtenerUltimaOfertaPorProductor(idUsuario, miConexion);
+    }
 }

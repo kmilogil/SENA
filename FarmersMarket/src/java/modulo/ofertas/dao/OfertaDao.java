@@ -281,5 +281,33 @@ public class OfertaDao {
         }
         return ranking;
     }
+    
+    public OfertaDto obtenerUltimaOfertaPorProductor(long idUsuario, Connection unaConexion) {
+        OfertaDto oferta = new OfertaDto();
+        try {
+            pstm = unaConexion.prepareStatement("select productos.nombres as producto, presentaciones.descripcion as presentacion, ofertas.fechaFin as vence, ofertas.precioVenta as precio, inventario.cantidad, promociones.descripcion as promocion\n"
+                    + "from ofertas\n"
+                    + "join inventario on inventario.idOferta = ofertas.idOferta\n"
+                    + "inner join productoasociado on ofertas.idProdAsoc = productoasociado.idProdAsoc\n"
+                    + "inner join productos on productos.idProducto = productoasociado.idProducto\n"
+                    + "inner join presentaciones on ofertas.idPresentacion= presentaciones.idPresentacion\n"
+                    + "inner join promociones on ofertas.idPromocion = promociones.idPromocion\n"
+                    + "inner join usuarios on usuarios.idUsuario = productoasociado.idUsuario\n"
+                    + "where ofertas.idOferta=(select ofertas.idOferta from ofertas order by ofertas.fechaInicio desc limit 1) and usuarios.idUsuario=?;");
+            pstm.setLong(1, idUsuario);
+            rs = pstm.executeQuery();
+            while (rs.next()) {
+                oferta.getProAso().getProDto().setNombres(rs.getString("producto"));
+                oferta.getInDto().setCantidad(rs.getInt("cantidad"));
+                oferta.setPrecioVenta(rs.getLong("precio"));
+                oferta.setFechaFin(rs.getString("vence"));
+                oferta.getPreDto().setDescripcion(rs.getString("presentacion"));
+                oferta.getProDto().setDescripcion(rs.getString("promocion"));
+            }
+        } catch (SQLException ex) {
+
+        }
+        return oferta;
+    }
 
 }

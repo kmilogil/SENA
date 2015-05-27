@@ -8,6 +8,7 @@ package controladores.ofertas;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -18,6 +19,7 @@ import javax.servlet.http.HttpSession;
 import modulo.ofertas.FOferta;
 import modulo.ofertas.dto.OfertaDto;
 import modulo.usuarios.FUsuario;
+import modulo.usuarios.dto.UsuarioDto;
 import utilidades.Correo;
 import utilidades.Exceptions;
 
@@ -105,6 +107,52 @@ public class ControladorOferta extends HttpServlet {
             ofDto.setIdPresentacion(Integer.parseInt(request.getParameter("presentacion")));
             ofDto.getInDto().setCantidad(Integer.parseInt(request.getParameter("cantidad")));
             int out = faOfer.ofertarProducto(ofDto);
+            String seleccionado = request.getParameter("correom");
+            if (seleccionado.equalsIgnoreCase("on")) {
+                String cuerpo;
+
+                HttpSession miSesion = request.getSession();
+                UsuarioDto actualUsuario;
+                actualUsuario = (UsuarioDto) miSesion.getAttribute("usuarioEntro");
+                OfertaDto ultoferta;
+                ultoferta = faOfer.obtenerUltimaOfertaPorProductor( actualUsuario.getIdUsuario());
+
+                cuerpo = "<!DOCTYPE html>";
+                cuerpo += "<center>";
+                cuerpo += "<br><p>¡Hola!</p>";
+                cuerpo += "<br><p>Este producto esta en oferta</p>";
+                cuerpo += "<br><p>Si quieres adquirir este y otros productos te invitamos a visitar nuestra página";
+                cuerpo += "<a href='http://localhost:8080/FarmersMarket/index.jsp'>Farmers Market</a>";
+                cuerpo += "<body>";
+                cuerpo += "<h2> <Strong>Oferta del día</Strong></h2>";
+                cuerpo += "<br>";
+                cuerpo += "<h4> Productor:" + actualUsuario.getNombres() + "" + actualUsuario.getApellidos() + "</h4>";
+                cuerpo += "-----------------------------------------------------------------------------------------------------------------";
+                cuerpo += "<p>" + ultoferta.getProAso().getProDto().getNombres()+ "</p>";
+                cuerpo += "<br>";
+                cuerpo += "<br>";
+                cuerpo += "<br>";
+                cuerpo += "<p>Cantidad disponible:" + ultoferta.getInDto().getCantidad() + "</p>";
+                cuerpo += "<p> Unidad:" + ultoferta.getPreDto().getDescripcion()+ "</p>";
+                cuerpo += "<p> Promoción:" + ultoferta.getProDto().getDescripcion()+ "</p>";
+                cuerpo += "<p> Precio:" + ultoferta.getPrecioVenta() + "</p>";
+                cuerpo += "<p> Fecha fin:" + ultoferta.getFechaFin() + "</p>";
+                cuerpo += "</center></body></html>";
+
+                StringBuilder correos = new StringBuilder("");
+                PrintWriter outt = response.getWriter();
+
+                List<UsuarioDto> correoscl;
+                correoscl = faUsu.obtenerCorreoClientes(actualUsuario.getIdUsuario());
+                for (int i=0; i<correoscl.size(); i++) {
+                    correos.append(correoscl.get(i).getCorreo());
+                    correos.append(",");
+                }
+                correos.deleteCharAt(correos.length()-1);
+                Correo.sendMail("Pedido activo", cuerpo, correos.toString());
+
+            }
+        
             if (out == 1) {
                 response.sendRedirect("pages/misproductos.jsp?msg=<strong>¡Su oferta a sido publicada! <i class='glyphicon glyphicon-ok'></i></strong> Puede mirarla en Mis Ofertas &tipoAlert=success");
             } else {
